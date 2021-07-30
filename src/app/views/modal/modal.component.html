@@ -1,0 +1,14 @@
+<div class="modal-box animated fadeIn fast" *ngIf="show">
+    <div class="modal-box-inner {{size}}">
+        <div class="modal-box-title">
+            <div class="close-modal pointer noselect" (click)="closeModal()"><i class="fa fa-times-circle"></i></div>
+            <div class="title-modal">{{title}}</div>
+        </div>
+        <div class="modal-box-content">
+            <ng-content select="div[role=body]"></ng-content>
+        </div>
+        <div class="modal-box-buttons modal-box-direction">
+            <ng-content select="div[role=button]"></ng-content>
+        </div>
+    </div>
+</div>
