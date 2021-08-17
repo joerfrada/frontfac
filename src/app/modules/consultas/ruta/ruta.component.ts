@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
+declare var $:any;
+
 @Component({
   selector: 'app-ruta',
   templateUrl: './ruta.component.html',
@@ -9,6 +11,8 @@ export class RutaComponent implements OnInit {
 
   modal: any;
   consultaModal: any;
+  especialidadModal: any;
+  workflowModal: any;
 
   varhistorial: any = [
     {
@@ -42,9 +46,23 @@ export class RutaComponent implements OnInit {
     },
   ];
 
+  varitem = [
+    {
+      id: 1,
+      cuerpo: "Cuerpo 1",
+      especialidad: "Especialidad 1"
+    },
+    {
+      id: 2,
+      cuerpo: "Cuerpo 2",
+      especialidad: "Especialidad 2"
+    }
+  ];
+
   constructor() { }
 
   ngOnInit(): void {
+    // Aqui carga 
   }
 
   openModal() {
@@ -61,6 +79,22 @@ export class RutaComponent implements OnInit {
 
   closeConsultaModal(bol: any) {
     this.consultaModal = bol;
+  }
+
+  openEspecialidad() {
+    this.especialidadModal = true;
+  }
+
+  closeEspecialidadModal(bol: any) {
+    this.especialidadModal = bol;
+  }
+
+  openWorkflow() {
+    this.workflowModal = true;
+  }
+
+  closeWorkflowModal(bol: any) {
+    this.workflowModal = bol;
   }
 
 }

@@ -18,6 +18,8 @@ import { PiramidesComponent } from '../modules/consultas/piramides/piramides.com
 import { RutaComponent } from '../modules/consultas/ruta/ruta.component';
 import { BreadcrumbComponent } from '../views/breadcrumb/breadcrumb.component';
 import { ModalComponent } from '../views/modal/modal.component';
+import { WorkflowModalComponent } from '../views/workflow-modal/workflow-modal.component';
+import { ConsultaComponent } from '../modules/consultas/consulta/consulta.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +35,9 @@ import { ModalComponent } from '../views/modal/modal.component';
     PiramidesComponent,
     RutaComponent,
     BreadcrumbComponent,
-    ModalComponent
+    ModalComponent,
+    WorkflowModalComponent,
+    ConsultaComponent
   ],
   imports: [
     CommonModule,

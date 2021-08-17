@@ -55,8 +55,8 @@
     </div>
 </div>
 
-<app-modal [title]="'Crear Nombre Lista'" [show]="modal" [size]="'small-m-modal'" (close)="closeModal($event)">
-    <div role="body" class="modal-body">
+<app-modal [title]="'Crear Nombre Lista'" [show]="modal" [size]="'modal-sm'" (close)="closeModal($event)">
+    <div role="body">
         <div class="inner-col">
             <div class="col col40">
                 <div class="label-row">Nombre Lista</div>
@@ -83,20 +83,14 @@
             </div>
         </div>
     </div>
-    <div role="button">
-        <ul class="modal-buttons">
-            <li class="modal-button-item">
-                <button type="button" class="btn btn-red" (click)="closeModal(false)">Cerrar</button>
-            </li>
-            <li class="modal-button-item">
-                <button type="button" class="btn btn-blue" (click)="closeModal(false)">Guardar</button>
-            </li>
-        </ul>
+    <div role="footer">
+        <button type="button" class="btn btn-red" (click)="closeModal(false)">Cerrar</button>
+        <button type="button" class="btn btn-blue" (click)="closeModal(false)">Guardar</button>
     </div>
 </app-modal>
 
-<app-modal [title]="'Lista Dinámica'" [show]="valorModal" [size]="'default-modal'" (close)="closeValorModal($event)">
-    <div role="body" class="modal-body">
+<app-modal [title]="'Lista Dinámica'" [show]="valorModal" [size]="'modal-md'" (close)="closeValorModal($event)">
+    <div role="body">
         <div class="inner-col">
             <div class="col col33">
                 <div class="label-row">Orden</div>
@@ -127,11 +121,8 @@
             </div>
         </div>
     </div>
-    <div role="button">
-        <ul class="modal-buttons">
-            <li class="modal-button-item">
-                <button type="button" class="btn btn-red" (click)="closeValorModal(false)">Cerrar</button>
-            </li>
-        </ul>
+    <div role="footer">
+        <button type="button" class="btn btn-red" (click)="closeValorModal(false)">Cerrar</button>
+        <!-- <button type="button" class="btn btn-blue" (click)="closeValorModal(false)">Guardar</button> -->
     </div>
 </app-modal>
