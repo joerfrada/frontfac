@@ -1,10 +1,49 @@
 #chart-container {
-    // overflow-x: auto;
-    // overflow-y: auto;
-    // position: relative;
-    // // margin-bottom: -120px;
-    // height: 100%;
-    // text-align: center;
-    border: 1px solid #ccc;
+    width: 100%;
     height: 100%;
+    text-align: center;
+}
+
+.datawf {
+    width: 100%;
+    height: 100%;
+    background: white;
+    border: 1px solid #BBB;
+}
+
+::ng-deep {
+    .orgchart.orgchart-demo {
+        background: none;
+
+        .title { 
+            background-color: #006699;
+            padding: 5px;
+            width: 160px;
+            height: 28px !important;
+
+            .fa-1mx {
+                font-size: 1.5em;
+            }
+
+            .icon {
+                float: right;
+                //margin-top: 2px;
+                margin-right: 5px;
+            }
+        }
+
+        .node .content { border: 1px solid #006699; height: 25px !important; }
+
+        .node:not(:only-child)::after {
+            background-color: #006699;
+        }
+
+        .hierarchy::before {
+            border-top: 2px solid #006699;
+        }
+    }
+
+    .orgchart.orgchart-demo > ul > li > ul li > .node::before {
+        background-color: #006699;
+    }
 }

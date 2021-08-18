@@ -20,6 +20,7 @@ import { BreadcrumbComponent } from '../views/breadcrumb/breadcrumb.component';
 import { ModalComponent } from '../views/modal/modal.component';
 import { WorkflowModalComponent } from '../views/workflow-modal/workflow-modal.component';
 import { ConsultaComponent } from '../modules/consultas/consulta/consulta.component';
+import { ViewCargoModalComponent } from '../views/view-cargo-modal/view-cargo-modal.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { ConsultaComponent } from '../modules/consultas/consulta/consulta.compon
     BreadcrumbComponent,
     ModalComponent,
     WorkflowModalComponent,
-    ConsultaComponent
+    ConsultaComponent,
+    ViewCargoModalComponent
   ],
   imports: [
     CommonModule,

@@ -33,11 +33,16 @@
             "styles": [
               "src/assets/libs/fontawesome/css/all.css",
               "src/styles.scss",
-              "src/assets/libs/sweetalert2/dist/sweetalert2.min.css"
+              "src/assets/libs/orgchart/css/jquery.orgchart.css",
+              "src/assets/libs/jquery.flowchart.css",
+              "src/assets/libs/sweetalert2/sweetalert2.min.css"
             ],
             "scripts": [
-              "src/assets/libs/jquery/dist/jquery.min.js",
-              "src/assets/libs/sweetalert2/dist/sweetalert2.min.js"
+              "src/assets/libs/jquery/dist/jquery.js",
+              "src/assets/libs/jquery-ui.js",
+              "src/assets/libs/orgchart/js/jquery.orgchart.js",
+              "src/assets/libs/jquery.flowchart.js",
+              "src/assets/libs/sweetalert2/sweetalert2.min.js"
             ]
           },
           "configurations": {
