@@ -145,7 +145,7 @@
     </div>
     <div role="footer">
         <button type="button" class="btn btn-blue" (click)="openWorkflow()">Generar Ruta de Carrera</button>
-        <button type="button" class="btn btn-blue" (click)="openEspecialidad()">Generar Pirámide de Carrera</button>
+        <button type="button" class="btn btn-blue" (click)="openPiramide()">Generar Pirámide de Carrera</button>
     </div>
 </app-modal>
 
@@ -178,8 +178,47 @@
     </div>
 </app-modal>
 
-<app-workflow-modal [title]="'Workflow'" [show]="workflowModal" [size]="'modal-xl-lg'" (close)="closeWorkflowModal($event)">
-    <div id="chart-container">
-        <!-- <div id="datawf" class="datawf"></div> -->
+<workflow-modal [title]="'Workflow'" [show]="workflowModal" [size]="'modal-md-3'" (close)="closeWorkflowModal($event)">
+    <div id="chart-container"></div>
+</workflow-modal>
+
+<viewcargo-modal [title]="tituloCargo" [show]="viewCargoModal" [size]="'modal-view-sm'" [data]="datos" (close)="closeViewCargoModal($event)">
+    <div role="footer1">
+        <button type="button" class="btn btn-blue">Detalle del Cargo</button>
+        <button type="button" class="btn btn-blue">Imprimir PDF</button>
     </div>
-</app-workflow-modal>
+</viewcargo-modal>
+
+<piramide-modal [title]="'Pirámide (Especialidad)'" [show]="piramideModal" [size]="'modal-piramide-md'" (close)="closePiramideModal($event)">
+    <div class="table-content">
+        <table class="table table-piramide">
+            <tbody class="scroll">
+                <tr *ngFor="let item of varPiramide; let i = index">
+                    <td>
+                        <div class="title-grado">{{item.grado}}</div>
+                        <div class="duration-grado">{{item.duracion}}</div>
+                        <div class="requisito-grado">
+                            <button type="button" class="button btn-edit" (click)="openDetalle(item.requisitos.detalle, 1)">Requisitos de Ley</button>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="trapeze-grado">
+                            <div class="trapeze-grado-inner">
+                                <div class="title-grado-inner">{{item.grado}}</div>
+                                <div class="detalle-grado">
+                                    <button type="button" class="button btn-edit" (click)="openDetalle(item.detalleGrado.grado, 2)">Detalle</button>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</piramide-modal>
+
+<detalle-modal [title]="titleDetalle" [show]="detalleModal" [size]="'modal-detalle-sm'" (close)="closeDetalleModal($event)">
+    <div class="view-detail">
+        <textarea [(ngModel)]="detalle" rows="10" cols="20" style="resize: none; height: 100%;" disabled></textarea>
+    </div>
+</detalle-modal>

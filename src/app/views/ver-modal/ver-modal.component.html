@@ -1,0 +1,21 @@
+<div class="modal-ver animated fadeIn fast" id="{{size}}" *ngIf="show">
+    <div class="modal-box modal-box-centered modal-box-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Detalle: {{title}}</div>
+                <div class="close-modal pointer noselect" (click)="closeModal()"><i class="fa fa-times-circle"></i></div>
+            </div>
+            <div class="modal-body">
+                <div class="card-ver-modal" *ngFor="let item of items | keyvalue">
+                    <div class="inner-card-ver-modal">
+                        <div class="title-cvm">{{format(item.key)}}</div>
+                        <div class="detalle-cvm">{{item.value}}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-red" (click)="closeModal()">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>

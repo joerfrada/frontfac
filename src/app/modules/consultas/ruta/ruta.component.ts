@@ -14,6 +14,9 @@ export class RutaComponent implements OnInit {
   consultaModal: any;
   especialidadModal: any;
   workflowModal: any;
+  viewCargoModal: any;
+  piramideModal: any;
+  detalleModal: any;
 
   varhistorial: any = [];
 
@@ -88,6 +91,79 @@ export class RutaComponent implements OnInit {
     ]
   };
 
+  varPiramide = [
+    {
+      id: 1,
+      grado: 'Grado XXX',
+      duracion: 'Duración 3 años',
+      requisitos: {
+        id: 23,
+        detalle: "Secrevit fontes liquidim locoque pronaque?\n\n<strong>Lorem Ipsum</strong> is simply dummy text of the printing and typesitting industry."
+      },
+      detalleGrado: {
+        id: 12,
+        grado: "Secrevit fontes liquidim locoque pronaque?\n\n/><strong>Lorem Ipsum</strong> is simply dummy text of the printing and typesitting industry."
+      }
+    },
+    {
+      id: 2,
+      grado: 'Grado XXX',
+      duracion: 'Duración 16 años',
+      requisitos: {
+        id: 1,
+        detalle: "Secrevit fontes liquidim locoque pronaque?\n\n/><strong>Lorem Ipsum</strong> is simply dummy text of the printing and typesitting industry."
+      },
+      detalleGrado: {
+        id: 23,
+        grado: "Secrevit fontes liquidim locoque pronaque?\n\nLorem Ipsum is simply dummy text of the printing and typesitting industry."
+      }
+    },
+    {
+      id: 3,
+      grado: 'Grado XXX',
+      duracion: 'Duración 8 años',
+      requisitos: {
+        id: 12,
+        detalle: "Secrevit fontes liquidim locoque pronaque?\n\nLorem Ipsum is simply dummy text of the printing and typesitting industry."
+      },
+      detalleGrado: {
+        id: 102,
+        grado: "Secrevit fontes liquidim locoque pronaque?\n\nLorem Ipsum is simply dummy text of the printing and typesitting industry."
+      }
+    },
+    {
+      id: 4,
+      grado: 'Grado XXX',
+      duracion: 'Duración 23 años',
+      requisitos: {
+        id: 35,
+        detalle: "Secrevit fontes liquidim locoque pronaque?\n\nLorem Ipsum is simply dummy text of the printing and typesitting industry."
+      },
+      detalleGrado: {
+        id: 48,
+        grado: "Secrevit fontes liquidim locoque pronaque?\n\nLorem Ipsum is simply dummy text of the printing and typesitting industry."
+      }
+    },
+    {
+      id: 5,
+      grado: 'Grado XXX',
+      duracion: 'Duración 4 años',
+      requisitos: {
+        id: 82,
+        detalle: "Secrevit fontes liquidim locoque pronaque?\n\nLorem Ipsum is simply dummy text of the printing and typesitting industry."
+      },
+      detalleGrado: {
+        id: 96,
+        grado: "Secrevit fontes liquidim locoque pronaque?\n\nLorem Ipsum is simply dummy text of the printing and typesitting industry."
+      }
+    }
+  ];
+
+  datos = "Cuerpos:\nXXXXXXXX\nXXXXX\nXXXXXXXX\nXXX\n\nEspecialidades:\nXXXXXXXX\nXXXXX\nXXXXXXXX\nXXX\n\nÁreas de Conocimientos:\nXXXXXXXX\nXXXXX\nXXXXXXXX\nXXX\n";
+  tituloCargo = "";
+  detalle = "";
+  titleDetalle = "";
+
   constructor(private router: Router) { }
 
   ngOnInit(): void {
@@ -154,6 +230,7 @@ export class RutaComponent implements OnInit {
   }
 
   orgchartinit() {
+    let th = this;
     let nodeTemplate = function(data: any) {
       return `
         <div class="title">
@@ -168,9 +245,34 @@ export class RutaComponent implements OnInit {
       'nodeTemplate': nodeTemplate,
       'createNode': function($node: any, data: any) {
         $node.on('click', function() {
-          alert('You selected ' + data.name);
+          th.viewCargoModal = true;
+          th.tituloCargo = data.name;
         });
       }
     });
+  }
+
+  closeViewCargoModal(bol: any) {
+    this.viewCargoModal = bol;
+  }
+
+  openPiramide() {
+    this.piramideModal = true;
+    this.consultaModal = false;
+  }
+
+  closePiramideModal(bol: any) {
+    this.piramideModal = bol;
+  }
+
+  openDetalle(data: any, tipo = 1) {
+    this.detalleModal = true;
+    this.detalle = data;
+    if (tipo == 1) this.titleDetalle = "Requisitos del Ley";
+    else if (tipo == 2) this.titleDetalle = "Detalle Grado";
+  }
+
+  closeDetalleModal(bol: any) {
+    this.detalleModal = bol;
   }
 }

@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
-  selector: 'app-workflow-modal',
+  selector: 'workflow-modal',
   templateUrl: './workflow-modal.component.html',
   styleUrls: ['./workflow-modal.component.scss']
 })

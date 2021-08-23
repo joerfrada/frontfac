@@ -21,6 +21,9 @@ import { ModalComponent } from '../views/modal/modal.component';
 import { WorkflowModalComponent } from '../views/workflow-modal/workflow-modal.component';
 import { ConsultaComponent } from '../modules/consultas/consulta/consulta.component';
 import { ViewCargoModalComponent } from '../views/view-cargo-modal/view-cargo-modal.component';
+import { VerModalComponent } from '../views/ver-modal/ver-modal.component';
+import { DetalleModalComponent } from '../views/detalle-modal/detalle-modal.component';
+import { PiramideModalComponent } from '../views/piramide-modal/piramide-modal.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +42,10 @@ import { ViewCargoModalComponent } from '../views/view-cargo-modal/view-cargo-mo
     ModalComponent,
     WorkflowModalComponent,
     ConsultaComponent,
-    ViewCargoModalComponent
+    ViewCargoModalComponent,
+    VerModalComponent,
+    DetalleModalComponent,
+    PiramideModalComponent
   ],
   imports: [
     CommonModule,

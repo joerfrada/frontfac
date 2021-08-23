@@ -1,16 +1,15 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
-  selector: 'viewcargo-modal',
-  templateUrl: './view-cargo-modal.component.html',
-  styleUrls: ['./view-cargo-modal.component.scss']
+  selector: 'piramide-modal',
+  templateUrl: './piramide-modal.component.html',
+  styleUrls: ['./piramide-modal.component.scss']
 })
-export class ViewCargoModalComponent implements OnInit {
+export class PiramideModalComponent implements OnInit {
 
-  @Input() show?: Boolean;
   @Input() title?: String;
+  @Input() show?: Boolean;
   @Input() size?: String;
-  @Input() data?: String;
   @Output() close = new EventEmitter<Boolean>();
 
   constructor() { }
