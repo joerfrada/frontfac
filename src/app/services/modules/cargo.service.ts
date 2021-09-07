@@ -1,0 +1,139 @@
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { retry, catchError } from 'rxjs/operators';
+import { ApiService } from '../api.service';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class CargoService {
+
+  // Cargos
+  private apiGetCargos = this.api.getBaseUrl + "cargo/getCargos";
+  private apiCreateCargos = this.api.getBaseUrl + "cargo/crearCargos";
+  private apiUpdateCargos = this.api.getBaseUrl + "cargo/actualizarCargos";
+
+  // Rutas y Requisitos
+  private apiGetRutasRequisitos = this.api.getBaseUrl + "cargo/getRutasRequisitos";
+  private apiCreateRutasRequisitos = this.api.getBaseUrl + "cargo/crearRutasRequisitos";
+  private apiUpdateRutasRequisitos = this.api.getBaseUrl + "cargo/actualizarRutasRequisitos";
+
+  // Areas
+  private apiGetAreas = this.api.getBaseUrl + "cargo/getAreas";
+  private apiCreateAreas = this.api.getBaseUrl + "cargo/crearAreas";
+  private apiUpdateAreas = this.api.getBaseUrl + "cargo/actualizarAreas";
+
+  // Cuerpos
+  private apiGetCuerpos = this.api.getBaseUrl + "cargo/getCuerpos";
+  private apiCreateCuerpos = this.api.getBaseUrl + "cargo/crearCuerpos";
+  private apiUpdateCuerpos = this.api.getBaseUrl + "cargo/actualizarCuerpos";
+
+  // Especialidades
+  private apiGetEspecialidades = this.api.getBaseUrl + "cargo/getEspecialidades";
+  private apiCreateEspecialidades = this.api.getBaseUrl + "cargo/crearEspecialidades";
+  private apiUpdateEspecialidades = this.api.getBaseUrl + "cargo/actualizarEspecialidades";
+
+  // Educaciones y Conocimientos
+  private apiGetEducaciones = this.api.getBaseUrl + "cargo/getEducaciones";
+  private apiCreateEducaciones = this.api.getBaseUrl + "cargo/crearEducaciones";
+  private apiUpdateEducaciones = this.api.getBaseUrl + "cargo/actualizarEducaciones";
+
+  constructor(private http: HttpClient, private api: ApiService) { }
+
+  // Cargo
+  public getCargos(data: any): Observable<any> {
+    return this.http.post<any>(this.apiGetCargos, JSON.stringify(data), this.api.getHttpOptions('g'))
+    .pipe(retry(1), catchError(this.api.errorHandle));
+  }
+
+  public createCargos(data: any): Observable<any> {
+    return this.http.post<any>(this.apiCreateCargos, JSON.stringify(data), this.api.getHttpOptions('g'))
+    .pipe(retry(1), catchError(this.api.errorHandle));
+  }
+
+  public updateCargos(data: any): Observable<any> {
+    return this.http.post<any>(this.apiUpdateCargos, JSON.stringify(data), this.api.getHttpOptions('g'))
+    .pipe(retry(1), catchError(this.api.errorHandle));
+  }
+
+  // Rutas y Requisitos
+  public getRutasRequisitos(data: any): Observable<any> {
+    return this.http.post<any>(this.apiGetRutasRequisitos, JSON.stringify(data), this.api.getHttpOptions('g'))
+    .pipe(retry(1), catchError(this.api.errorHandle));
+  }
+
+  public createRutasRequisitos(data: any): Observable<any> {
+    return this.http.post<any>(this.apiCreateRutasRequisitos, JSON.stringify(data), this.api.getHttpOptions('g'))
+    .pipe(retry(1), catchError(this.api.errorHandle));
+  }
+
+  public updateRutasRequisitos(data: any): Observable<any> {
+    return this.http.post<any>(this.apiUpdateRutasRequisitos, JSON.stringify(data), this.api.getHttpOptions('g'))
+    .pipe(retry(1), catchError(this.api.errorHandle));
+  }
+
+  // Areas
+  public getAreas(data: any): Observable<any> {
+    return this.http.post<any>(this.apiGetAreas, JSON.stringify(data), this.api.getHttpOptions('g'))
+    .pipe(retry(1), catchError(this.api.errorHandle));
+  }
+
+  public createAreas(data: any): Observable<any> {
+    return this.http.post<any>(this.apiCreateAreas, JSON.stringify(data), this.api.getHttpOptions('g'))
+    .pipe(retry(1), catchError(this.api.errorHandle));
+  }
+
+  public updateAreas(data: any): Observable<any> {
+    return this.http.post<any>(this.apiUpdateAreas, JSON.stringify(data), this.api.getHttpOptions('g'))
+    .pipe(retry(1), catchError(this.api.errorHandle));
+  }
+
+  // Cuerpos
+  public getCuerpos(data: any): Observable<any> {
+    return this.http.post<any>(this.apiGetCuerpos, JSON.stringify(data), this.api.getHttpOptions('g'))
+    .pipe(retry(1), catchError(this.api.errorHandle));
+  }
+
+  public createCuerpos(data: any): Observable<any> {
+    return this.http.post<any>(this.apiCreateCuerpos, JSON.stringify(data), this.api.getHttpOptions('g'))
+    .pipe(retry(1), catchError(this.api.errorHandle));
+  }
+
+  public updateCuerpos(data: any): Observable<any> {
+    return this.http.post<any>(this.apiUpdateCuerpos, JSON.stringify(data), this.api.getHttpOptions('g'))
+    .pipe(retry(1), catchError(this.api.errorHandle));
+  }
+
+  // Especialidades
+  public getEspecialidades(data: any): Observable<any> {
+    return this.http.post<any>(this.apiGetEspecialidades, JSON.stringify(data), this.api.getHttpOptions('g'))
+    .pipe(retry(1), catchError(this.api.errorHandle));
+  }
+
+  public createEspecialidades(data: any): Observable<any> {
+    return this.http.post<any>(this.apiCreateEspecialidades, JSON.stringify(data), this.api.getHttpOptions('g'))
+    .pipe(retry(1), catchError(this.api.errorHandle));
+  }
+
+  public updateEspecialidades(data: any): Observable<any> {
+    return this.http.post<any>(this.apiUpdateEspecialidades, JSON.stringify(data), this.api.getHttpOptions('g'))
+    .pipe(retry(1), catchError(this.api.errorHandle));
+  }
+
+  // Educaciones y Conocimientos
+  public getEducaciones(data: any): Observable<any> {
+    return this.http.post<any>(this.apiGetEducaciones, JSON.stringify(data), this.api.getHttpOptions('g'))
+    .pipe(retry(1), catchError(this.api.errorHandle));
+  }
+
+  public createEducaciones(data: any): Observable<any> {
+    return this.http.post<any>(this.apiCreateEducaciones, JSON.stringify(data), this.api.getHttpOptions('g'))
+    .pipe(retry(1), catchError(this.api.errorHandle));
+  }
+
+  public updateEducaciones(data: any): Observable<any> {
+    return this.http.post<any>(this.apiUpdateEducaciones, JSON.stringify(data), this.api.getHttpOptions('g'))
+    .pipe(retry(1), catchError(this.api.errorHandle));
+  }
+}

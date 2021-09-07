@@ -1,0 +1,321 @@
+<app-breadcrumb [icon]="'fa-address-card'" [title]="'Cargos'" [items]="'Módulo,Param,Cargos'"></app-breadcrumb>
+<div class="app-content-inner">
+    <div class="app-content-tile">
+        <div class="flex-content">
+            <div class="filter-content">
+                <ul class="filter-inner">
+                    <li class="filter-item">
+                        <button type="button" class="button btn-default" (click)="openModal()">Crear</button>
+                    </li>
+                    <li class="filter-item">
+                        <div class="input-group-btn">
+                            <input type="search" placeholder="Buscar...">
+                            <button type="button" class="button btn-default">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="table-content">
+                <table class="table flex-table">
+                    <thead>
+                        <tr>
+                            <th>Cargo</th>
+                            <th>Descripción</th>
+                            <th>Clase</th>
+                            <th>Categoría</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody class="scroll">
+                        <tr *ngFor="let item of varhistorial; let i = index">
+                            <td>{{item.cargo}}</td>
+                            <td>{{item.descripcion}}</td>
+                            <td>{{item.clase_cargo}}</td>
+                            <td>{{item.categoria}}</td>
+                            <td>
+                                <i class="fa fa-1m5x fa-check-circle" *ngIf="item.activo == true"></i>
+                                <i class="fa fa-1m5x fa-times-circle" *ngIf="item.activo == false"></i>
+                            </td>
+                            <td class="table-buttons-action">
+                                <!-- <button type="button" class="button btn-icon btn-trash"><i class="fa fa-trash"></i></button>
+                                <button type="button" class="button btn-icon btn-edit"><i class="fa fa-edit"></i></button>
+                                <button type="button" class="button btn-icon btn-plus"><i class="fa fa-plus"></i></button> -->
+                                <button type="button" class="button btn-edit">Editar</button>
+                                <!-- <button type="button" class="button btn-default">Detalle</button> -->
+                            </td>
+                        </tr>
+                        <tr *ngIf="varhistorial?.length == 0">
+                            <div class="dbempty">No hay datos.</div>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="pagination-content"></div>
+        </div>
+    </div>
+</div>
+
+<app-modal [title]="model.title" [show]="modal" [size]="'modal-md'" (close)="closeModal($event)">
+    <div role="body">
+        <div class="inner-col">
+            <div class="col col25">
+                <div class="label-row">Cargo</div>
+                <input type="text" [(ngModel)]="model.varCargo.cargo">
+            </div>
+            <div class="col col25">
+                <div class="label-row">Categoría</div>
+                <select [(ngModel)]="model.varCargo.categoria_id">
+                    <option value="0">Seleccionar</option>
+                    <option *ngFor="let item of varcategoria" value="item.id">{{item.detalle}}</option>
+                </select>
+            </div>
+            <div class="col col25">
+                <div class="label-row">Clase de Cargo</div>
+                <select [(ngModel)]="model.varCargo.clase_cargo_id">
+                    <option value="0">Seleccionar</option>
+                    <option *ngFor="let item of varclase" value="item.id">{{item.detalle}}</option>
+                </select>
+            </div>
+            <div class="col col25">
+                <div class="label-row">Activo</div>
+                <div class="checkbox-component">
+                    <label>
+                        <input type="checkbox" checked="checked" [(ngModel)]="model.varCargo.activo">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+            </div>
+            <div class="col col100">
+                <div class="label-row">Descripción</div>
+                <textarea rows="4" cols="80" [(ngModel)]="model.varCargo.descripcion"></textarea>
+            </div>
+            <div class="line-col"></div>
+            <div class="col col100 title-row">Grados</div>
+            <div class="table-content">
+                <table class="table flex-table">
+                    <thead>
+                        <tr>
+                            <th>Grado</th>
+                            <th></th>
+                            <th>Activo</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody class="scroll">
+                        <tr *ngFor="let item of vargrados;let i = index">
+                            <td>{{item.grado}}</td>
+                            <td class="table-buttons-action">
+                                <button type="button" class="button btn-default" (click)="openConfigModal()">Configuración</button>
+                            </td>
+                            <td>
+                                <div class="table-checkbox-component">
+                                    <input type="checkbox" checked="checked">
+                                </div>
+                            </td>
+                            <td class="table-buttons-action">
+                                <button type="button" class="button btn-icon btn-trash"><i class="fa fa-times-circle"></i></button>
+                            </td>
+                        </tr>
+                        <tr *ngIf="vargrados?.length == 0">
+                            <div class="dbempty">No hay datos.</div>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div role="footer">
+        <button type="button" class="btn btn-red" (click)="closeModal(false)">Cerrar</button>
+        <button type="button" class="btn btn-blue" (click)="saveCargos()">Guardar</button>
+    </div>
+</app-modal>
+
+<app-modal [title]="'Cargos / Grados Configuración'" [show]="configModal" [size]="'modal-md'" (close)="closeConfigModal($event)">
+    <div role="body">
+        <div class="inner-col">
+            <div class="col col33">
+                <div class="label-row">Grado</div>
+                <select>
+                    <option value="0">Seleccionar</option>
+                </select>
+            </div>
+            <div class="col col33">
+                <div class="label-row">Cargo</div>
+                <select>
+                    <option value="0">Seleccionar</option>
+                </select>
+            </div>
+            <div class="col col33">
+                <div class="label-row">Categoría</div>
+                <select>
+                    <option value="0">Seleccionar</option>
+                </select>
+            </div>
+            <div class="col col100">
+                <div class="flex-tabs">
+                    <ul>
+                        <li (click)="selectTab(1)" [ngClass]="{'active': tab === 1}">Rutas y Requisitos</li>
+                        <li (click)="selectTab(2)" [ngClass]="{'active': tab === 2}">Cuerpos, Especialidades y Áreas</li>
+                        <li (click)="selectTab(3)" [ngClass]="{'active': tab === 3}">Educación y Conocimientos</li>
+                        <li (click)="selectTab(4)" [ngClass]="{'active': tab === 4}">Experiencia y Competencias</li>
+                    </ul>
+                </div>
+                <div class="tabs-inner">
+                    <div class="tabs-content" *ngIf="tab === 1">
+                        <div class="col col15">
+                            <div class="label-row">Puestos Cant.</div>
+                            <input type="number">
+                        </div>
+                        <div class="col col50">
+                            <div class="label-row">Cargo Jefe Inmediato</div>
+                            <select>
+                                <option value="0">Seleccionar</option>
+                            </select>
+                        </div>
+
+                        <div class="col col100 title-row">Ubicaciones de Cargo</div>
+                        <div class="line-col"></div>
+                        <div class="col col100">
+                            <div class="col col20">
+                                <div class="label-row">Nivel 1</div>
+                                <select>
+                                    <option value="0">Seleccionar</option>
+                                </select>
+                            </div>
+                            <div class="col col20">
+                                <div class="label-row">Nivel 2</div>
+                                <select>
+                                    <option value="0">Seleccionar</option>
+                                </select>
+                            </div>
+                            <div class="col col20">
+                                <div class="label-row">Nivel 3</div>
+                                <select>
+                                    <option value="0">Seleccionar</option>
+                                </select>
+                            </div>
+                            <div class="col col20">
+                                <div class="label-row">Nivel 4</div>
+                                <select>
+                                    <option value="0">Seleccionar</option>
+                                </select>
+                            </div>
+                            <div class="col col20">
+                                <div class="label-row">Nivel 5</div>
+                                <select>
+                                    <option value="0">Seleccionar</option>
+                                </select>
+                            </div>
+                            <div class="col col100 title-row">Requisitos del Cargo</div>
+                            <div class="line-col"></div>
+                            <div class="col col20">
+                                <div class="label-row">Tiempo en el cargo</div>
+                                <input type="number">
+                            </div>
+                            <div class="col col100">
+                                <textarea rows="4" cols="80"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tabs-content" *ngIf="tab === 2">
+                        <div class="col col100 title-row">Cuerpos</div>
+                        <div class="line-col"></div>
+                        <div class="col col100">
+                            <textarea rows="4" cols="80"></textarea>
+                        </div>
+                        <div class="col col100 title-row">Especialidades</div>
+                        <div class="line-col"></div>
+                        <div class="col col100">
+                            <textarea rows="4" cols="80"></textarea>
+                        </div>
+                        <div class="col col100 title-row">Áreas de Conocimiento</div>
+                        <div class="line-col"></div>
+                        <div class="col col100">
+                            <textarea rows="4" cols="80"></textarea>
+                        </div>
+                    </div>
+                    <div class="tabs-content" *ngIf="tab === 3">
+                        <div class="col col100 title-row">Educación formal requerida</div>
+                        <div class="line-col"></div>
+                        <div class="col col100">
+                            <textarea rows="4" cols="80"></textarea>
+                        </div>
+                        <div class="col col100 title-row">Conocimientos Adicionales</div>
+                        <div class="line-col"></div>
+                        <div class="col col100">
+                            <textarea rows="4" cols="80"></textarea>
+                        </div>
+                    </div>
+                    <div class="tabs-content" *ngIf="tab === 4">
+                        <div class="col col100 title-row">Experiencia de Conocimiento</div>
+                        <div class="line-col"></div>
+                        <div class="col col20">
+                            <select>
+                                <option value="0">Seleccionar</option>
+                            </select>
+                        </div>
+                        <div class="col col20">
+                            <select>
+                                <option value="0">Seleccionar</option>
+                            </select>
+                        </div>
+                        <div class="col col20">
+                            <select>
+                                <option value="0">Seleccionar</option>
+                            </select>
+                        </div>
+                        <div class="col col20">
+                            <select>
+                                <option value="0">Seleccionar</option>
+                            </select>
+                        </div>
+                        <div class="col col20">
+                            <select>
+                                <option value="0">Seleccionar</option>
+                            </select>
+                        </div>
+                        <div class="col col100 title-row">Competencias Requeridas</div>
+                        <div class="line-col"></div>
+                        <div class="col col20">
+                            <select>
+                                <option value="0">Seleccionar</option>
+                            </select>
+                        </div>
+                        <div class="col col20">
+                            <select>
+                                <option value="0">Seleccionar</option>
+                            </select>
+                        </div>
+                        <div class="col col20">
+                            <select>
+                                <option value="0">Seleccionar</option>
+                            </select>
+                        </div>
+                        <div class="col col20">
+                            <select>
+                                <option value="0">Seleccionar</option>
+                            </select>
+                        </div>
+                        <div class="col col20">
+                            <select>
+                                <option value="0">Seleccionar</option>
+                            </select>
+                        </div>
+                        <div class="col col100 title-row">Observaciones Generales</div>
+                        <div class="line-col"></div>
+                        <div class="col col100">
+                            <textarea rows="4" cols="80"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div role="footer">
+        <button type="button" class="btn btn-red" (click)="closeConfigModal(false)">Cerrar</button>
+        <button type="button" class="btn btn-blue" (click)="closeConfigModal(false)">Guardar</button>
+    </div>
+</app-modal>
