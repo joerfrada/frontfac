@@ -14,6 +14,7 @@ export class Model {
     usuario_modificador: ""
   };
 }
+
 @Component({
   selector: 'app-valores-flexibles',
   templateUrl: './valores-flexibles.component.html',

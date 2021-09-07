@@ -34,8 +34,8 @@
                             <td>{{item.apellidos}}</td>
                             <td>{{item.correo_electronico}}</td>
                             <td>
-                                <i class="fa fa-1m5x fa-check-circle" *ngIf="item.activo == true"></i>
-                                <i class="fa fa-1m5x fa-times-circle" *ngIf="item.activo == false"></i>
+                                <i class="fa fa-1m5x fa-check-circle" *ngIf="item.activo == 'S'"></i>
+                                <i class="fa fa-1m5x fa-times-circle" *ngIf="item.activo == 'N'"></i>
                             </td>
                             <td class="table-buttons-action">
                                 <!-- <button type="button" class="button btn-icon btn-trash"><i class="fa fa-trash"></i></button>
@@ -56,26 +56,26 @@
     </div>
 </div>
 
-<app-modal [title]="'Crear'" [show]="modal" [size]="'modal-sm'" (close)="closeModal($event)">
+<app-modal [title]="model.title" [show]="modal" [size]="'modal-sm'" (close)="closeModal($event)">
     <div role="body">
         <div class="inner-col">
             <div class="col col50">
                 <div class="label-row">Nombres</div>
-                <input type="text">
+                <input type="text" [(ngModel)]="model.varPerfil.nombres">
             </div>
             <div class="col col50">
                 <div class="label-row">Apellidos</div>
-                <input type="text">
+                <input type="text" [(ngModel)]="model.varPerfil.apellidos">
             </div>
             <div class="col col50">
                 <div class="label-row">Correo Electrónico</div>
-                <input type="text">
+                <input type="text" [(ngModel)]="model.varPerfil.correo_electronico">
             </div>
             <div class="col col50">
                 <div class="label-row">Activo</div>
                 <div class="checkbox-component">
                     <label>
-                        <input type="checkbox" checked="checked">
+                        <input type="checkbox" checked="checked" [(ngModel)]="model.varPerfil.activo">
                         <span class="checkmark"></span>
                     </label>
                 </div>
@@ -84,6 +84,6 @@
     </div>
     <div role="footer">
         <button type="button" class="btn btn-red" (click)="closeModal(false)">Cerrar</button>
-        <button type="button" class="btn btn-blue" (click)="closeModal(false)">Guardar</button>
+        <button type="button" class="btn btn-blue" (click)="savePerfil">Guardar</button>
     </div>
 </app-modal>
