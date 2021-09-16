@@ -34,10 +34,12 @@ export class ValoresFlexiblesComponent implements OnInit {
 
   varvalor: any = [];
 
+  currentUser: any;
+
   constructor(private api: ApiService, private listaDinamica: ListaDinamicaService) { 
-    let currentUser = JSON.parse(localStorage.getItem("currentUser") as any)[0];
-    this.model.varNombreLista.usuario_creador = currentUser.usuario;
-    this.model.varNombreLista.usuario_modificador = currentUser.usuario;
+    this.currentUser = JSON.parse(localStorage.getItem("currentUser") as any)[0];
+    this.model.varNombreLista.usuario_creador = this.currentUser.usuario;
+    this.model.varNombreLista.usuario_modificador = this.currentUser.usuario;
   }
 
   ngOnInit(): void {
@@ -50,7 +52,9 @@ export class ValoresFlexiblesComponent implements OnInit {
       nombre_lista_id: 0,
       descripcion: "",
       nombre_lista_padre_id: 0,
-      activo: true
+      activo: true,
+      usuario_creador: this.currentUser.usuario,
+      usuario_modificador: this.currentUser.usuario
     };
   }
 

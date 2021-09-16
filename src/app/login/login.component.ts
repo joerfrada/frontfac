@@ -15,7 +15,7 @@ export class LoginComponent implements OnInit {
 
   usuario: any = "";
   password: any = "";
-  titleLogin = "Iniciar sesión...";
+  titleLogin = "Iniciar sesión";
 
   loader = false;
 
@@ -29,7 +29,7 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
-    this.titleLogin = "Iniciando sesión...";
+    this.titleLogin = "Iniciando sesión... Espere";
     this.loginService.login({ "usuario": this.usuario, "password": this.password}).subscribe(data => {
       let response: any = this.api.ProcesarRespuesta(data);
       if (response.tipo === 0) {

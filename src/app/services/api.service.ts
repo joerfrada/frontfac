@@ -25,8 +25,10 @@ export class ApiService {
     else if (tipo == 'g') {
       return {
         headers: new HttpHeaders({
-          'Content-Type': 'application/json;charset=utf8',
-          'Data-Type': 'json'
+          'Content-Type': 'application/json',
+          'Data-Type': 'json',
+          'Accept': 'json',
+          'Authorization': 'Bearer ' + localStorage.getItem('auth-token')
         })
       };
     }

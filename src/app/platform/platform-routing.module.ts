@@ -1,8 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { AuthorizeGuard } from '../guard/authorize.guard';
-
 import { LoginComponent } from '../login/login.component';
 import { PlatformComponent } from './platform.component';
 import { HomeComponent } from '../modules/home/home.component';
@@ -19,15 +17,15 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'fac', component: PlatformComponent, children: [
-    { path: 'home', component: HomeComponent, canActivate: [ AuthorizeGuard ] },
-    { path: 'modulo/admin/perfiles', component: ProfilesComponent, canActivate: [ AuthorizeGuard ] },
-    { path: 'modulo/admin/perfiles-usuarios', component: ProfilesUsersComponent, canActivate: [ AuthorizeGuard ] },
-    { path: 'modulo/param/cargos', component: CargosComponent, canActivate: [ AuthorizeGuard ] },
-    { path: 'modulo/param/grados', component: GradosComponent, canActivate: [ AuthorizeGuard ] },
-    { path: 'modulo/param/valores-flexibles', component: ValoresFlexiblesComponent, canActivate: [ AuthorizeGuard ] },
-    { path: 'modulo/param/requerimientos', component: RequerimientosComponent, canActivate: [ AuthorizeGuard ] },
-    { path: 'modulo/consultas/piramide', component: PiramidesComponent, canActivate: [ AuthorizeGuard ] },
-    { path: 'modulo/consultas/ruta', component: RutaComponent, canActivate: [ AuthorizeGuard ] }
+    { path: 'home', component: HomeComponent },
+    { path: 'modulo/admin/perfiles', component: ProfilesComponent },
+    { path: 'modulo/admin/perfiles-usuarios', component: ProfilesUsersComponent },
+    { path: 'modulo/param/cargos', component: CargosComponent },
+    { path: 'modulo/param/grados', component: GradosComponent },
+    { path: 'modulo/param/valores-flexibles', component: ValoresFlexiblesComponent },
+    { path: 'modulo/param/requerimientos', component: RequerimientosComponent },
+    { path: 'modulo/consultas/piramide', component: PiramidesComponent },
+    { path: 'modulo/consultas/ruta', component: RutaComponent }
   ]},
 ];
 
