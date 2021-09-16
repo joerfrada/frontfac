@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../services/api.service';
 import { LoginService } from '../services/auth/login.service';
+import { Session } from '../models/session.model';
 
+declare var $:any;
 declare var swal:any;
 
 @Component({
@@ -13,6 +15,7 @@ export class LoginComponent implements OnInit {
 
   usuario: any = "";
   password: any = "";
+  titleLogin = "Iniciar sesión...";
 
   loader = false;
 
@@ -21,12 +24,17 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  inputNext() {
+    $('.inputp').focus();
+  }
+
   login() {
+    this.titleLogin = "Iniciando sesión...";
     this.loginService.login({ "usuario": this.usuario, "password": this.password}).subscribe(data => {
       let response: any = this.api.ProcesarRespuesta(data);
       if (response.tipo === 0) {
-        localStorage.setItem('currentUser', JSON.stringify(response.user.result));
-        localStorage.setItem('auth-token', response.token);
+        localStorage.setItem("currentUser", JSON.stringify(response.user.result));
+        localStorage.setItem("auth-token", response.token);
         this.loader = true;
         setTimeout(() => {
           location.href = "/fac/home";
@@ -39,7 +47,12 @@ export class LoginComponent implements OnInit {
           allowOutsideClick: false,
           showConfirmButton: true,
           type: 'error'
-        })
+        }).then((result: any) => {
+          if (result) {
+            this.titleLogin = "Iniciar sesión";
+            this.password = "";
+          }
+        });
       }
     });
   }

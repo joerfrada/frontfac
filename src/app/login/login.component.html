@@ -13,7 +13,7 @@
                         <label for="login-username">
                             <i class="fas fa-user"></i>
                         </label>
-                        <input id="login-username" type="text" placeholder="Usuario" [(ngModel)]="usuario">
+                        <input autofocus id="login-username" type="text" placeholder="Usuario" [(ngModel)]="usuario" (keyup.enter)="inputNext()">
                     </div>
                 </div>
                 <div class="row-login row-login-password">
@@ -21,12 +21,12 @@
                         <label for="login-password">
                             <i class="fas fa-lock"></i>
                         </label>
-                        <input id="login-password" type="password" placeholder="Contraseña" [(ngModel)]="password">
+                        <input id="login-password" class="inputp" type="password" placeholder="Contraseña" [(ngModel)]="password" (keyup.enter)="login()">
                     </div>
                 </div>
                 <div class="row-login row-login-btn">
                     <div class="form-login">
-                        <div class="btn-login pointer noselect" (click)="login()">Iniciar sesión</div>
+                        <div class="btn-login pointer noselect" (click)="login()">{{titleLogin}}</div>
                     </div>
                 </div>
             </div>

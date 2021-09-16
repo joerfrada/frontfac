@@ -25,6 +25,7 @@ export class CargoService {
   private apiUpdateAreas = this.api.getBaseUrl + "cargo/actualizarAreas";
 
   // Cuerpos
+  private apiGetCuerposFull = this.api.getBaseUrl + "cargo/getCuerposFull";
   private apiGetCuerpos = this.api.getBaseUrl + "cargo/getCuerpos";
   private apiCreateCuerpos = this.api.getBaseUrl + "cargo/crearCuerpos";
   private apiUpdateCuerpos = this.api.getBaseUrl + "cargo/actualizarCuerpos";
@@ -90,6 +91,11 @@ export class CargoService {
   }
 
   // Cuerpos
+  public getCuerposFull(): Observable<any> {
+    return this.http.get<any>(this.apiGetCuerposFull, this.api.getHttpOptions('g'))
+    .pipe(retry(1), catchError(this.api.errorHandle));
+  }
+
   public getCuerpos(data: any): Observable<any> {
     return this.http.post<any>(this.apiGetCuerpos, JSON.stringify(data), this.api.getHttpOptions('g'))
     .pipe(retry(1), catchError(this.api.errorHandle));

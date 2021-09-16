@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../services/api.service';
 import { ListaDinamicaService } from '../../../services/modules/lista-dinamica.service';
 
+declare var swal:any;
+
 export class Model {
   title: any;
 
@@ -43,6 +45,15 @@ export class ValoresFlexiblesComponent implements OnInit {
     this.getNombresListasFull();
   }
 
+  clearNombreLista() {
+    this.model.varNombreLista = {
+      nombre_lista_id: 0,
+      descripcion: "",
+      nombre_lista_padre_id: 0,
+      activo: true
+    };
+  }
+
   getNombresListasFull() {
     this.listaDinamica.getNombresListasFull().subscribe(data => {
       let response: any = this.api.ProcesarRespuesta(data);
@@ -67,6 +78,7 @@ export class ValoresFlexiblesComponent implements OnInit {
   openModal() {
     this.modal = true;
     this.model.title = "Crear Nombre Lista";
+    this.clearNombreLista();
   }
 
   closeModal(bol: any) {
@@ -101,6 +113,22 @@ export class ValoresFlexiblesComponent implements OnInit {
       this.model.varNombreLista.nombre_lista_padre_id = null;
 
     console.log(this.model.varNombreLista);
+
+    this.listaDinamica.createNombresListas(this.model.varNombreLista).subscribe((data => {
+      let response: any = this.api.ProcesarRespuesta(data);
+      if (response.tipo == 0) {
+        swal({
+          title: 'Nombres Listas',
+          text: response.mensaje,
+          allowOutsideClick: false,
+          showConfirmButton: true,
+          type: 'success'
+        }).then((result: any) => {
+          this.modal = false;
+          window.location.reload();
+        })
+      }
+    }));
   }
 
   updateNombreLista() {
@@ -110,6 +138,22 @@ export class ValoresFlexiblesComponent implements OnInit {
       this.model.varNombreLista.nombre_lista_padre_id = null;
 
     console.log(this.model.varNombreLista);
+
+    this.listaDinamica.updateNombresListas(this.model.varNombreLista).subscribe((data => {
+      let response: any = this.api.ProcesarRespuesta(data);
+      if (response.tipo == 0) {
+        swal({
+          title: 'Nombres Listas',
+          text: response.mensaje,
+          allowOutsideClick: false,
+          showConfirmButton: true,
+          type: 'success'
+        }).then((result: any) => {
+          this.modal = false;
+          window.location.reload();
+        })
+      }
+    }));
   }
 
 }

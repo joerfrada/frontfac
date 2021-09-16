@@ -19,9 +19,9 @@ export class HeaderComponent implements OnInit {
 
   logout() {
     setTimeout(() => {
-      location.href = "/login";
+      localStorage.clear();
+      location.href = '/login';
     }, 1000);
-    localStorage.clear();
   }
 
 }

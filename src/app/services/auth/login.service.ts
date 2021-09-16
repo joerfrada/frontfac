@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { retry, catchError } from 'rxjs/operators';
@@ -13,14 +12,11 @@ export class LoginService {
 
   private apiLogin = this.api.getBaseUrl + "login";
 
-  constructor(public router: Router, private http: HttpClient, private api: ApiService) { }
+  constructor(private http: HttpClient, private api: ApiService) { }
 
   public login(data: any): Observable<any> {
     return this.http.post<Usuario>(this.apiLogin, JSON.stringify(data), this.api.getHttpOptions())
     .pipe(retry(1), catchError(this.api.errorHandle));
   }
 
-  public getCurrentUser() {
-    return JSON.parse(localStorage.getItem('currentUser') as any);
-  }
 }

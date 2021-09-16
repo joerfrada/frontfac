@@ -1,7 +1,26 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { ApiService } from '../../../services/api.service';
+import { RutaCarreraService } from '../../../services/modules/ruta-carrera.service';
+import { CargoService } from '../../../services/modules/cargo.service';
+import { EspecialidadService } from '../../../services/modules/especialidad.service';
 
 declare var $:any;
+
+export class Model {
+  title = "";
+
+  varRuta: any = {
+    ruta_carrera_id: 0,
+    cuerpo_id: 0,
+    especialidad_id: 0,
+    descripcion: "",
+    tipo_categoria_id: 0,
+    activo: true,
+    usuario_creador: "",
+    usuario_modificador: ""
+  }
+}
 
 @Component({
   selector: 'app-ruta',
@@ -9,6 +28,8 @@ declare var $:any;
   styleUrls: ['./ruta.component.scss']
 })
 export class RutaComponent implements OnInit {
+
+  model = new Model();
 
   modal: any;
   consultaModal: any;
@@ -20,22 +41,11 @@ export class RutaComponent implements OnInit {
 
   varhistorial: any = [];
 
-  varlinea = [
-    {
-      linea_id: 1,
-      cargo_ruta: "Cargo 1",
-      tipo_cargo: "ASDB",
-      tipo_ruta: "Ruta 1",
-      activo: true
-    },
-    {
-      linea_id: 2,
-      cargo_ruta: "Cargo 2",
-      tipo_cargo: "ASDB",
-      tipo_ruta: "Ruta 2",
-      activo: true
-    },
-  ];
+  varlinea: any = [];
+
+  varcuerpo: any = [];
+  varespecialidad: any = [];
+  varcategoria: any = [];
 
   varitem = [
     {
@@ -164,10 +174,21 @@ export class RutaComponent implements OnInit {
   detalle = "";
   titleDetalle = "";
 
-  constructor(private router: Router) { }
+  constructor(private router: Router,
+              private api: ApiService,
+              private ruta: RutaCarreraService,
+              private cargo: CargoService,
+              private especialidad: EspecialidadService) { 
+    let currentUser = JSON.parse(localStorage.getItem("currentUser") as any)[0];
+    this.model.varRuta.usuario_creador = currentUser.usuario;
+    this.model.varRuta.usuario_modificador = currentUser.usuario;
+  }
 
   ngOnInit(): void {
-    this.filter();
+    this.getRutaCarrera();
+    this.getCuerposFull();
+    this.getEspecialidadesFull();
+    this.getListas();
   }
 
   reload() {
@@ -177,29 +198,71 @@ export class RutaComponent implements OnInit {
     });
   }
 
-  filter() {
-    this.varhistorial = [
-      {
-        ruta_id: 1,
-        cuerpo: "Cuerpo 1",
-        especialidad: "Especialidad 1",
-        activo: true
-      },
-      {
-        ruta_id: 2,
-        cuerpo: "Cuerpo 2",
-        especialidad: "Especialidad 2",
-        activo: true
-      },
-    ];
+  getRutaCarrera() {
+    let json = {
+      filtro: 0
+    };
+
+    this.ruta.getRutaCarrera(json).subscribe(data => {
+      let response: any = this.api.ProcesarRespuesta(data);
+      if (response.tipo == 0) {
+        this.varhistorial = response.result;
+      }
+    });
+  }
+
+  getCuerposFull() {
+    this.cargo.getCuerposFull().subscribe(data => {
+      let response: any = this.api.ProcesarRespuesta(data);
+      if (response.tipo == 0) {
+        this.varcuerpo = response.result;
+      }
+    });
+  }
+
+  getEspecialidadesFull() {
+    this.especialidad.getEspecialidadesFull().subscribe(data => {
+      let response: any = this.api.ProcesarRespuesta(data);
+      if (response.tipo == 0) {
+        this.varespecialidad = response.result;
+      }
+    });
+  }
+
+  getListas() {
+    let varlistas = JSON.parse(localStorage.getItem("listasDinamicasFull") as any);
+    this.varcategoria = varlistas.filter((x: any) => x.nombre_lista == 'BAS_TIPO_CATEGORIA');
+    this.varcategoria.forEach((x: any) => {
+      x.id = x.lista_dinamica_id;
+      x.detalle = x.lista_dinamica;
+    });
   }
 
   openModal() {
     this.modal = true;
+    this.model.title = "Crear Ruta de Carrera";
   }
 
   closeModal(bol: any) {
     this.modal = bol;
+  }
+
+  editRuta(data: any) {
+    this.modal = true;
+    this.model.title = "Actualizar Ruta de Carrera";
+
+    this.model.varRuta.ruta_carrera_id = data.ruta_carrera_id;
+    this.model.varRuta.cuerpo_id = data.cuerpo_id;
+    this.model.varRuta.especialidad_id = data.especialidad_id;
+    this.model.varRuta.tipo_categoria_id = data.tipo_categoria_id;
+    this.model.varRuta.descripcion = data.descripcion;
+
+    this.ruta.getLineasCargos({ruta_carrera_id: data.ruta_carrera_id}).subscribe(data => {
+      let response: any = this.api.ProcesarRespuesta(data);
+      if (response.tipo == 0) {
+        this.varlinea = response.result;
+      }
+    });
   }
 
   openConsulta() {
@@ -274,5 +337,21 @@ export class RutaComponent implements OnInit {
 
   closeDetalleModal(bol: any) {
     this.detalleModal = bol;
+  }
+
+  saveRuta() {
+    this.model.varRuta.cuerpo_id = Number(this.model.varRuta.cuerpo_id);
+    this.model.varRuta.especialidad_id = Number(this.model.varRuta.especialidad_id);
+    this.model.varRuta.tipo_categoria_id = Number(this.model.varRuta.tipo_categoria_id);
+
+    console.log(this.model.varRuta);
+  }
+
+  updateRuta() {
+    this.model.varRuta.cuerpo_id = Number(this.model.varRuta.cuerpo_id);
+    this.model.varRuta.especialidad_id = Number(this.model.varRuta.especialidad_id);
+    this.model.varRuta.tipo_categoria_id = Number(this.model.varRuta.tipo_categoria_id);
+
+    console.log(this.model.varRuta);
   }
 }

@@ -35,8 +35,8 @@
                             <td>{{item.cuerpo}}</td>
                             <td>{{item.especialidad}}</td>
                             <td>
-                                <i class="fa fa-1m5x fa-check-circle" *ngIf="item.activo == true"></i>
-                                <i class="fa fa-1m5x fa-times-circle" *ngIf="item.activo == false"></i>
+                                <i class="fa fa-1m5x fa-check-circle" *ngIf="item.activo == 'S'"></i>
+                                <i class="fa fa-1m5x fa-times-circle" *ngIf="item.activo == 'N'"></i>
                             </td>
                             <td class="table-buttons-action">
                                 <!-- <button type="button" class="button btn-icon btn-trash"><i class="fa fa-trash"></i></button>
@@ -57,38 +57,41 @@
     </div>
 </div>
 
-<app-modal [title]="'Crear'" [show]="modal" [size]="'modal-md'" (close)="closeModal($event)">
+<app-modal [title]="model.title" [show]="modal" [size]="'modal-md'" (close)="closeModal($event)">
     <div role="body">
         <div class="inner-col">
             <div class="col col33">
                 <div class="label-row">Cuerpo</div>
-                <select>
+                <select [(ngModel)]="model.varRuta.cuerpo_id">
                     <option value="0">Seleccionar</option>
+                    <option *ngFor="let item of varcuerpo" value="item.cuerpo_id">{{item.cuerpo}}</option>
                 </select>
             </div>
             <div class="col col33">
                 <div class="label-row">Especialidad</div>
-                <select>
+                <select [(ngModel)]="model.varRuta.especialidad_id">
                     <option value="0">Seleccionar</option>
+                    <option *ngFor="let item of varespecialidad" value="item.especialidad_id">{{item.especialidad}}</option>
                 </select>
             </div>
             <div class="col col33">
                 <div class="label-row">Activo</div>
                 <div class="checkbox-component">
                     <label>
-                        <input type="checkbox" checked="checked">
+                        <input type="checkbox" checked="checked" [(ngModel)]="model.varRuta.activo">
                         <span class="checkmark"></span>
                     </label>
                 </div>
             </div>
             <div class="col col50">
                 <div class="label-row">Descripción</div>
-                <input type="text">
+                <input type="text" [(ngModel)]="model.varRuta.descripcion">
             </div>
             <div class="col col25">
                 <div class="label-row">Categoría</div>
-                <select>
+                <select [(ngModel)]="model.varRuta.tipo_categoria_id">
                     <option value="0">Seleccionar</option>
+                    <option *ngFor="let item of varcategoria" value="{{item.id}}">{{item.detalle}}</option>
                 </select>
             </div>
             <div class="col col25">
@@ -113,7 +116,10 @@
                             <td>{{item.cargo_ruta}}</td>
                             <td>{{item.tipo_ruta}}</td>
                             <td>{{item.tipo_cargo}}</td>
-                            <td></td>
+                            <td>
+                                <i class="fa fa-1m5x fa-check-circle" *ngIf="item.activo == 'S'"></i>
+                                <i class="fa fa-1m5x fa-times-circle" *ngIf="item.activo == 'N'"></i>
+                            </td>
                             <td class="table-buttons-action">
                                 <button type="button" class="button btn-icon btn-trash"><i class="fa fa-times-circle"></i></button>
                             </td>
