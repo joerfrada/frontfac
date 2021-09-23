@@ -967,6 +967,13 @@ a {
     padding-left: 0.5em;
 }
 
+.tab-content {
+    width: 100%;
+    padding-bottom: 10px;
+    flex: 1;
+    overflow: auto;
+}
+
 .table-content {
     width: 100%;
     padding-bottom: 10px;

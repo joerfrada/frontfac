@@ -46,7 +46,7 @@
                                 <!-- <button type="button" class="button btn-icon btn-trash"><i class="fa fa-trash"></i></button>
                                 <button type="button" class="button btn-icon btn-edit"><i class="fa fa-edit"></i></button>
                                 <button type="button" class="button btn-icon btn-plus"><i class="fa fa-plus"></i></button> -->
-                                <button type="button" class="button btn-edit">Editar</button>
+                                <button type="button" class="button btn-edit" (click)="editModal(item)">Editar</button>
                                 <!-- <button type="button" class="button btn-default">Detalle</button> -->
                             </td>
                         </tr>
@@ -61,30 +61,30 @@
     </div>
 </div>
 
-<app-modal [title]="'Crear Aplicaciones'" [show]="modal" [size]="'modal-md'" (close)="closeModal($event)">
+<app-modal [title]="model.title" [show]="modal" [size]="'modal-md'" (close)="closeModal($event)">
     <div role="body">
         <div class="inner-col">
             <div class="col col40">
                 <div class="label-row">Nombre</div>
-                <input type="text">
+                <input type="text" [(ngModel)]="model.varAplicacion.nombre">
             </div>
             <div class="col col60">
                 <div class="label-row">Descripción</div>
-                <input type="text">
+                <input type="text" [(ngModel)]="model.varAplicacion.descripcion">
             </div>
             <div class="col col40">
                 <div class="label-row">Url</div>
-                <input type="text">
+                <input type="text" [(ngModel)]="model.varAplicacion.url">
             </div>
             <div class="col col10">
                 <div class="label-row">Orden</div>
-                <input type="text">
+                <input type="number" [(ngModel)]="model.varAplicacion.orden">
             </div>
             <div class="col col10">
                 <div class="label-row">SAML 2.0</div>
                 <div class="checkbox-component">
                     <label>
-                        <input type="checkbox" checked="checked">
+                        <input type="checkbox" checked="checked" [(ngModel)]="model.varAplicacion.saml">
                         <span class="checkmark"></span>
                     </label>
                 </div>
@@ -93,7 +93,7 @@
                 <div class="label-row">Activo</div>
                 <div class="checkbox-component">
                     <label>
-                        <input type="checkbox" checked="checked">
+                        <input type="checkbox" checked="checked" [(ngModel)]="model.varAplicacion.activo">
                         <span class="checkmark"></span>
                     </label>
                 </div>
@@ -106,12 +106,13 @@
             <div class="line-col"></div>
             <div class="col col100">
                 <div class="label-row center">Previsualizar</div>
-                <img [src]="model.varAplicacion.imagen" width="200px" height="200px" class="img-center">
+                <img [src]="model.varAplicacion.logo" width="200px" height="200px" class="img-center">
             </div>
         </div>
     </div>
     <div role="footer">
         <button type="button" class="btn btn-red" (click)="closeModal(false)">Cerrar</button>
-        <button type="button" class="btn btn-blue" (click)="closeModal(false)">Guardar</button>
+        <button *ngIf="model.tipo == 'C'" type="button" class="btn btn-blue" (click)="saveAplicacion()">Guardar</button>
+        <button *ngIf="model.tipo == 'U'" type="button" class="btn btn-blue" (click)="updateAplicacion()">Actualizar</button>
     </div>
 </app-modal>

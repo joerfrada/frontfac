@@ -9,11 +9,17 @@ import { ApiService } from '../api.service';
 })
 export class AplicacionService {
 
+  private apiGetAplicacionesFull = this.api.getBaseUrl + "aplicacion/getAplicacionesFull";
   private apiGetAplicaciones = this.api.getBaseUrl + "aplicacion/getAplicaciones";
   private apiCreateAplicaciones = this.api.getBaseUrl + "aplicacion/crearAplicaciones";
   private apiUpdateAplicaciones = this.api.getBaseUrl + "aplicacion/actualizarAplicaciones";
 
   constructor(private http: HttpClient, private api: ApiService) { }
+
+  public getAplicacionesFull(): Observable<any> {
+    return this.http.get<any>(this.apiGetAplicacionesFull, this.api.getHttpOptions('g'))
+    .pipe(retry(1), catchError(this.api.errorHandle));
+  }
 
   public getAplicaciones(data: any): Observable<any> {
     return this.http.post<any>(this.apiGetAplicaciones, JSON.stringify(data), this.api.getHttpOptions('g'))

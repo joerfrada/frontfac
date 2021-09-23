@@ -10,7 +10,14 @@ export class Model {
   tipo = 'C';
 
   varAplicacion: any = {
-    imagen: "../../../../assets/images/fileupload.jpg"
+    aplicacion_id: 0,
+    nombre: "",
+    descripcion: "",
+    orden: 0,
+    url: "",
+    logo: "../../../../assets/images/fileupload.jpg",
+    saml: false,
+    activo: true
   }
 }
 
@@ -23,50 +30,65 @@ export class AplicacionesComponent implements OnInit {
 
   model = new Model();
 
-  varhistorial: any = [
-    {
-      aplicacion_id: 1,
-      nombre: "App 1",
-      descripcion: "Descripcion 1",
-      orden: 4,
-      saml: 'S',
-      activo: 'S'
-    },
-    {
-      aplicacion_id: 2,
-      nombre: "App 2",
-      descripcion: "Descripcion 2",
-      orden: 2,
-      saml: 'N',
-      activo: 'S'
-    },
-    {
-      aplicacion_id: 3,
-      nombre: "App 3",
-      descripcion: "Descripcion 3",
-      orden: 3,
-      saml: 'N',
-      activo: 'N'
-    },
-    {
-      aplicacion_id: 4,
-      nombre: "App 4",
-      descripcion: "Descripcion 4",
-      orden: 1,
-      saml: 'S',
-      activo: 'N'
-    }
-  ];
+  varhistorial: any = [];
 
   modal: any;
 
-  constructor() { }
+  currentUser: any;
+
+  constructor(private router: Router, private api: ApiService, private app: AplicacionService) {
+    this.currentUser = JSON.parse(localStorage.getItem("currentUser") as any)[0];
+    this.model.varAplicacion.usuario_creador = this.currentUser.usuario;
+    this.model.varAplicacion.usuario_modificador = this.currentUser.usuario;
+   }
 
   ngOnInit(): void {
+    this.getAplicaciones();
+  }
+
+  reload() {
+    let currentUrl = this.router.url;
+    this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
+      this.router.navigate([currentUrl]);
+    });
+  }
+
+  getAplicaciones() {
+    let json = {
+      filtro: 0
+    }
+
+    this.app.getAplicaciones(json).subscribe(data => {
+      let response: any = this.api.ProcesarRespuesta(data);
+      if (response.tipo == 0) {
+        this.varhistorial = response.result;
+        console.log(response.result);
+      }
+    });
   }
 
   openModal() {
     this.modal = true;
+    this.model = new Model();
+    this.model.title = "Crear Aplicación";
+    this.model.tipo = 'C';
+  }
+
+  editModal(data: any) {
+    this.modal = true;
+    this.model.title = "Actualizar Aplicación";
+    this.model.tipo = 'U';
+
+    console.log(data);
+
+    this.model.varAplicacion.aplicacion_id = data.aplicacion_id;
+    this.model.varAplicacion.nombre = data.nombre;
+    this.model.varAplicacion.descripcion = data.descripcion;
+    this.model.varAplicacion.orden = data.orden;
+    this.model.varAplicacion.url = data.url;
+    this.model.varAplicacion.logo = data.logo;
+    this.model.varAplicacion.saml = (data.saml == 'S') ? true : false;
+    this.model.varAplicacion.saml = (data.activo == 'S') ? true : false;
   }
 
   closeModal(bol: any) {
@@ -89,8 +111,38 @@ export class AplicacionesComponent implements OnInit {
     var reader = new FileReader();
     reader.readAsDataURL(file); 
     reader.onload = (_event) => { 
-      this.model.varAplicacion.imagen = reader.result; 
+      this.model.varAplicacion.logo = reader.result; 
     }
+  }
+
+  saveAplicacion() {
+    this.model.varAplicacion.usuario_creador = this.currentUser.usuario;
+    this.model.varAplicacion.usuario_modificador = this.currentUser.usuario;
+
+    console.log(this.model.varAplicacion);
+
+    this.app.createAplicaciones(this.model.varAplicacion).subscribe(data => {
+      let response: any = this.api.ProcesarRespuesta(data);
+      if (response.tipo == 0) {
+        swal({
+          title: 'Aplicaciones',
+          text: response.mensaje,
+          allowOutsideClick: false,
+          showConfirmButton: true,
+          type: 'success'
+        }).then((result: any) => {
+          this.modal = false;
+          this.reload();
+        })
+      }
+    });
+  }
+
+  updateAplicacion() {
+    this.model.varAplicacion.usuario_creador = this.currentUser.usuario;
+    this.model.varAplicacion.usuario_modificador = this.currentUser.usuario;
+
+    console.log(this.model.varAplicacion);
   }
 
 }

@@ -13,6 +13,7 @@ import { RequerimientosComponent } from '../modules/param/requerimientos/requeri
 import { PiramidesComponent } from '../modules/consultas/piramides/piramides.component';
 import { RutaComponent } from '../modules/consultas/ruta/ruta.component';
 import { AplicacionesComponent } from '../modules/admin/aplicaciones/aplicaciones.component';
+import { SiglasComponent } from '../modules/param/siglas/siglas.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -27,7 +28,8 @@ const routes: Routes = [
     { path: 'modulo/param/requerimientos', component: RequerimientosComponent },
     { path: 'modulo/consultas/piramide', component: PiramidesComponent },
     { path: 'modulo/consultas/ruta', component: RutaComponent },
-    { path: 'modulo/admin/aplicacion', component: AplicacionesComponent}
+    { path: 'modulo/admin/aplicacion', component: AplicacionesComponent },
+    { path: 'modulo/param/siglas', component: SiglasComponent }
   ]},
 ];
 

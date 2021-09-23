@@ -25,6 +25,7 @@ import { VerModalComponent } from '../views/ver-modal/ver-modal.component';
 import { DetalleModalComponent } from '../views/detalle-modal/detalle-modal.component';
 import { PiramideModalComponent } from '../views/piramide-modal/piramide-modal.component';
 import { AplicacionesComponent } from '../modules/admin/aplicaciones/aplicaciones.component';
+import { SiglasComponent } from '../modules/param/siglas/siglas.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,8 @@ import { AplicacionesComponent } from '../modules/admin/aplicaciones/aplicacione
     VerModalComponent,
     DetalleModalComponent,
     PiramideModalComponent,
-    AplicacionesComponent
+    AplicacionesComponent,
+    SiglasComponent
   ],
   imports: [
     CommonModule,
