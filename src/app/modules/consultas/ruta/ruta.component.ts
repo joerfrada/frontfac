@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from '../../../services/api.service';
 import { RutaCarreraService } from '../../../services/modules/ruta-carrera.service';
-import { CargoService } from '../../../services/modules/cargo.service';
+import { CuerpoService } from '../../../services/modules/cuerpo.service';
 import { EspecialidadService } from '../../../services/modules/especialidad.service';
 
 declare var $:any;
@@ -177,7 +177,7 @@ export class RutaComponent implements OnInit {
   constructor(private router: Router,
               private api: ApiService,
               private ruta: RutaCarreraService,
-              private cargo: CargoService,
+              private cuerpo: CuerpoService,
               private especialidad: EspecialidadService) { 
     let currentUser = JSON.parse(localStorage.getItem("currentUser") as any)[0];
     this.model.varRuta.usuario_creador = currentUser.usuario;
@@ -212,7 +212,7 @@ export class RutaComponent implements OnInit {
   }
 
   getCuerposFull() {
-    this.cargo.getCuerposFull().subscribe(data => {
+    this.cuerpo.getCuerposFull().subscribe(data => {
       let response: any = this.api.ProcesarRespuesta(data);
       if (response.tipo == 0) {
         this.varcuerpo = response.result;

@@ -10,6 +10,10 @@
     --color-footer: #cccccb;
     --color-border-footer: #c0c0c0;
     --color-pagination: #60605e;
+    --color-menu-light: #32373d;
+    --color-menu-dark: #202527;
+    --color-header: #0473ce;
+    --color-bgfooter: #0473ce;
 }
 * {
     margin: 0;
@@ -155,7 +159,7 @@ a {
     left: 0;
     bottom: 0;
     width: 100%;
-    background-color: var(--color-bluedark);
+    background-color: var(--color-bgfooter);
     display: flex;
     height: 40px;
     z-index: 1032;
@@ -188,7 +192,7 @@ a {
     padding-top: 70px;
     overflow: auto;
     z-index: 10;
-    background-color: var(--color-blueblack);
+    background-color: var(--color-menu-light);
     -webkit-box-shadow: 0px 8px 17px rgba(0, 0, 0, 0.2);
     box-shadow: 0px 8px 17px rgba(0, 0, 0, 0.2);
     -webkit-transition: left 0.3s ease, width 0.3s ease;
@@ -202,7 +206,7 @@ a {
         flex-direction: column;
         align-items: center;
         color: white;
-        border-bottom: 1px solid #002953;
+        // border-bottom: 1px solid #002953;
 
         img {
             width: 40%;
@@ -231,10 +235,12 @@ a {
     padding: 10px 15px;
     font-size: 1.08em;
     color: #fff;
-    border-bottom: 1px solid #002953;
+    // border-bottom: 1px solid #002953;
+    // border-bottom: 1px solid var(--color-menu-dark);
 
     &:hover {
-        background: #002953;
+        // background: #002953;
+        background: var(--color-menu-dark);
     }
 }
 
@@ -281,11 +287,13 @@ a {
     color: white;
 
     &:hover {
-        color: #36629a;
+        // color: #36629a;
+        background: var(--color-menu-dark);
     }
 
     .active {
-        background: #36629a;
+        // background: #36629a;
+        background: var(--color-menu-dark);
     }
 }
 
@@ -293,9 +301,10 @@ a {
     margin-right: 5px;
 }
 
-.treeview-menu:last-child {
-    border-bottom: 1px solid #002953;
-}
+// .treeview-menu:last-child {
+//     // border-bottom: 1px solid #002953;
+//     border-bottom: 1px solid var(--color-menu-dark);
+// }
 
 .treeview-indicator {
     -webkit-transform-origin: center;

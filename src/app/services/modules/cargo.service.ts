@@ -28,13 +28,13 @@ export class CargoService {
   constructor(private http: HttpClient, private api: ApiService) { }
 
   // Cargo
-  public getCargos(data: any): Observable<any> {
-    return this.http.post<any>(this.apiGetCargos, JSON.stringify(data), this.api.getHttpOptions('g'))
+  public getCargosFull(): Observable<any> {
+    return this.http.get<any>(this.apiGetCargosFull, this.api.getHttpOptions('g'))
     .pipe(retry(1), catchError(this.api.errorHandle));
   }
 
-  public getCargosFull(): Observable<any> {
-    return this.http.post<any>(this.apiGetCargosFull, this.api.getHttpOptions('g'))
+  public getCargos(data: any): Observable<any> {
+    return this.http.post<any>(this.apiGetCargos, JSON.stringify(data), this.api.getHttpOptions('g'))
     .pipe(retry(1), catchError(this.api.errorHandle));
   }
 

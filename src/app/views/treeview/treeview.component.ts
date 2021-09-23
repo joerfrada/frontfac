@@ -1,4 +1,5 @@
 import { AfterViewInit, Component, Input } from '@angular/core';
+import { Router } from '@angular/router';
 
 declare var $:any;
 
@@ -11,7 +12,7 @@ export class TreeviewComponent implements AfterViewInit {
 
   @Input() menuList: any;
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngAfterViewInit() {
     this.menuList.forEach((x: any) => {
