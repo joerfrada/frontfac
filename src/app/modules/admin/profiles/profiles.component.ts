@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ApiService } from '../../../services/api.service';
 import { PerfilService } from '../../../services/modules/perfil.service';
 
@@ -6,6 +7,7 @@ declare var swal:any;
 
 export class Model {
   title: any;
+  tipo = 'C';
 
   varPerfil: any = {
     perfil_id: 0,
@@ -32,19 +34,44 @@ export class ProfilesComponent implements OnInit {
 
   modal: any;
 
-  constructor(private api: ApiService, private perfil: PerfilService) { 
-    let currentUser = JSON.parse(localStorage.getItem("currentUser") as any)[0];
-    this.model.varPerfil.usuario_creador = currentUser.usuario;
-    this.model.varPerfil.usuario_modificador = currentUser.usuario;
+  currentUser: any;
+
+  constructor(private router: Router, private api: ApiService, private perfil: PerfilService) { 
+    this.currentUser = JSON.parse(localStorage.getItem("currentUser") as any)[0];
+    this.model.varPerfil.usuario_creador = this.currentUser.usuario;
+    this.model.varPerfil.usuario_modificador = this.currentUser.usuario;
   }
 
   ngOnInit(): void {
     this.getPerfiles();
   }
 
+  reload() {
+    let currentUrl = this.router.url;
+    this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
+      this.router.navigate([currentUrl]);
+    });
+  }
+
+  clearPerfil() {
+    this.model.varPerfil = {
+      perfil_id: 0,
+      nombres: "",
+      apellidos: "",
+      correo_electronico: "",
+      avatar: "",
+      activo: true,
+      usuario_creador: this.currentUser.usuario,
+      usuario_modificador: this.currentUser.usuario
+    };
+  }
+
   openModal() {
     this.modal = true;
     this.model.title = "Crear Perfil";
+    this.model.tipo = 'C';
+
+    this.clearPerfil();
   }
 
   closeModal(bol: any) {
@@ -67,6 +94,7 @@ export class ProfilesComponent implements OnInit {
   editPerfil(data: any) {
     this.modal = true;
     this.model.title = "Actualizar Perfil";
+    this.model.tipo = 'U';
 
     this.model.varPerfil.perfil_id = data.perfil_id;
     this.model.varPerfil.nombres = data.nombres;
@@ -78,10 +106,42 @@ export class ProfilesComponent implements OnInit {
 
   savePerfil() {
     console.log(this.model.varPerfil);
+
+    this.perfil.createPerfiles(this.model.varPerfil).subscribe(data => {
+      let response: any = this.api.ProcesarRespuesta(data);
+      if (response.tipo == 0) {
+        swal({
+          title: 'Perfiles',
+          text: response.mensaje,
+          allowOutsideClick: false,
+          showConfirmButton: true,
+          type: 'success'
+        }).then((result: any) => {
+          this.modal = false;
+          this.reload();
+        })
+      }
+    })
   }
 
   updatePerfil() {
     console.log(this.model.varPerfil);
+
+    this.perfil.updatePerfiles(this.model.varPerfil).subscribe(data => {
+      let response: any = this.api.ProcesarRespuesta(data);
+      if (response.tipo == 0) {
+        swal({
+          title: 'Perfiles',
+          text: response.mensaje,
+          allowOutsideClick: false,
+          showConfirmButton: true,
+          type: 'success'
+        }).then((result: any) => {
+          this.modal = false;
+          this.reload();
+        })
+      }
+    })
   }
 
 }

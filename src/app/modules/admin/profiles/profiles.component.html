@@ -84,6 +84,7 @@
     </div>
     <div role="footer">
         <button type="button" class="btn btn-red" (click)="closeModal(false)">Cerrar</button>
-        <button type="button" class="btn btn-blue" (click)="savePerfil">Guardar</button>
+        <button *ngIf="model.tipo == 'C'" type="button" class="btn btn-blue" (click)="savePerfil()">Guardar</button>
+        <button *ngIf="model.tipo == 'U'" type="button" class="btn btn-blue" (click)="updatePerfil()">Guardar</button>
     </div>
 </app-modal>

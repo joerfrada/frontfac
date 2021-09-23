@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ApiService } from '../../../services/api.service';
 import { ListaDinamicaService } from '../../../services/modules/lista-dinamica.service';
 
@@ -6,6 +7,7 @@ declare var swal:any;
 
 export class Model {
   title: any;
+  tipo = 'C';
 
   varNombreLista: any = {
     nombre_lista_id: 0,
@@ -36,7 +38,7 @@ export class ValoresFlexiblesComponent implements OnInit {
 
   currentUser: any;
 
-  constructor(private api: ApiService, private listaDinamica: ListaDinamicaService) { 
+  constructor(private router: Router, private api: ApiService, private listaDinamica: ListaDinamicaService) { 
     this.currentUser = JSON.parse(localStorage.getItem("currentUser") as any)[0];
     this.model.varNombreLista.usuario_creador = this.currentUser.usuario;
     this.model.varNombreLista.usuario_modificador = this.currentUser.usuario;
@@ -45,6 +47,13 @@ export class ValoresFlexiblesComponent implements OnInit {
   ngOnInit(): void {
     this.getNombresListas();
     this.getNombresListasFull();
+  }
+
+  reload() {
+    let currentUrl = this.router.url;
+    this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
+      this.router.navigate([currentUrl]);
+    });
   }
 
   clearNombreLista() {
@@ -82,6 +91,7 @@ export class ValoresFlexiblesComponent implements OnInit {
   openModal() {
     this.modal = true;
     this.model.title = "Crear Nombre Lista";
+    this.model.tipo = 'C';
     this.clearNombreLista();
   }
 
@@ -100,6 +110,7 @@ export class ValoresFlexiblesComponent implements OnInit {
   editNombreLista(data: any) {
     this.modal = true;
     this.model.title = "Actualizar Nombre Lista";
+    this.model.tipo = 'U';
 
     this.model.varNombreLista.nombre_lista_id = data.nombre_lista_id;
     this.model.varNombreLista.nombre_lista = data.nombre_lista;
@@ -129,7 +140,7 @@ export class ValoresFlexiblesComponent implements OnInit {
           type: 'success'
         }).then((result: any) => {
           this.modal = false;
-          window.location.reload();
+          this.reload();
         })
       }
     }));
@@ -154,7 +165,7 @@ export class ValoresFlexiblesComponent implements OnInit {
           type: 'success'
         }).then((result: any) => {
           this.modal = false;
-          window.location.reload();
+          this.reload();
         })
       }
     }));

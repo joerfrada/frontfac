@@ -10,6 +10,7 @@ import { ApiService } from '../api.service';
 export class PerfilService {
 
   private apiGetPerfiles = this.api.getBaseUrl + "perfil/getPerfiles";
+  private apiGetPerfilesFull = this.api.getBaseUrl + "perfil/getPerfilesFull";
   private apiCreatePerfiles = this.api.getBaseUrl + "perfil/crearPerfiles";
   private apiUpdatePerfiles = this.api.getBaseUrl + "perfil/actualizarPerfiles";
 
@@ -17,6 +18,11 @@ export class PerfilService {
 
   public getPerfiles(data: any): Observable<any> {
     return this.http.post<any>(this.apiGetPerfiles, JSON.stringify(data), this.api.getHttpOptions('g'))
+    .pipe(retry(1), catchError(this.api.errorHandle));
+  }
+
+  public getPerfilesFull(): Observable<any> {
+    return this.http.get<any>(this.apiGetPerfilesFull, this.api.getHttpOptions('g'))
     .pipe(retry(1), catchError(this.api.errorHandle));
   }
 

@@ -588,6 +588,11 @@ a {
     flex: 1 1 auto;
     padding: 10px;
     background: var(--color-body);
+
+    .btn-upload {
+        font-size: 14px;
+        padding: 5px 8px;
+    }
 }
 
 .modal-footer {
@@ -871,6 +876,12 @@ a {
     background-color: #6c757d;
     border-color: #6c757d;
     font-size: 12px;
+}
+
+.btn-upload {
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
 }
 
 .flex-content {
@@ -1418,3 +1429,9 @@ textarea {
 .tabs-inner {
     width: 100%;
 }
+
+.img-center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }

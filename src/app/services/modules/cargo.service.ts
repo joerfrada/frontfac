@@ -11,6 +11,7 @@ export class CargoService {
 
   // Cargos
   private apiGetCargos = this.api.getBaseUrl + "cargo/getCargos";
+  private apiGetCargosFull = this.api.getBaseUrl + "cargo/getCargosFull";
   private apiCreateCargos = this.api.getBaseUrl + "cargo/crearCargos";
   private apiUpdateCargos = this.api.getBaseUrl + "cargo/actualizarCargos";
 
@@ -18,22 +19,6 @@ export class CargoService {
   private apiGetRutasRequisitos = this.api.getBaseUrl + "cargo/getRutasRequisitos";
   private apiCreateRutasRequisitos = this.api.getBaseUrl + "cargo/crearRutasRequisitos";
   private apiUpdateRutasRequisitos = this.api.getBaseUrl + "cargo/actualizarRutasRequisitos";
-
-  // Areas
-  private apiGetAreas = this.api.getBaseUrl + "cargo/getAreas";
-  private apiCreateAreas = this.api.getBaseUrl + "cargo/crearAreas";
-  private apiUpdateAreas = this.api.getBaseUrl + "cargo/actualizarAreas";
-
-  // Cuerpos
-  private apiGetCuerposFull = this.api.getBaseUrl + "cargo/getCuerposFull";
-  private apiGetCuerpos = this.api.getBaseUrl + "cargo/getCuerpos";
-  private apiCreateCuerpos = this.api.getBaseUrl + "cargo/crearCuerpos";
-  private apiUpdateCuerpos = this.api.getBaseUrl + "cargo/actualizarCuerpos";
-
-  // Especialidades
-  private apiGetEspecialidades = this.api.getBaseUrl + "cargo/getEspecialidades";
-  private apiCreateEspecialidades = this.api.getBaseUrl + "cargo/crearEspecialidades";
-  private apiUpdateEspecialidades = this.api.getBaseUrl + "cargo/actualizarEspecialidades";
 
   // Educaciones y Conocimientos
   private apiGetEducaciones = this.api.getBaseUrl + "cargo/getEducaciones";
@@ -45,6 +30,11 @@ export class CargoService {
   // Cargo
   public getCargos(data: any): Observable<any> {
     return this.http.post<any>(this.apiGetCargos, JSON.stringify(data), this.api.getHttpOptions('g'))
+    .pipe(retry(1), catchError(this.api.errorHandle));
+  }
+
+  public getCargosFull(): Observable<any> {
+    return this.http.post<any>(this.apiGetCargosFull, this.api.getHttpOptions('g'))
     .pipe(retry(1), catchError(this.api.errorHandle));
   }
 
@@ -71,59 +61,6 @@ export class CargoService {
 
   public updateRutasRequisitos(data: any): Observable<any> {
     return this.http.post<any>(this.apiUpdateRutasRequisitos, JSON.stringify(data), this.api.getHttpOptions('g'))
-    .pipe(retry(1), catchError(this.api.errorHandle));
-  }
-
-  // Areas
-  public getAreas(data: any): Observable<any> {
-    return this.http.post<any>(this.apiGetAreas, JSON.stringify(data), this.api.getHttpOptions('g'))
-    .pipe(retry(1), catchError(this.api.errorHandle));
-  }
-
-  public createAreas(data: any): Observable<any> {
-    return this.http.post<any>(this.apiCreateAreas, JSON.stringify(data), this.api.getHttpOptions('g'))
-    .pipe(retry(1), catchError(this.api.errorHandle));
-  }
-
-  public updateAreas(data: any): Observable<any> {
-    return this.http.post<any>(this.apiUpdateAreas, JSON.stringify(data), this.api.getHttpOptions('g'))
-    .pipe(retry(1), catchError(this.api.errorHandle));
-  }
-
-  // Cuerpos
-  public getCuerposFull(): Observable<any> {
-    return this.http.get<any>(this.apiGetCuerposFull, this.api.getHttpOptions('g'))
-    .pipe(retry(1), catchError(this.api.errorHandle));
-  }
-
-  public getCuerpos(data: any): Observable<any> {
-    return this.http.post<any>(this.apiGetCuerpos, JSON.stringify(data), this.api.getHttpOptions('g'))
-    .pipe(retry(1), catchError(this.api.errorHandle));
-  }
-
-  public createCuerpos(data: any): Observable<any> {
-    return this.http.post<any>(this.apiCreateCuerpos, JSON.stringify(data), this.api.getHttpOptions('g'))
-    .pipe(retry(1), catchError(this.api.errorHandle));
-  }
-
-  public updateCuerpos(data: any): Observable<any> {
-    return this.http.post<any>(this.apiUpdateCuerpos, JSON.stringify(data), this.api.getHttpOptions('g'))
-    .pipe(retry(1), catchError(this.api.errorHandle));
-  }
-
-  // Especialidades
-  public getEspecialidades(data: any): Observable<any> {
-    return this.http.post<any>(this.apiGetEspecialidades, JSON.stringify(data), this.api.getHttpOptions('g'))
-    .pipe(retry(1), catchError(this.api.errorHandle));
-  }
-
-  public createEspecialidades(data: any): Observable<any> {
-    return this.http.post<any>(this.apiCreateEspecialidades, JSON.stringify(data), this.api.getHttpOptions('g'))
-    .pipe(retry(1), catchError(this.api.errorHandle));
-  }
-
-  public updateEspecialidades(data: any): Observable<any> {
-    return this.http.post<any>(this.apiUpdateEspecialidades, JSON.stringify(data), this.api.getHttpOptions('g'))
     .pipe(retry(1), catchError(this.api.errorHandle));
   }
 

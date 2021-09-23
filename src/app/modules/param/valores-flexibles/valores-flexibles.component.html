@@ -86,17 +86,14 @@
     </div>
     <div role="footer">
         <button type="button" class="btn btn-red" (click)="closeModal(false)">Cerrar</button>
-        <button type="button" class="btn btn-blue" (click)="saveNombreLista()">Guardar</button>
+        <button *ngIf="model.tipo == 'C'" type="button" class="btn btn-blue" (click)="saveNombreLista()">Guardar</button>
+        <button *ngIf="model.tipo == 'U'" type="button" class="btn btn-blue" (click)="updateNombreLista()">Actualizar</button>
     </div>
 </app-modal>
 
 <app-modal [title]="'Lista Dinámica'" [show]="valorModal" [size]="'modal-md'" (close)="closeValorModal($event)">
     <div role="body">
         <div class="inner-col">
-            <div class="col col33">
-                <div class="label-row">Orden</div>
-                <input type="text">
-            </div>
             <div class="col col33">
                 <div class="label-row">Variable</div>
                 <input type="text">

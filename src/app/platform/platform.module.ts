@@ -24,6 +24,7 @@ import { ViewCargoModalComponent } from '../views/view-cargo-modal/view-cargo-mo
 import { VerModalComponent } from '../views/ver-modal/ver-modal.component';
 import { DetalleModalComponent } from '../views/detalle-modal/detalle-modal.component';
 import { PiramideModalComponent } from '../views/piramide-modal/piramide-modal.component';
+import { AplicacionesComponent } from '../modules/admin/aplicaciones/aplicaciones.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import { PiramideModalComponent } from '../views/piramide-modal/piramide-modal.c
     ViewCargoModalComponent,
     VerModalComponent,
     DetalleModalComponent,
-    PiramideModalComponent
+    PiramideModalComponent,
+    AplicacionesComponent
   ],
   imports: [
     CommonModule,
