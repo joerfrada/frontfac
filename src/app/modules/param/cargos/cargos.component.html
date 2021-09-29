@@ -36,8 +36,8 @@
                             <td>{{item.clase_cargo}}</td>
                             <td>{{item.categoria}}</td>
                             <td>
-                                <i class="fa fa-1m5x fa-check-circle" *ngIf="item.activo == true"></i>
-                                <i class="fa fa-1m5x fa-times-circle" *ngIf="item.activo == false"></i>
+                                <i class="fa fa-1m5x fa-check-circle" *ngIf="item.activo == 'S'"></i>
+                                <i class="fa fa-1m5x fa-times-circle" *ngIf="item.activo == 'N'"></i>
                             </td>
                             <td class="table-buttons-action">
                                 <!-- <button type="button" class="button btn-icon btn-trash"><i class="fa fa-trash"></i></button>

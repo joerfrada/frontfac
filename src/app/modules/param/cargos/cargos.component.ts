@@ -4,6 +4,7 @@ import { CargoService } from '../../../services/modules/cargo.service';
 
 export class Model {
   title: any;
+  tipo = 'C';
 
   varCargo: any = {
     cargo_id: 0,

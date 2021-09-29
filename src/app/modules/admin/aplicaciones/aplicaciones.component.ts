@@ -88,7 +88,7 @@ export class AplicacionesComponent implements OnInit {
     this.model.varAplicacion.url = data.url;
     this.model.varAplicacion.logo = data.logo;
     this.model.varAplicacion.saml = (data.saml == 'S') ? true : false;
-    this.model.varAplicacion.saml = (data.activo == 'S') ? true : false;
+    this.model.varAplicacion.activo = (data.activo == 'S') ? true : false;
   }
 
   closeModal(bol: any) {
@@ -120,6 +120,7 @@ export class AplicacionesComponent implements OnInit {
     this.model.varAplicacion.usuario_modificador = this.currentUser.usuario;
 
     console.log(this.model.varAplicacion);
+    console.log(this.currentUser.usuario);
 
     this.app.createAplicaciones(this.model.varAplicacion).subscribe(data => {
       let response: any = this.api.ProcesarRespuesta(data);
@@ -143,6 +144,22 @@ export class AplicacionesComponent implements OnInit {
     this.model.varAplicacion.usuario_modificador = this.currentUser.usuario;
 
     console.log(this.model.varAplicacion);
+
+    this.app.updateAplicaciones(this.model.varAplicacion).subscribe(data => {
+      let response: any = this.api.ProcesarRespuesta(data);
+      if (response.tipo == 0) {
+        swal({
+          title: 'Aplicaciones',
+          text: response.mensaje,
+          allowOutsideClick: false,
+          showConfirmButton: true,
+          type: 'success'
+        }).then((result: any) => {
+          this.modal = false;
+          this.reload();
+        })
+      }
+    });
   }
 
 }

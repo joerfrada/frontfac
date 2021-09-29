@@ -6,10 +6,12 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { PlatformModule } from './platform/platform.module';
+import { SelectListModalComponent } from './views/select-list-modal/select-list-modal.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    SelectListModalComponent
   ],
   imports: [
     BrowserModule,

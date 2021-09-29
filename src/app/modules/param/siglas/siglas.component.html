@@ -5,9 +5,9 @@
             <div class="filter-content">
                 <ul class="filter-inner">
                     <li class="filter-item">
-                        <button *ngIf="tab == 1" type="button" class="button btn-default" (click)="openCuerpoModal()">Crear Cuerpo</button>
-                        <button *ngIf="tab == 2" type="button" class="button btn-default" (click)="openEspecialidadModal()" style="width: 123px !important;">Crear Especialidad</button>
-                        <button *ngIf="tab == 3" type="button" class="button btn-default" (click)="openAreaModal()">Crear Área</button>
+                        <button *ngIf="tab == 1" type="button" class="button btn-default" (click)="openModal(1)">Crear Cuerpo</button>
+                        <button *ngIf="tab == 2" type="button" class="button btn-default" (click)="openModal(2)" style="width: 123px !important;">Crear Especialidad</button>
+                        <button *ngIf="tab == 3" type="button" class="button btn-default" (click)="openModal(3)" style="width: 183px !important;">Crear Área de Conocimiento</button>
                     </li>
                     <li class="filter-item">
                         <div class="input-group-btn">
@@ -24,7 +24,7 @@
                     <ul>
                         <li (click)="selectTab(1)" [ngClass]="{'active': tab === 1}">Cuerpos</li>
                         <li (click)="selectTab(2)" [ngClass]="{'active': tab === 2}">Especialidades</li>
-                        <li (click)="selectTab(3)" [ngClass]="{'active': tab === 3}">Áreas</li>
+                        <li (click)="selectTab(3)" [ngClass]="{'active': tab === 3}">Área de Conocimiento</li>
                     </ul>
                 </div>
                 <div class="tabs-inner" style="margin-top: 5px;">
@@ -48,7 +48,7 @@
                                             <!-- <button type="button" class="button btn-icon btn-trash"><i class="fa fa-trash"></i></button>
                                             <button type="button" class="button btn-icon btn-edit"><i class="fa fa-edit"></i></button>
                                             <button type="button" class="button btn-icon btn-plus"><i class="fa fa-plus"></i></button> -->
-                                            <button type="button" class="button btn-edit">Editar</button>
+                                            <button type="button" class="button btn-edit" (click)="editModal(item, 1)">Editar</button>
                                             <!-- <button type="button" class="button btn-default">Detalle</button> -->
                                         </td>
                                     </tr>
@@ -79,7 +79,7 @@
                                             <!-- <button type="button" class="button btn-icon btn-trash"><i class="fa fa-trash"></i></button>
                                             <button type="button" class="button btn-icon btn-edit"><i class="fa fa-edit"></i></button>
                                             <button type="button" class="button btn-icon btn-plus"><i class="fa fa-plus"></i></button> -->
-                                            <button type="button" class="button btn-edit">Editar</button>
+                                            <button type="button" class="button btn-edit" (click)="editModal(item, 2)">Editar</button>
                                             <!-- <button type="button" class="button btn-default">Detalle</button> -->
                                         </td>
                                     </tr>
@@ -110,7 +110,7 @@
                                             <!-- <button type="button" class="button btn-icon btn-trash"><i class="fa fa-trash"></i></button>
                                             <button type="button" class="button btn-icon btn-edit"><i class="fa fa-edit"></i></button>
                                             <button type="button" class="button btn-icon btn-plus"><i class="fa fa-plus"></i></button> -->
-                                            <button type="button" class="button btn-edit">Editar</button>
+                                            <button type="button" class="button btn-edit" (click)="editModal(item, 3)">Editar</button>
                                             <!-- <button type="button" class="button btn-default">Detalle</button> -->
                                         </td>
                                     </tr>
@@ -127,3 +127,84 @@
         </div>
     </div>
 </div>
+
+<app-modal [title]="model.title" [show]="cuerpoModal" [size]="'modal-sm'" (close)="closeModal($event, 1)">
+    <div role="body">
+        <div class="inner-col">
+            <div class="col col25">
+                <div class="label-row">Tipo de Categoría</div>
+                <select [(ngModel)]="model.varCuerpo.tipo_categoria_id">
+                    <option value="0">Seleccionar</option>
+                    <option *ngFor="let item of varcategoria" value="{{item.id}}">{{item.detalle}}</option>
+                </select>
+            </div>
+            <div class="col col25">
+                <div class="label-row">Sigla</div>
+                <input type="text" [(ngModel)]="model.varCuerpo.sigla">
+            </div>
+            <div class="col col50">
+                <div class="label-row">Cuerpo</div>
+                <input type="text" [(ngModel)]="model.varCuerpo.cuerpo">
+            </div>
+        </div>
+    </div>
+    <div role="footer">
+        <button type="button" class="btn btn-red" (click)="closeModal(false, 1)">Cerrar</button>
+        <button *ngIf="model.tipo == 'C'" type="button" class="btn btn-blue" (click)="saveData(1)">Guardar</button>
+        <button *ngIf="model.tipo == 'U'" type="button" class="btn btn-blue" (click)="updateData(1)">Actualizar</button>
+    </div>
+</app-modal>
+
+<app-modal [title]="model.title" [show]="especialidadModal" [size]="'modal-sm'" (close)="closeModal($event, 2)">
+    <div role="body">
+        <div class="inner-col">
+            <div class="col col25">
+                <div class="label-row">Tipo de Categoría</div>
+                <select [(ngModel)]="model.varEspecialidad.tipo_categoria_id">
+                    <option value="0">Seleccionar</option>
+                    <option *ngFor="let item of varcategoria" value="{{item.id}}">{{item.detalle}}</option>
+                </select>
+            </div>
+            <div class="col col25">
+                <div class="label-row">Sigla</div>
+                <input type="text" [(ngModel)]="model.varEspecialidad.sigla">
+            </div>
+            <div class="col col50">
+                <div class="label-row">Especialidad</div>
+                <input type="text" [(ngModel)]="model.varEspecialidad.especialidad">
+            </div>
+        </div>
+    </div>
+    <div role="footer">
+        <button type="button" class="btn btn-red" (click)="closeModal(false, 2)">Cerrar</button>
+        <button *ngIf="model.tipo == 'C'" type="button" class="btn btn-blue" (click)="saveData(2)">Guardar</button>
+        <button *ngIf="model.tipo == 'U'" type="button" class="btn btn-blue" (click)="updateData(2)">Actualizar</button>
+    </div>
+</app-modal>
+
+<app-modal [title]="model.title" [show]="areaModal" [size]="'modal-sm'" (close)="closeModal($event, 3)">
+    <div role="body">
+        <div class="inner-col">
+            <div class="col col25">
+                <div class="label-row">Tipo de Categoría</div>
+                <select [(ngModel)]="model.varArea.tipo_categoria_id">
+                    <option value="0">Seleccionar</option>
+                    <option *ngFor="let item of varcategoria" value="{{item.id}}">{{item.detalle}}</option>
+                </select>
+            </div>
+            <div class="col col25">
+                <div class="label-row">Sigla</div>
+                <input type="text" [(ngModel)]="model.varArea.sigla">
+            </div>
+            <div class="col col50">
+                <div class="label-row">Área</div>
+                <input type="text" [(ngModel)]="model.varArea.area">
+            </div>
+        </div>
+    </div>
+    <div role="footer">
+        <button type="button" class="btn btn-red" (click)="closeModal(false, 3)">Cerrar</button>
+        <button *ngIf="model.tipo == 'C'" type="button" class="btn btn-blue" (click)="saveData(3)">Guardar</button>
+        <button *ngIf="model.tipo == 'U'" type="button" class="btn btn-blue" (click)="updateData(3)">Actualizar</button>
+    </div>
+</app-modal>
