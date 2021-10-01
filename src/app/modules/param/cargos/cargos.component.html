@@ -69,14 +69,14 @@
                 <div class="label-row">Categoría</div>
                 <select [(ngModel)]="model.varCargo.categoria_id">
                     <option value="0">Seleccionar</option>
-                    <option *ngFor="let item of varcategoria" value="item.id">{{item.detalle}}</option>
+                    <option *ngFor="let item1 of varcategoria" value="item1.id">{{item1.detalle}}</option>
                 </select>
             </div>
             <div class="col col25">
                 <div class="label-row">Clase de Cargo</div>
                 <select [(ngModel)]="model.varCargo.clase_cargo_id">
                     <option value="0">Seleccionar</option>
-                    <option *ngFor="let item of varclase" value="item.id">{{item.detalle}}</option>
+                    <option *ngFor="let item2 of varclase" value="item2.id">{{item2.detalle}}</option>
                 </select>
             </div>
             <div class="col col25">
@@ -216,7 +216,17 @@
                                 <input type="number">
                             </div>
                             <div class="col col100">
-                                <textarea rows="4" cols="80"></textarea>
+                                <div class="col col95">
+                                    <textarea rows="4" cols="80" [(ngModel)]="model.varRutaRequisito.ruta_requisito"></textarea>
+                                </div>
+                                <div class="col col5">
+                                    <button type="button" class="btn-select btn-select-red pointer" style="margin-bottom: 10px;" (click)="openSelect()">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                    <button type="button" class="btn-select btn-select-blue pointer" style="margin-bottom: 10px;">
+                                        <i class="fa fa-minus"></i>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -224,29 +234,79 @@
                         <div class="col col100 title-row">Cuerpos</div>
                         <div class="line-col"></div>
                         <div class="col col100">
-                            <textarea rows="4" cols="80"></textarea>
+                            <div class="col col95">
+                                <textarea rows="4" cols="80"></textarea>
+                            </div>
+                            <div class="col col5">
+                                <button type="button" class="btn-select btn-select-red pointer" style="margin-bottom: 10px;">
+                                    <i class="fa fa-plus"></i>
+                                </button>
+                                <button type="button" class="btn-select btn-select-blue pointer" style="margin-bottom: 10px;">
+                                    <i class="fa fa-minus"></i>
+                                </button>
+                            </div>
                         </div>
                         <div class="col col100 title-row">Especialidades</div>
                         <div class="line-col"></div>
                         <div class="col col100">
-                            <textarea rows="4" cols="80"></textarea>
+                            <div class="col col95">
+                                <textarea rows="4" cols="80"></textarea>
+                            </div>
+                            <div class="col col5">
+                                <button type="button" class="btn-select btn-select-red pointer" style="margin-bottom: 10px;">
+                                    <i class="fa fa-plus"></i>
+                                </button>
+                                <button type="button" class="btn-select btn-select-blue pointer" style="margin-bottom: 10px;">
+                                    <i class="fa fa-minus"></i>
+                                </button>
+                            </div>
                         </div>
                         <div class="col col100 title-row">Áreas de Conocimiento</div>
                         <div class="line-col"></div>
                         <div class="col col100">
-                            <textarea rows="4" cols="80"></textarea>
+                            <div class="col col95">
+                                <textarea rows="4" cols="80"></textarea>
+                            </div>
+                            <div class="col col5">
+                                <button type="button" class="btn-select btn-select-red pointer" style="margin-bottom: 10px;">
+                                    <i class="fa fa-plus"></i>
+                                </button>
+                                <button type="button" class="btn-select btn-select-blue pointer" style="margin-bottom: 10px;">
+                                    <i class="fa fa-minus"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
                     <div class="tabs-content" *ngIf="tab === 3">
                         <div class="col col100 title-row">Educación formal requerida</div>
                         <div class="line-col"></div>
                         <div class="col col100">
-                            <textarea rows="4" cols="80"></textarea>
+                            <div class="col col95">
+                                <textarea rows="4" cols="80"></textarea>
+                            </div>
+                            <div class="col col5">
+                                <button type="button" class="btn-select btn-select-red pointer" style="margin-bottom: 10px;">
+                                    <i class="fa fa-plus"></i>
+                                </button>
+                                <button type="button" class="btn-select btn-select-blue pointer" style="margin-bottom: 10px;">
+                                    <i class="fa fa-minus"></i>
+                                </button>
+                            </div>
                         </div>
                         <div class="col col100 title-row">Conocimientos Adicionales</div>
                         <div class="line-col"></div>
                         <div class="col col100">
-                            <textarea rows="4" cols="80"></textarea>
+                            <div class="col col95">
+                                <textarea rows="4" cols="80"></textarea>
+                            </div>
+                            <div class="col col5">
+                                <button type="button" class="btn-select btn-select-red pointer" style="margin-bottom: 10px;">
+                                    <i class="fa fa-plus"></i>
+                                </button>
+                                <button type="button" class="btn-select btn-select-blue pointer" style="margin-bottom: 10px;">
+                                    <i class="fa fa-minus"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
                     <div class="tabs-content" *ngIf="tab === 4">
@@ -319,3 +379,12 @@
         <button type="button" class="btn btn-blue" (click)="closeConfigModal(false)">Guardar</button>
     </div>
 </app-modal>
+
+<app-select-list-modal [title]="'Especialidades'"
+    [item1]="varitem1"
+    [item2]="varitem2"
+    [show]="selectModal"
+    [size]="'modal-select-list'"
+    (output)="parentSelected($event)"
+    (close)="closeSelectModal($event)">
+</app-select-list-modal>

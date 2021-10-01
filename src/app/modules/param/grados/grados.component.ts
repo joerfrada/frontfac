@@ -4,6 +4,7 @@ import { GradoService } from '../../../services/modules/grado.service';
 
 export class Model {
   title: any;
+  tipo = 'C';
 
   varGrado: any = {
     grado_id: 0,
@@ -31,15 +32,23 @@ export class GradosComponent implements OnInit {
   modal: any;
 
   varhistorial: any = [];
+  varcategoria: any = [];
+  varnivel: any = [];
+  varnivelTemp: any = [];
+  varnivel_oficial: any = [];
+  varnivel_suboficial: any = [];
+
+  currentUser: any;
 
   constructor(private api: ApiService, private grado: GradoService) { 
-    let currentUser = JSON.parse(localStorage.getItem("currentUser") as any)[0];
-    this.model.varGrado.usuario_creador = currentUser.usuario;
-    this.model.varGrado.usuario_modificador = currentUser.usuario;
+    this.currentUser = JSON.parse(localStorage.getItem("currentUser") as any)[0];
+    this.model.varGrado.usuario_creador = this.currentUser.usuario;
+    this.model.varGrado.usuario_modificador = this.currentUser.usuario;
   }
 
   ngOnInit(): void {
     this.getGrados();
+    this.getListas();
   }
 
   getGrados() {
@@ -55,17 +64,46 @@ export class GradosComponent implements OnInit {
     });
   }
 
+  getListas() {
+    let varlistas = JSON.parse(localStorage.getItem("listasDinamicasFull") as any);
+    this.varcategoria = varlistas.filter((x: any) => x.nombre_lista == 'BAS_TIPO_CATEGORIA');
+    this.varcategoria.forEach((x: any) => {
+      x.id = x.lista_dinamica_id;
+      x.detalle = x.lista_dinamica;
+    });
+    this.varnivel_oficial = varlistas.filter((x: any) => x.nombre_lista == 'BAS_NIVEL_OFICIALES');
+    this.varnivel_oficial.forEach((x: any) => {
+      x.id = x.lista_dinamica_id;
+      x.detalle = x.lista_dinamica;
+    });
+    this.varnivel_suboficial = varlistas.filter((x: any) => x.nombre_lista == 'BAS_NIVEL_SUBOFICIALES');
+    this.varnivel_suboficial.forEach((x: any) => {
+      x.id = x.lista_dinamica_id;
+      x.detalle = x.lista_dinamica;
+    });
+    this.varnivel = this.varnivel_oficial.concat(this.varnivel_suboficial);
+    this.varnivelTemp = this.varnivel_oficial.concat(this.varnivel_suboficial);
+  }
+
   openModal() {
     this.modal = true;
+    this.model = new Model();
     this.model.title = "Crear Grado";
+    this.model.tipo = 'C';
   }
 
   closeModal(bol: any) {
     this.modal = bol;
   }
 
+  changeNivel(id: any) {
+    this.varnivel = this.varnivelTemp.filter((x: any) => x.nombre_lista_id == id);
+  }
+
   editGrado(data: any) {
     this.model.title = "Actualizar Grado";
+    this.model.tipo = 'U';
+    this.modal = true;
 
     this.model.varGrado.grado_id = data.grado_id;
     this.model.varGrado.grado = data.grado;
@@ -80,6 +118,9 @@ export class GradosComponent implements OnInit {
   }
 
   saveGrado() {
+    this.model.varGrado.usuario_creador = this.currentUser.usuario;
+    this.model.varGrado.usuario_modificador = this.currentUser.usuario;
+
     this.model.varGrado.nivel_id = Number(this.model.varGrado.nivel_id);
     this.model.varGrado.grado_previo_id = Number(this.model.varGrado.grado_previo_id);
     this.model.varGrado.categoria_id = Number(this.model.varGrado.categoria_id);
@@ -97,6 +138,9 @@ export class GradosComponent implements OnInit {
   }
 
   updateGrado() {
+    this.model.varGrado.usuario_creador = this.currentUser.usuario;
+    this.model.varGrado.usuario_modificador = this.currentUser.usuario;
+
     this.model.varGrado.nivel_id = Number(this.model.varGrado.nivel_id);
     this.model.varGrado.grado_previo_id = Number(this.model.varGrado.grado_previo_id);
     this.model.varGrado.categoria_id = Number(this.model.varGrado.categoria_id);

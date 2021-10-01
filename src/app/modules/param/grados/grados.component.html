@@ -24,9 +24,9 @@
                             <th>Grado</th>
                             <th>Descripción</th>
                             <th>Duración</th>
+                            <th>Categoría</th>
                             <th>Nivel</th>
                             <th>Grado Previo</th>
-                            <th>Categoría</th>
                             <th>Estado</th>
                             <th>Acciones</th>
                         </tr>
@@ -36,9 +36,9 @@
                             <td>{{item.grado}}</td>
                             <td>{{item.descripcion}}</td>
                             <td>{{item.duracion}}</td>
+                            <td>{{item.categoria}}</td>
                             <td>{{item.nivel}}</td>
                             <td>{{item.gradoprev}}</td>
-                            <td>{{item.categoria}}</td>
                             <td>
                                 <i class="fa fa-1m5x fa-check-circle" *ngIf="item.activo == 'S'"></i>
                                 <i class="fa fa-1m5x fa-times-circle" *ngIf="item.activo == 'N'"></i>
@@ -47,7 +47,7 @@
                                 <!-- <button type="button" class="button btn-icon btn-trash"><i class="fa fa-trash"></i></button>
                                 <button type="button" class="button btn-icon btn-edit"><i class="fa fa-edit"></i></button>
                                 <button type="button" class="button btn-icon btn-plus"><i class="fa fa-plus"></i></button> -->
-                                <button type="button" class="button btn-edit">Editar</button>
+                                <button type="button" class="button btn-edit" (click)="editGrado(item)">Editar</button>
                                 <!-- <button type="button" class="button btn-default">Detalle</button> -->
                             </td>
                         </tr>
@@ -70,9 +70,17 @@
                 <input type="text" [(ngModel)]="model.varGrado.grado">
             </div>
             <div class="col col33">
+                <div class="label-row">Categoría</div>
+                <select [(ngModel)]="model.varGrado.categoria_id" (change)="changeNivel(model.varGrado.categoria_id)">
+                    <option value="0">Seleccionar</option>
+                    <option *ngFor="let item1 of varcategoria" value="{{item1.id}}">{{item1.detalle}}</option>
+                </select>
+            </div>
+            <div class="col col33">
                 <div class="label-row">Nivel</div>
                 <select [(ngModel)]="model.varGrado.nivel_id">
                     <option value="0">Seleccionar</option>
+                    <option *ngFor="let item2 of varnivel" value="{{item2.id}}">{{item2.detalle}}</option>
                 </select>
             </div>
             <div class="col col33">
@@ -81,11 +89,9 @@
                     <option value="0">Seleccionar</option>
                 </select>
             </div>
-            <div class="col col33">
-                <div class="label-row">Categoría</div>
-                <select [(ngModel)]="model.varGrado.categoria_id">
-                    <option value="0">Seleccionar</option>
-                </select>
+            <div class="col col15">
+                <div class="label-row">Duración</div>
+                <input type="number" [(ngModel)]="model.varGrado.duracion">
             </div>
             <div class="col col33">
                 <div class="label-row">Activo</div>
@@ -104,6 +110,7 @@
     </div>
     <div role="footer">
         <button type="button" class="btn btn-red" (click)="closeModal(false)">Cerrar</button>
-        <button type="button" class="btn btn-blue" (click)="saveGrado()">Guardar</button>
+        <button *ngIf="model.tipo == 'C'" type="button" class="btn btn-blue" (click)="saveGrado()">Guardar</button>
+        <button *ngIf="model.tipo == 'U'" type="button" class="btn btn-blue" (click)="updateGrado()">Actualizar</button>
     </div>
 </app-modal>

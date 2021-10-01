@@ -16,6 +16,11 @@ export class Model {
     usuario_creador: "",
     usuario_modificador: ""
   };
+
+  varRutaRequisito: any = {
+    ruta_requisito_id: 0,
+    ruta_requisito: ""
+  }
 }
 
 @Component({
@@ -35,12 +40,56 @@ export class CargosComponent implements OnInit {
   varclase: any = [];
   varcategoria: any = [];
 
-  vargrados: any = [];
+  vargrados: any = [
+    {
+      id: 1,
+      grado: "Grado 1",
+      activo: true
+    },
+    {
+      id: 2,
+      grado: "Grado 2",
+      activo: true
+    }
+  ];
+
+  varitem1: any = [
+    {
+      id: 1,
+      detalle: "VPIL"
+    },
+    {
+      id: 2,
+      detalle: "LAMAA"
+    },
+    {
+      id: 3,
+      detalle: "SDGA"
+    },
+    {
+      id: 4,
+      detalle: "THIAA"
+    },
+    {
+      id: 5,
+      detalle: "LIATHI"
+    },
+    {
+      id: 6,
+      detalle: "SFGO"
+    }
+  ];
+
+  varitem2: any = [];
+
+  currentUser: any;
+
+  selectModal: any;
 
   constructor(private api: ApiService, private cargo: CargoService) { 
-    let currentUser = JSON.parse(localStorage.getItem("currentUser") as any)[0];
-    this.model.varCargo.usuario_creador = currentUser.usuario;
-    this.model.varCargo.usuario_modificador = currentUser.usuario;
+    this.currentUser = JSON.parse(localStorage.getItem("currentUser") as any)[0];
+    this.model.varCargo.usuario_creador = this.currentUser.usuario;
+    this.model.varCargo.usuario_modificador = this.currentUser.usuario;
   }
 
   ngOnInit(): void {
@@ -64,7 +113,9 @@ export class CargosComponent implements OnInit {
 
   openModal() {
     this.modal = true;
+    this.model = new Model();
     this.model.title = "Crear Cargo";
+    this.model.tipo = 'C';
   }
 
   closeModal(bol: any) {
@@ -100,6 +151,7 @@ export class CargosComponent implements OnInit {
   editCargos(data: any) {
     this.modal = true;
     this.model.title = "Actualizar Cargos";
+    this.model.tipo = 'U';
 
     this.model.varCargo.cargo_id = data.cargo_id;
     this.model.varCargo.cargo = data.cargo;
@@ -107,9 +159,14 @@ export class CargosComponent implements OnInit {
     this.model.varCargo.clase_cargo_id = data.clase_cargo_id;
     this.model.varCargo.categoria_id = data.categoria_id;
     this.model.varCargo.activo = (data.activo == 'S') ? true : false;
+
+    // console.log(this.model.varCargo);
   }
 
   saveCargos() {
+    this.model.varCargo.usuario_creador = this.currentUser.usuario;
+    this.model.varCargo.usuario_modificador = this.currentUser.usuario;
+
     this.model.varCargo.clase_cargo_id = Number(this.model.varCargo.clase_cargo_id);
     this.model.varCargo.categoria_id = Number(this.model.varCargo.categoria_id);
 
@@ -123,6 +180,9 @@ export class CargosComponent implements OnInit {
   }
 
   updateCargos() {
+    this.model.varCargo.usuario_creador = this.currentUser.usuario;
+    this.model.varCargo.usuario_modificador = this.currentUser.usuario;
+    
     this.model.varCargo.clase_cargo_id = Number(this.model.varCargo.clase_cargo_id);
     this.model.varCargo.categoria_id = Number(this.model.varCargo.categoria_id);
 
@@ -135,4 +195,19 @@ export class CargosComponent implements OnInit {
     console.log(this.model.varCargo);
   }
 
+  openSelect() {
+    this.selectModal = true;
+  }
+  
+  closeSelectModal(bol: any) {
+    this.selectModal = bol;
+  }
+
+  saveSelectModal() {
+    this.selectModal = false;
+  }
+
+  parentSelected(e: any) {
+    this.model.varRutaRequisito.ruta_requisito = e;
+  }
 }

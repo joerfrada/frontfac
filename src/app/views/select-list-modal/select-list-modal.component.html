@@ -7,13 +7,25 @@
             </div>
             <div class="modal-body">
                 <div class="select-container">
-                    <div class="select-left"></div>
-                    <div class="select-buttons"></div>
-                    <div class="select-right"></div>
+                    <div class="select-left">
+                        <select multiple [(ngModel)]="selectedToAdd">
+                            <option *ngFor="let item of item1" [ngValue]="item">{{item.detalle}}</option>
+                        </select>
+                    </div>
+                    <div class="select-buttons">
+                        <div class="btn-arrows" (click)="btnRight()"><i class="fa fa-angle-right"></i></div>
+                        <div class="btn-arrows" (click)="btnLeft()"><i class="fa fa-angle-left"></i></div>
+                    </div>
+                    <div class="select-right">
+                        <select multiple [(ngModel)]="selectedToRemove">
+                            <option *ngFor="let item of selectedItems" [ngValue]="item">{{item.detalle}}</option>
+                        </select>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <ng-content select="div[role=footer]"></ng-content>
+                <button type="button" class="btn btn-red" (click)="closeModal()">Cerrar</button>
+                <button type="button" class="btn btn-blue" (click)="saveModal()">Guardar</button>
             </div>
         </div>
     </div>

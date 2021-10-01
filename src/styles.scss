@@ -458,6 +458,24 @@ a {
     }
 }
 
+#modal-select-list {
+    .modal-box {
+        width: 30vw;
+    }
+
+    .modal-box-centered {
+        min-height: calc(100% - 30rem);
+    }
+
+    .modal-header, .modal-body, .modal-footer {
+        background: #2b2b2b;
+    }
+
+    .modal-header, .modal-footer {
+        border: none;
+    }
+}
+
 #modal-md {
     .modal-box {
         width: 60vw;
@@ -893,6 +911,31 @@ a {
     border-color: #007bff;
 }
 
+.btn-select {
+    display: inline-block;
+    font-weight: 400;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    user-select: none;
+    border: 1px solid transparent;
+    font-size: 1rem;
+    width: 90%;
+    line-height: 25px;
+    border-radius: 50%;
+    transition: color .15s ease-in-out, background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+.btn-select-red {
+    color: #fff;
+    background-color: red;
+}
+
+.btn-select-blue {
+    color: #fff;
+    background-color: var(--color-viewblue);
+}
+
 .flex-content {
     display: flex;
     flex-direction: column;
@@ -1194,6 +1237,10 @@ a {
     width: 90%;
 }
 
+.col95 {
+    width: 95%;
+}
+
 .col100 {
     width: 100%;
 }
@@ -1450,4 +1497,73 @@ textarea {
     display: block;
     margin-left: auto;
     margin-right: auto;
+}
+
+.select-container {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: stretch;
+
+    select {
+        height: 100%;
+        width: 100%;
+        padding: 0;
+        color: black;
+
+        option {
+            padding: 4px 10px;
+        }
+
+        option:hover {
+            background: #eee;
+            color: black;
+        }
+    }
+}
+
+.select-left {
+    order: 1;
+    // border: 1px solid red;
+    width: 43%;
+    height: 300px;
+}
+
+.select-right {
+    order: 3;
+    // border: 1px solid blue;
+    width: 43%;
+    height: 300px;
+}
+
+.select-buttons {
+    order: 2;
+    // border: 1px solid green;
+    width: 13%;
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 10px;
+
+    .btn-arrows {
+        width: 100%;;
+        line-height: 45px;
+        height: 45px;
+        background: var(--color-bluedark);
+        user-select: none;
+        cursor: pointer;
+        border-radius: 5px;
+        text-align: center;
+        color: white;
+
+        &:hover {
+            background: var(--color-bluelight);
+        }
+    }
+
+    .btn-arrows:first-child {
+        margin-bottom: 10px;
+    }
 }
