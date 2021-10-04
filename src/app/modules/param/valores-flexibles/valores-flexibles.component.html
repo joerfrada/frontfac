@@ -91,7 +91,55 @@
     </div>
 </app-modal>
 
-<app-modal [title]="'Lista Dinámica'" [show]="valorModal" [size]="'modal-md'" (close)="closeValorModal($event)">
+<app-modal [title]="'Listas Dinámicas'" [show]="valorModal" [size]="'modal-md'" (close)="closeValorModal($event)">
+    <div role="body">
+        <div class="inner-col">
+            <div class="table-content">
+                <table class="table flex-table">
+                    <thead>
+                        <tr>
+                            <th>Lista Dinámica</th>
+                            <th>Descripción</th>
+                            <th>Padre</th>
+                            <th>Activo</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody class="scroll">
+                        <tr *ngFor="let item of varvalor; let i = index">
+                            <td><input type="text" [(ngModel)]="varvalor[i].lista_dinamica"></td>
+                            <td><input type="text" [(ngModel)]="varvalor[i].descripcion"></td>
+                            <td>
+                                <select [(ngModel)]="item.lista_dinamica_padre_id">
+                                    <option value="0">Seleccionar</option>
+                                    <option *ngFor="let varitem of varlista" value="{{varitem.id}}">{{varitem.detalle}}</option>
+                                </select>
+                            </td>
+                            <td>
+                                <div class="table-checkbox-component">
+                                    <input type="checkbox" [(ngModel)]="varvalor[i].activo">
+                                </div>
+                            </td>
+                            <td>
+                                <i class="fa fa-1m5x fa-times-circle delete" *ngIf="item.NuevoRegistro == false"></i>
+                                <i class="fa fa-1m5x fa-times-circle" (click)="deleteValor(i)"></i>
+                            </td>
+                        </tr>
+                        <tr class="add_row_full">
+                            <div type="button" class="button btn-blue" (click)="addValor()">Agregar</div>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div role="footer">
+        <button type="button" class="btn btn-red" (click)="closeValorModal(false)">Cerrar</button>
+        <button type="button" class="btn btn-blue" (click)="closeValorModal(false)">Guardar</button>
+    </div>
+</app-modal>
+
+<app-modal [title]="'Actualizar Listas Dinámicas'" [show]="editValorModal" [size]="'modal-sm'" (close)="closeEditarValorModal($event)">
     <div role="body">
         <div class="inner-col">
             <div class="col col33">
@@ -120,7 +168,7 @@
         </div>
     </div>
     <div role="footer">
-        <button type="button" class="btn btn-red" (click)="closeValorModal(false)">Cerrar</button>
-        <!-- <button type="button" class="btn btn-blue" (click)="closeValorModal(false)">Guardar</button> -->
+        <button type="button" class="btn btn-red" (click)="closeEditarValorModal(false)">Cerrar</button>
+        <button type="button" class="btn btn-blue" (click)="closeEditarValorModal(false)">Guardar</button>
     </div>
 </app-modal>

@@ -17,6 +17,17 @@ export class Model {
     usuario_creador: "",
     usuario_modificador: ""
   };
+
+  varListaDinamica: any = {
+    lista_dinamica_id: 0,
+    nombre_lista_id: 0,
+    lista_dinamica: "",
+    descripcion: "",
+    lista_dinamica_padre_id: 0,
+    activo: true,
+    usuario_creador: "",
+    usuario_modificador: ""
+  }
 }
 
 @Component({
@@ -30,11 +41,13 @@ export class ValoresFlexiblesComponent implements OnInit {
 
   modal: any;
   valorModal: any;
+  editValorModal: any;
 
   varhistorial: any = [];
   varnombreLista: any = [];
 
   varvalor: any = [];
+  varlista: any = [];
 
   currentUser: any;
 
@@ -47,6 +60,7 @@ export class ValoresFlexiblesComponent implements OnInit {
   ngOnInit(): void {
     this.getNombresListas();
     this.getNombresListasFull();
+    this.getListasDinamicasFull();
   }
 
   reload() {
@@ -86,6 +100,18 @@ export class ValoresFlexiblesComponent implements OnInit {
         this.varhistorial = response.result;
       }
     });
+  }
+
+  getListasDinamicasFull() {
+    this.listaDinamica.getListasDinamicasFull().subscribe(data => {
+      let response: any = this.api.ProcesarRespuesta(data);
+      if (response.tipo == 0) {
+        response.result.forEach((x: any) => {
+          x.id = x.lista_dinamica_id;
+          x.detalle = x.lista_dinamica;
+        });
+      }
+    })
   }
 
   openModal() {
@@ -169,6 +195,29 @@ export class ValoresFlexiblesComponent implements OnInit {
         })
       }
     }));
+  }
+
+  editarValorModal(data: any) {
+    this.editValorModal = true;
+
+    this.model.varListaDinamica.lista_dinamica_id = data.lista_dinamica_id;
+    this.model.varListaDinamica.nombre_lista_id = data.nombre_lista_id;
+    this.model.varListaDinamica.lista_dinamica = data.lista_dinamica;
+    this.model.varListaDinamica.descripcion = data.descripcion;
+    this.model.varListaDinamica.lista_dinamica_padre_id = data.lista_dinamica_padre_id;
+    this.model.varListaDinamica.activo = (data.activo == 'S') ? true : false;
+  }
+
+  closeEditarValorModal(bol: any) {
+    this.editarValorModal = bol;
+  }
+
+  addValor() {
+    this.varvalor.push({ lista_dinamica_id: 0, nombre_lista_id: 0, lista_dinamica: "", descripcion: "", lista_dinamica_padre_id: 0, activo: true, NuevoRegistro: true});
+  }
+
+  deleteValor(index: any) {
+    this.varvalor.splice(index, 1);
   }
 
 }
