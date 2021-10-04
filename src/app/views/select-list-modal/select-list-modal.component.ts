@@ -12,18 +12,18 @@ export class SelectListModalComponent implements OnInit {
   @Input() show?: Boolean;
   @Input() title?: String;
   @Input() size?: String;
-  @Input() item1?: any;
-  @Input() item2?: any;
+  @Input() items?: any;
+  @Input() selectedItems?: any;
+  @Input() index?: any
   @Output() close = new EventEmitter<Boolean>();
   @Output() output = new EventEmitter<any>();
 
   selectedToAdd: any;
   selectedToRemove: any;
-  selectedItems: any = [];
 
   constructor() { }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {}
 
   closeModal() {
     this.close.emit(false);
@@ -31,22 +31,22 @@ export class SelectListModalComponent implements OnInit {
 
   btnRight() {
     this.selectedItems = this.selectedItems.concat(this.selectedToAdd);
-    this.item1 = this.item1.filter((selectedData: any) => {
+    this.items = this.items.filter((selectedData: any) => {
       return this.selectedItems.indexOf(selectedData) < 0;
     });
     this.selectedToAdd = [];
   }
 
   btnLeft() {
-    this.item1 = this.item1.concat(this.selectedToRemove);
+    this.items = this.items.concat(this.selectedToRemove);
     this.selectedItems = this.selectedItems.filter((selectedData: any) => {
-      return this.item1.indexOf(selectedData) < 0;
+      return this.items.indexOf(selectedData) < 0;
     });
     this.selectedToRemove = [];
   }
 
   saveModal() {
-    this.output.emit(this.selectedItems.map((e: any) => e.detalle).join(", "));
+    this.output.emit(this.selectedItems.filter((x: any) => x.indice == this.index));
     this.closeModal();
   }
 }

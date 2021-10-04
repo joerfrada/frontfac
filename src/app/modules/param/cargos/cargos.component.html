@@ -216,7 +216,7 @@
                                 <input type="number">
                             </div>
                             <div class="col col100">
-                                <div class="col col95">
+                                <!-- <div class="col col95">
                                     <textarea rows="4" cols="80" [(ngModel)]="model.varRutaRequisito.ruta_requisito"></textarea>
                                 </div>
                                 <div class="col col5">
@@ -226,7 +226,8 @@
                                     <button type="button" class="btn-select btn-select-blue pointer" style="margin-bottom: 10px;">
                                         <i class="fa fa-minus"></i>
                                     </button>
-                                </div>
+                                </div> -->
+                                <textarea rows="4" cols="80" [(ngModel)]="model.varRutaRequisito.ruta_requisito"></textarea>
                             </div>
                         </div>
                     </div>
@@ -235,10 +236,10 @@
                         <div class="line-col"></div>
                         <div class="col col100">
                             <div class="col col95">
-                                <textarea rows="4" cols="80"></textarea>
+                                <textarea rows="4" cols="80" [(ngModel)]="model.varCuerpo.cuerpo"></textarea>
                             </div>
                             <div class="col col5">
-                                <button type="button" class="btn-select btn-select-red pointer" style="margin-bottom: 10px;">
+                                <button type="button" class="btn-select btn-select-red pointer" style="margin-bottom: 10px;" (click)="openCuerpoSelect()">
                                     <i class="fa fa-plus"></i>
                                 </button>
                                 <button type="button" class="btn-select btn-select-blue pointer" style="margin-bottom: 10px;">
@@ -250,10 +251,10 @@
                         <div class="line-col"></div>
                         <div class="col col100">
                             <div class="col col95">
-                                <textarea rows="4" cols="80"></textarea>
+                                <textarea rows="4" cols="80" [(ngModel)]="model.varEspecialidad.especialidad"></textarea>
                             </div>
                             <div class="col col5">
-                                <button type="button" class="btn-select btn-select-red pointer" style="margin-bottom: 10px;">
+                                <button type="button" class="btn-select btn-select-red pointer" style="margin-bottom: 10px;" (click)="openEspecialidadSelect()">
                                     <i class="fa fa-plus"></i>
                                 </button>
                                 <button type="button" class="btn-select btn-select-blue pointer" style="margin-bottom: 10px;">
@@ -265,10 +266,10 @@
                         <div class="line-col"></div>
                         <div class="col col100">
                             <div class="col col95">
-                                <textarea rows="4" cols="80"></textarea>
+                                <textarea rows="4" cols="80" [(ngModel)]="model.varArea.area"></textarea>
                             </div>
                             <div class="col col5">
-                                <button type="button" class="btn-select btn-select-red pointer" style="margin-bottom: 10px;">
+                                <button type="button" class="btn-select btn-select-red pointer" style="margin-bottom: 10px;" (click)="openAreaSelect()">
                                     <i class="fa fa-plus"></i>
                                 </button>
                                 <button type="button" class="btn-select btn-select-blue pointer" style="margin-bottom: 10px;">
@@ -381,10 +382,11 @@
 </app-modal>
 
 <app-select-list-modal [title]="'Especialidades'"
-    [item1]="varitem1"
-    [item2]="varitem2"
+    [items]="varitems"
+    [selectedItems]="varselectedItems"
+    [index]="indexform"
     [show]="selectModal"
     [size]="'modal-select-list'"
-    (output)="parentSelected($event)"
+    (output)="saveSelected($event, indexform)"
     (close)="closeSelectModal($event)">
 </app-select-list-modal>

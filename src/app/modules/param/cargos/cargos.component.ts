@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../services/api.service';
 import { CargoService } from '../../../services/modules/cargo.service';
+import { AreaService } from 'src/app/services/modules/area.service';
+import { EspecialidadService } from 'src/app/services/modules/especialidad.service';
+import { CuerpoService } from 'src/app/services/modules/cuerpo.service';
 
 export class Model {
   title: any;
@@ -20,6 +23,21 @@ export class Model {
   varRutaRequisito: any = {
     ruta_requisito_id: 0,
     ruta_requisito: ""
+  }
+
+  varArea: any = {
+    area_id: 0,
+    area: ""
+  }
+
+  varCuerpo: any = {
+    cuerpo_id: 0,
+    cuerpo: ""
+  }
+
+  varEspecialidad: any = {
+    especialidad_id: 0,
+    especialidad: ""
   }
 }
 
@@ -53,40 +71,26 @@ export class CargosComponent implements OnInit {
     }
   ];
 
-  varitem1: any = [
-    {
-      id: 1,
-      detalle: "VPIL"
-    },
-    {
-      id: 2,
-      detalle: "LAMAA"
-    },
-    {
-      id: 3,
-      detalle: "SDGA"
-    },
-    {
-      id: 4,
-      detalle: "THIAA"
-    },
-    {
-      id: 5,
-      detalle: "LIATHI"
-    },
-    {
-      id: 6,
-      detalle: "SFGO"
-    }
-  ];
+  varcuerpo: any = [];
+  varcuerpoTemp: any = [];
+  varespecialidad: any = [];
+  varespecialidadTemp: any = [];
+  vararea: any = [];
+  varareaTemp: any = [];
 
-  varitem2: any = [];
+  varitems: any = [];
+  varselectedItems: any = [];
 
   currentUser: any;
 
   selectModal: any;
+  indexform = 0;
 
-  constructor(private api: ApiService, private cargo: CargoService) { 
+  constructor(private api: ApiService,
+              private cargo: CargoService,
+              private cuerpo: CuerpoService,
+              private especialidad: EspecialidadService,
+              private area: AreaService) { 
     this.currentUser = JSON.parse(localStorage.getItem("currentUser") as any)[0];
     this.model.varCargo.usuario_creador = this.currentUser.usuario;
     this.model.varCargo.usuario_modificador = this.currentUser.usuario;
@@ -109,6 +113,36 @@ export class CargosComponent implements OnInit {
         this.varhistorial = response.result;
       }
     })
+
+    this.area.getAreasFull().subscribe(data => {
+      let response: any = this.api.ProcesarRespuesta(data);
+      if (response.tipo == 0) {
+        response.result.forEach((x: any) => {
+          x.id = x.area_id;
+        });
+        this.vararea = response.result;
+      }
+    });
+
+    this.cuerpo.getCuerposFull().subscribe(data => {
+      let response: any = this.api.ProcesarRespuesta(data);
+      if (response.tipo == 0) {
+        response.result.forEach((x: any) => {
+          x.id = x.cuerpo_id;
+        });
+        this.varcuerpo = response.result;
+      }
+    });
+
+    this.especialidad.getEspecialidadesFull().subscribe(data => {
+      let response: any = this.api.ProcesarRespuesta(data);
+      if (response.tipo == 0) {
+        response.result.forEach((x: any) => {
+          x.id = x.especialidad_id;
+        });
+        this.varespecialidad = response.result;
+      }
+    });
   }
 
   openModal() {
@@ -195,19 +229,52 @@ export class CargosComponent implements OnInit {
     console.log(this.model.varCargo);
   }
 
-  openSelect() {
+  openCuerpoSelect() {
     this.selectModal = true;
+    this.indexform = 1;
+    this.varitems = this.varcuerpo;
+    if (this.varcuerpoTemp.length > 0) {
+      this.varselectedItems = this.varcuerpoTemp.filter((x: any) => x.indice == 1);
+    }
+    else this.varselectedItems = [];
+  }
+
+  openEspecialidadSelect() {
+    this.selectModal = true;
+    this.indexform = 2;
+    this.varitems = this.varespecialidad;
+    if (this.varespecialidadTemp.length > 0) {
+      this.varselectedItems = this.varespecialidadTemp.filter((x: any) => x.indice == 2);
+    }
+    else this.varselectedItems = [];
+  }
+
+  openAreaSelect() {
+    this.selectModal = true;
+    this.indexform = 3;
+    this.varitems = this.vararea;
+    if (this.varareaTemp.length > 0) {
+      this.varselectedItems = this.varareaTemp.filter((x: any) => x.indice == 3);
+    }
+    else this.varselectedItems = [];
   }
   
   closeSelectModal(bol: any) {
     this.selectModal = bol;
   }
 
-  saveSelectModal() {
-    this.selectModal = false;
-  }
-
-  parentSelected(e: any) {
-    this.model.varRutaRequisito.ruta_requisito = e;
+  saveSelected(e: any, indexform: any) {
+    if (indexform == 1) {
+      this.varcuerpoTemp = e;
+      this.model.varCuerpo.cuerpo = e.map((x: any) => x.sigla).join(", ");
+    }
+    else if (indexform == 2) {
+      this.varespecialidadTemp = e;
+      this.model.varEspecialidad.especialidad = e.map((x: any) => x.sigla).join(", ");
+    }
+    else if (indexform == 3) {
+      this.varareaTemp = e;
+      this.model.varArea.area = e.map((x: any) => x.sigla).join(", ");
+    }
   }
 }

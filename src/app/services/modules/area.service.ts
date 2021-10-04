@@ -10,6 +10,7 @@ import { ApiService } from '../api.service';
 export class AreaService {
 
   // Areas
+  private apiGetAreasFull = this.api.getBaseUrl + "area/getAreasFull";
   private apiGetAreas = this.api.getBaseUrl + "area/getAreas";
   private apiCreateAreas = this.api.getBaseUrl + "area/crearAreas";
   private apiUpdateAreas = this.api.getBaseUrl + "area/actualizarAreas";
@@ -17,6 +18,12 @@ export class AreaService {
   constructor(private http: HttpClient, private api: ApiService) { }
 
   // Areas
+
+  public getAreasFull(): Observable<any> {
+    return this.http.get<any>(this.apiGetAreasFull, this.api.getHttpOptions('g'))
+    .pipe(retry(1), catchError(this.api.errorHandle));
+  }
+
   public getAreas(data: any): Observable<any> {
     return this.http.post<any>(this.apiGetAreas, JSON.stringify(data), this.api.getHttpOptions('g'))
     .pipe(retry(1), catchError(this.api.errorHandle));
