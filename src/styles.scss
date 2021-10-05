@@ -518,6 +518,20 @@ a {
     }
 }
 
+#modal-md-w {
+    .modal-box {
+        width: 80vw;
+    }
+
+    .modal-box-centered {
+        min-height: calc(100% - 8.5rem);
+    }
+
+    .modal-box-scrollable {
+        height: calc(100% - 8.5rem);
+    }
+}
+
 #modal-lg {
     .modal-box {
         width: 80vw;
@@ -619,6 +633,10 @@ a {
     .btn-upload {
         font-size: 14px;
         padding: 5px 8px;
+    }
+
+    .flex-content input[type=search] {
+        border: 1px solid #ccc;
     }
 }
 
