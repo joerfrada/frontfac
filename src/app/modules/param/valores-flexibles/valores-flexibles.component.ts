@@ -238,7 +238,7 @@ export class ValoresFlexiblesComponent implements OnInit {
 
     console.log(this.model.varListaDinamica);
     
-    this.listaDinamica.createListasDinamicas(this.model.varNombreLista).subscribe((data => {
+    this.listaDinamica.createListasDinamicas(this.model.varListaDinamica).subscribe((data => {
       let response: any = this.api.ProcesarRespuesta(data);
       if (response.tipo == 0) {
         swal({
@@ -248,7 +248,7 @@ export class ValoresFlexiblesComponent implements OnInit {
           showConfirmButton: true,
           type: 'success'
         }).then((result: any) => {
-          this.modal = false;
+          this.editValorModal = false;
           this.reload();
         })
       }
@@ -263,7 +263,7 @@ export class ValoresFlexiblesComponent implements OnInit {
 
     console.log(this.model.varListaDinamica);
     
-    this.listaDinamica.updateListasDinamicas(this.model.varNombreLista).subscribe((data => {
+    this.listaDinamica.updateListasDinamicas(this.model.varListaDinamica).subscribe((data => {
       let response: any = this.api.ProcesarRespuesta(data);
       if (response.tipo == 0) {
         swal({
@@ -273,7 +273,7 @@ export class ValoresFlexiblesComponent implements OnInit {
           showConfirmButton: true,
           type: 'success'
         }).then((result: any) => {
-          this.modal = false;
+          this.editValorModal = false;
           this.reload();
         })
       }
