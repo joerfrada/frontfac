@@ -6,9 +6,11 @@ import { CuerpoService } from '../../../services/modules/cuerpo.service';
 import { EspecialidadService } from '../../../services/modules/especialidad.service';
 
 declare var $:any;
+declare var swal:any;
 
 export class Model {
   title = "";
+  tipo = "";
 
   varRuta: any = {
     ruta_carrera_id: 0,
@@ -43,9 +45,14 @@ export class RutaComponent implements OnInit {
 
   varlinea: any = [];
 
-  varcuerpo: any = [];
-  varespecialidad: any = [];
   varcategoria: any = [];
+  varcuerpo: any = [];
+  varcuerpoTemp: any = [];
+  varespecialidad: any = [];
+  varespecialidadTemp: any = [];
+  varcargoruta: any = [];
+  vartiporuta: any = [];
+  vartipocargo: any = [];
 
   varitem = [
     {
@@ -174,14 +181,16 @@ export class RutaComponent implements OnInit {
   detalle = "";
   titleDetalle = "";
 
+  currentUser: any;
+
   constructor(private router: Router,
               private api: ApiService,
               private ruta: RutaCarreraService,
               private cuerpo: CuerpoService,
               private especialidad: EspecialidadService) { 
-    let currentUser = JSON.parse(localStorage.getItem("currentUser") as any)[0];
-    this.model.varRuta.usuario_creador = currentUser.usuario;
-    this.model.varRuta.usuario_modificador = currentUser.usuario;
+    this.currentUser = JSON.parse(localStorage.getItem("currentUser") as any)[0];
+    this.model.varRuta.usuario_creador = this.currentUser.usuario;
+    this.model.varRuta.usuario_modificador = this.currentUser.usuario;
   }
 
   ngOnInit(): void {
@@ -216,6 +225,7 @@ export class RutaComponent implements OnInit {
       let response: any = this.api.ProcesarRespuesta(data);
       if (response.tipo == 0) {
         this.varcuerpo = response.result;
+        this.varcuerpoTemp = response.result;
       }
     });
   }
@@ -225,6 +235,7 @@ export class RutaComponent implements OnInit {
       let response: any = this.api.ProcesarRespuesta(data);
       if (response.tipo == 0) {
         this.varespecialidad = response.result;
+        this.varespecialidadTemp = response.result;
       }
     });
   }
@@ -236,30 +247,60 @@ export class RutaComponent implements OnInit {
       x.id = x.lista_dinamica_id;
       x.detalle = x.lista_dinamica;
     });
+    this.varcargoruta = varlistas.filter((x: any) => x.nombre_lista == 'BAS_CARGO_RUTA');
+    this.varcargoruta.forEach((x: any) => {
+      x.id = x.lista_dinamica_id;
+      x.detalle = x.lista_dinamica;
+    });
+    this.vartiporuta = varlistas.filter((x: any) => x.nombre_lista == 'BAS_TIPO_RUTA');
+    this.vartiporuta.forEach((x: any) => {
+      x.id = x.lista_dinamica_id;
+      x.detalle = x.lista_dinamica;
+    });
+    this.vartipocargo = varlistas.filter((x: any) => x.nombre_lista == 'BAS_TIPO_CARGO');
+    this.vartipocargo.forEach((x: any) => {
+      x.id = x.lista_dinamica_id;
+      x.detalle = x.lista_dinamica;
+    });
   }
 
   openModal() {
     this.modal = true;
+    this.model = new Model();
     this.model.title = "Crear Ruta de Carrera";
+    this.model.tipo = "C";
+    this.varlinea = [];
+
+    this.model.varRuta.usuario_creador = this.currentUser.usuario;
+    this.model.varRuta.usuario_modificador = this.currentUser.usuario;
   }
 
   closeModal(bol: any) {
     this.modal = bol;
   }
 
-  editRuta(data: any) {
+  editRutaCarrera(data: any) {
     this.modal = true;
     this.model.title = "Actualizar Ruta de Carrera";
+    this.model.tipo = "U";
 
     this.model.varRuta.ruta_carrera_id = data.ruta_carrera_id;
     this.model.varRuta.cuerpo_id = data.cuerpo_id;
     this.model.varRuta.especialidad_id = data.especialidad_id;
     this.model.varRuta.tipo_categoria_id = data.tipo_categoria_id;
     this.model.varRuta.descripcion = data.descripcion;
+    this.model.varRuta.activo = (data.activo == 'S') ? true : false;
+
+    this.model.varRuta.usuario_creador = this.currentUser.usuario;
+    this.model.varRuta.usuario_modificador = this.currentUser.usuario;
 
     this.ruta.getLineasCargos({ruta_carrera_id: data.ruta_carrera_id}).subscribe(data => {
       let response: any = this.api.ProcesarRespuesta(data);
       if (response.tipo == 0) {
+        response.result.forEach((x: any) => {
+          x.NuevoRegistro = false;
+          x.activo = (x.activo == 'S') ? true : false;
+        });
         this.varlinea = response.result;
       }
     });
@@ -339,12 +380,71 @@ export class RutaComponent implements OnInit {
     this.detalleModal = bol;
   }
 
+  addLinea() {
+    this.varlinea.push({linea_cargo_id: 0,ruta_carrera_id: 0,cargo_ruta_id: 0,tipo_ruta_id: 0,tipo_cargo_id: 0,activo: true,usuario_creador: this.currentUser.usuario,usuario_modificador: this.currentUser.usuario, NuevoRegistro: true});
+  }
+
+  deleteLinea(id: any) {
+    this.varlinea.splice(id, 1);
+  }
+
+  changeCategoria(id: any) {
+    this.varcuerpo = this.varcuerpoTemp.filter((x: any) => x.tipo_categoria_id == id);
+    this.varespecialidad = this.varespecialidadTemp.filter((x: any) => x.tipo_categoria_id == id);
+  }
+
   saveRuta() {
     this.model.varRuta.cuerpo_id = Number(this.model.varRuta.cuerpo_id);
     this.model.varRuta.especialidad_id = Number(this.model.varRuta.especialidad_id);
     this.model.varRuta.tipo_categoria_id = Number(this.model.varRuta.tipo_categoria_id);
 
-    console.log(this.model.varRuta);
+    if (this.model.varRuta.cuerpo_id == 0)
+      this.model.varRuta.cuerpo_id = null;
+
+    if (this.model.varRuta.especialidad_id == 0)
+      this.model.varRuta.especialidad_id = null;
+
+    if (this.model.varRuta.tipo_categoria_id == 0)
+      this.model.varRuta.tipo_categoria_id = null;
+
+    this.ruta.createRutaCarrera(this.model.varRuta).subscribe(data => {
+      let response: any = this.api.ProcesarRespuesta(data);
+      if (response.tipo == 0) {
+        if (this.varlinea.length > 0) {
+          this.varlinea.forEach((element: any) => {
+            element.ruta_carrera_id = response.id;
+            element.cargo_ruta_id = Number(element.cargo_ruta_id);
+            element.tipo_cargo_id = Number(element.tipo_cargo_id);
+            element.tipo_ruta_id = Number(element.tipo_ruta_id);
+
+            this.ruta.createLineasCargos(element).subscribe(data1 => {});
+
+            swal({
+              title: 'Ruta de Carrera',
+              text: response.mensaje,
+              allowOutsideClick: false,
+              showConfirmButton: true,
+              type: 'success'
+            }).then((result: any) => {
+              this.modal = false;
+              this.reload();
+            })
+          });
+        }
+        else {
+          swal({
+            title: 'Ruta de Carrera',
+            text: response.mensaje,
+            allowOutsideClick: false,
+            showConfirmButton: true,
+            type: 'success'
+          }).then((result: any) => {
+            this.modal = false;
+            this.reload();
+          });
+        }
+      }
+    });
   }
 
   updateRuta() {

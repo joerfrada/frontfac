@@ -42,7 +42,7 @@
                                 <!-- <button type="button" class="button btn-icon btn-trash"><i class="fa fa-trash"></i></button>
                                 <button type="button" class="button btn-icon btn-edit"><i class="fa fa-edit"></i></button>
                                 <button type="button" class="button btn-icon btn-plus"><i class="fa fa-plus"></i></button> -->
-                                <button type="button" class="button btn-edit">Editar</button>
+                                <button type="button" class="button btn-edit" (click)="editRutaCarrera(item)">Editar</button>
                                 <!-- <button type="button" class="button btn-default">Detalle</button> -->
                             </td>
                         </tr>
@@ -60,21 +60,32 @@
 <app-modal [title]="model.title" [show]="modal" [size]="'modal-md'" (close)="closeModal($event)">
     <div role="body">
         <div class="inner-col">
+            <div class="col col25">
+                <div class="label-row">Categoría</div>
+                <select [(ngModel)]="model.varRuta.tipo_categoria_id" (change)="changeCategoria(model.varRuta.tipo_categoria_id)">
+                    <option value="0">Seleccionar</option>
+                    <option *ngFor="let item of varcategoria" value="{{item.id}}">{{item.detalle}}</option>
+                </select>
+            </div>
             <div class="col col33">
                 <div class="label-row">Cuerpo</div>
                 <select [(ngModel)]="model.varRuta.cuerpo_id">
                     <option value="0">Seleccionar</option>
-                    <option *ngFor="let item of varcuerpo" value="item.cuerpo_id">{{item.cuerpo}}</option>
+                    <option *ngFor="let item of varcuerpo" value="{{item.cuerpo_id}}">{{item.cuerpo}}</option>
                 </select>
             </div>
             <div class="col col33">
                 <div class="label-row">Especialidad</div>
                 <select [(ngModel)]="model.varRuta.especialidad_id">
                     <option value="0">Seleccionar</option>
-                    <option *ngFor="let item of varespecialidad" value="item.especialidad_id">{{item.especialidad}}</option>
+                    <option *ngFor="let item of varespecialidad" value="{{item.especialidad_id}}">{{item.especialidad}}</option>
                 </select>
             </div>
-            <div class="col col33">
+            <div class="col col50">
+                <div class="label-row">Descripción</div>
+                <input type="text" [(ngModel)]="model.varRuta.descripcion">
+            </div>
+            <div class="col col10">
                 <div class="label-row">Activo</div>
                 <div class="checkbox-component">
                     <label>
@@ -82,17 +93,6 @@
                         <span class="checkmark"></span>
                     </label>
                 </div>
-            </div>
-            <div class="col col50">
-                <div class="label-row">Descripción</div>
-                <input type="text" [(ngModel)]="model.varRuta.descripcion">
-            </div>
-            <div class="col col25">
-                <div class="label-row">Categoría</div>
-                <select [(ngModel)]="model.varRuta.tipo_categoria_id">
-                    <option value="0">Seleccionar</option>
-                    <option *ngFor="let item of varcategoria" value="{{item.id}}">{{item.detalle}}</option>
-                </select>
             </div>
             <div class="col col25">
                 <div class="label-row">&nbsp;</div>
@@ -113,20 +113,42 @@
                     </thead>
                     <tbody class="scroll">
                         <tr *ngFor="let item of varlinea;let i=index">
-                            <td>{{item.cargo_ruta}}</td>
-                            <td>{{item.tipo_ruta}}</td>
-                            <td>{{item.tipo_cargo}}</td>
                             <td>
-                                <i class="fa fa-1m5x fa-check-circle" *ngIf="item.activo == 'S'"></i>
-                                <i class="fa fa-1m5x fa-times-circle" *ngIf="item.activo == 'N'"></i>
+                                <select [(ngModel)]="varlinea[i].cargo_ruta_id">
+                                    <option value="0">Seleccionar</option>
+                                    <option *ngFor="let item of varcargoruta" value="{{item.id}}">{{item.detalle}}</option>
+                                </select>
                             </td>
-                            <td class="table-buttons-action">
-                                <button type="button" class="button btn-icon btn-trash"><i class="fa fa-times-circle"></i></button>
+                            <td>
+                                <select [(ngModel)]="varlinea[i].tipo_ruta_id">
+                                    <option value="0">Seleccionar</option>
+                                    <option *ngFor="let item of vartiporuta" value="{{item.id}}">{{item.detalle}}</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select [(ngModel)]="varlinea[i].tipo_cargo_id">
+                                    <option value="0">Seleccionar</option>
+                                    <option *ngFor="let item of vartipocargo" value="{{item.id}}">{{item.detalle}}</option>
+                                </select>
+                            </td>
+                            <td>
+                                <div class="table-checkbox-component">
+                                    <label>
+                                        <input type="checkbox" checked="checked" [(ngModel)]="varlinea[i].activo">
+                                        <!-- <span class="checkmark"></span> -->
+                                    </label>
+                                </div>
+                            </td>
+                            <td>
+                                <i class="fa fa-1m5x fa-times-circle pointer noselect" style="color: black !important;" *ngIf="varlinea[i].NuevoRegistro" (click)="deleteLinea(i)"></i>
                             </td>
                         </tr>
-                        <tr *ngIf="varlinea?.length == 0">
+                        <tr class="add_row_full">
+                            <button type="button" class="button btn-blue" (click)="addLinea()">Agregar</button>
+                        </tr>
+                        <!-- <tr *ngIf="varlinea?.length == 0">
                             <div class="dbempty">No hay datos.</div>
-                        </tr>
+                        </tr> -->
                     </tbody>
                 </table>
             </div>
@@ -134,7 +156,8 @@
     </div>
     <div role="footer">
         <button type="button" class="btn btn-red" (click)="closeModal(false)">Cerrar</button>
-        <button type="button" class="btn btn-blue" (click)="closeModal(false)">Guardar</button>
+        <button *ngIf="model.tipo == 'C'" type="button" class="btn btn-blue" (click)="saveRuta()">Guardar</button>
+        <button *ngIf="model.tipo == 'U'" type="button" class="btn btn-blue" (click)="updateRuta()">Actualizar</button>
     </div>
 </app-modal>
 

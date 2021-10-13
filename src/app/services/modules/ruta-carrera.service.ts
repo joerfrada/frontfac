@@ -11,8 +11,8 @@ export class RutaCarreraService {
 
   // Ruta Carrera
   private apiGetRutaCarrera = this.api.getBaseUrl + "rutacarrera/getRutaCarrera";
-  private apiCreateRutaCarrera = this.api.getBaseUrl + "rutaCarrera/crearCarrera";
-  private apiUpdateRutaCarrera = this.api.getBaseUrl + "rutaCarrera/actualizarCarrera";
+  private apiCreateRutaCarrera = this.api.getBaseUrl + "rutacarrera/crearRutaCarrera";
+  private apiUpdateRutaCarrera = this.api.getBaseUrl + "rutacarrera/actualizarRutaCarrera";
 
   // Lineas de Cargo
   private apiGetLineasCargos = this.api.getBaseUrl + "rutacarrera/getLineasCargos";
