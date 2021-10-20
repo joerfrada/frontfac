@@ -58,18 +58,7 @@ export class CargosComponent implements OnInit {
   varclase: any = [];
   varcategoria: any = [];
 
-  vargrados: any = [
-    {
-      id: 1,
-      grado: "Grado 1",
-      activo: true
-    },
-    {
-      id: 2,
-      grado: "Grado 2",
-      activo: true
-    }
-  ];
+  vargrados: any = [];
 
   varcuerpo: any = [];
   varcuerpoTemp: any = [];
@@ -180,6 +169,14 @@ export class CargosComponent implements OnInit {
       x.id = x.lista_dinamica_id;
       x.detalle = x.lista_dinamica;
     });
+  }
+
+  addGrado() {
+    this.vargrados.push({grado_id:0, grado:"", NuevoRegistro: true});
+  }
+
+  deleteGrado(index: any) {
+    this.vargrados.splice(index, 1);
   }
 
   editCargos(data: any) {

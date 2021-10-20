@@ -115,13 +115,16 @@
                                     <input type="checkbox" checked="checked">
                                 </div>
                             </td>
-                            <td class="table-buttons-action">
-                                <button type="button" class="button btn-icon btn-trash"><i class="fa fa-times-circle"></i></button>
+                            <td>
+                                <i class="fa fa-1m5x fa-times-circle pointer noselect" style="color: black !important;" *ngIf="vargrado[i].NuevoRegistro" (click)="deleteGrado(i)"></i>
                             </td>
                         </tr>
-                        <tr *ngIf="vargrados?.length == 0">
-                            <div class="dbempty">No hay datos.</div>
+                        <tr class="add_row_full">
+                            <button type="button" class="button btn-blue" (click)="addGrado()">Agregar</button>
                         </tr>
+                        <!-- <tr *ngIf="vargrados?.length == 0">
+                            <div class="dbempty">No hay datos.</div>
+                        </tr> -->
                     </tbody>
                 </table>
             </div>

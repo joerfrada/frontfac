@@ -206,21 +206,21 @@ export class RequerimientosComponent implements OnInit {
     
     console.log(this.model.varRequerimiento);
 
-    // this.requerimiento.updateRequerimientos(this.model.varRequerimiento).subscribe(data => {
-    //   let response: any = this.api.ProcesarRespuesta(data);
-    //   if (response.tipo == 0) {
-    //     swal({
-    //       title: 'Requerimientos',
-    //       text: response.mensaje,
-    //       allowOutsideClick: false,
-    //       showConfirmButton: true,
-    //       type: 'success'
-    //     }).then((result: any) => {
-    //       this.modal = false;
-    //       this.reload();
-    //     })
-    //   }
-    // });
+    this.requerimiento.updateRequerimientos(this.model.varRequerimiento).subscribe(data => {
+      let response: any = this.api.ProcesarRespuesta(data);
+      if (response.tipo == 0) {
+        swal({
+          title: 'Requerimientos',
+          text: response.mensaje,
+          allowOutsideClick: false,
+          showConfirmButton: true,
+          type: 'success'
+        }).then((result: any) => {
+          this.modal = false;
+          this.reload();
+        })
+      }
+    });
   }
 
 }
