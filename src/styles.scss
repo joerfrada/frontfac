@@ -244,11 +244,6 @@ a {
     }
 }
 
-// .app-menu-item.active {
-//     background: #0d1214;
-//     color: white;
-// }
-
 .app-menu-icon {
     flex: 0 0 auto;
     width: 25px;
@@ -270,6 +265,10 @@ a {
             transform: rotate(90deg);
 }
 
+.treeview .active, .subtreeview .active {
+    background: var(--color-menu-dark);
+}
+
 .treeview-menu {
     max-height: 0;
     overflow: hidden;
@@ -288,11 +287,6 @@ a {
 
     &:hover {
         // color: #36629a;
-        background: var(--color-menu-dark);
-    }
-
-    .active {
-        // background: #36629a;
         background: var(--color-menu-dark);
     }
 }

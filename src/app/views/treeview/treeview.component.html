@@ -10,7 +10,7 @@
             <i class="treeview-indicator fa fa-angle-right"></i>
         </div>
         <ul class="treeview-menu">
-            <li *ngFor="let submenu of menu.submenus">
+            <li *ngFor="let submenu of menu.submenus" class="subtreeview">
                 <div *ngIf="submenu.menu_padre_id != null" class="treeview-menu-item pointer noselect" routerLink="/fac/{{submenu.url}}" routerLinkActive="active">
                     <i class="app-menu-icon {{submenu.icono}}"></i>
                     <span class="app-menu-label">{{submenu.titulo}}</span>
