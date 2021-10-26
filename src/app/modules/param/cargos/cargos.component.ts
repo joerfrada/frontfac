@@ -4,6 +4,7 @@ import { CargoService } from '../../../services/modules/cargo.service';
 import { AreaService } from 'src/app/services/modules/area.service';
 import { EspecialidadService } from 'src/app/services/modules/especialidad.service';
 import { CuerpoService } from 'src/app/services/modules/cuerpo.service';
+import { GradoService } from 'src/app/services/modules/grado.service';
 
 export class Model {
   title: any;
@@ -58,6 +59,7 @@ export class CargosComponent implements OnInit {
   varclase: any = [];
   varcategoria: any = [];
 
+  lstGrados: any = [];
   vargrados: any = [];
 
   varcuerpo: any = [];
@@ -79,7 +81,8 @@ export class CargosComponent implements OnInit {
               private cargo: CargoService,
               private cuerpo: CuerpoService,
               private especialidad: EspecialidadService,
-              private area: AreaService) { 
+              private area: AreaService,
+              private grado: GradoService) { 
     this.currentUser = JSON.parse(localStorage.getItem("currentUser") as any)[0];
     this.model.varCargo.usuario_creador = this.currentUser.usuario;
     this.model.varCargo.usuario_modificador = this.currentUser.usuario;
@@ -132,6 +135,13 @@ export class CargosComponent implements OnInit {
         this.varespecialidad = response.result;
       }
     });
+
+    this.grado.getGradosFull().subscribe(data => {
+      let response: any = this.api.ProcesarRespuesta(data);
+      if (response.tipo == 0) {
+        this.lstGrados = response.result;
+      }
+    })
   }
 
   openModal() {
@@ -191,7 +201,7 @@ export class CargosComponent implements OnInit {
     this.model.varCargo.categoria_id = data.categoria_id;
     this.model.varCargo.activo = (data.activo == 'S') ? true : false;
 
-    // console.log(this.model.varCargo);
+    console.log(this.model.varCargo);
   }
 
   saveCargos() {

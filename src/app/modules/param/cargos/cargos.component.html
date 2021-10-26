@@ -69,14 +69,14 @@
                 <div class="label-row">Categoría</div>
                 <select [(ngModel)]="model.varCargo.categoria_id">
                     <option value="0">Seleccionar</option>
-                    <option *ngFor="let item1 of varcategoria" value="item1.id">{{item1.detalle}}</option>
+                    <option *ngFor="let item1 of varcategoria" value="{{item1.id}}">{{item1.detalle}}</option>
                 </select>
             </div>
             <div class="col col25">
                 <div class="label-row">Clase de Cargo</div>
                 <select [(ngModel)]="model.varCargo.clase_cargo_id">
                     <option value="0">Seleccionar</option>
-                    <option *ngFor="let item2 of varclase" value="item2.id">{{item2.detalle}}</option>
+                    <option *ngFor="let item2 of varclase" value="{{item2.id}}">{{item2.detalle}}</option>
                 </select>
             </div>
             <div class="col col25">
@@ -106,7 +106,12 @@
                     </thead>
                     <tbody class="scroll">
                         <tr *ngFor="let item of vargrados;let i = index">
-                            <td>{{item.grado}}</td>
+                            <td>
+                                <select>
+                                    <option value="0">Seleccionar</option>
+                                    <option *ngFor="let grado of lstGrados" value="{{grado.grado_id}}">{{grado.grado}} - {{grado.descripcion}}</option>
+                                </select>
+                            </td>
                             <td class="table-buttons-action">
                                 <button type="button" class="button btn-default" (click)="openConfigModal()">Configuración</button>
                             </td>
@@ -116,7 +121,7 @@
                                 </div>
                             </td>
                             <td>
-                                <i class="fa fa-1m5x fa-times-circle pointer noselect" style="color: black !important;" *ngIf="vargrado[i].NuevoRegistro" (click)="deleteGrado(i)"></i>
+                                <i class="fa fa-1m5x fa-times-circle pointer noselect" style="color: black !important;" *ngIf="vargrados[i].NuevoRegistro" (click)="deleteGrado(i)"></i>
                             </td>
                         </tr>
                         <tr class="add_row_full">

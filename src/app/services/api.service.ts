@@ -9,8 +9,8 @@ declare var swal:any;
 })
 export class ApiService {
 
-  // private baseurl = "http://localhost:8000/api/";
-  private baseurl = "http://localhost:82/api";
+  private baseurl = "http://localhost:8000/api/";
+  // private baseurl = "http://localhost:83/api/";
 
   constructor() { }
 
@@ -86,6 +86,7 @@ export class ApiService {
   }
 
   public ProcesarRespuesta(request: any) {
+    console.log('Procesar Respuesta:', request);
     if (request != undefined && request.tipo != 0 && request.tipo != -1) {
       swal({
         title: 'ERROR EN EL SISTEMA',
