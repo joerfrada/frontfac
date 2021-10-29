@@ -1,14 +1,6 @@
 <div class="app-content-inner">
-    <div class="application-content">
-        <div *ngFor="let item of varAplicacion" class="application-card">
-            <div class="application-logo">
-                <img [src]="item.logo">
-            </div>
-            <div class="application-name">{{item.nombre}}</div>
-        </div>
-    </div>
     <div class="highcharts-inner">
-        <!-- <highcharts-chart
+        <highcharts-chart
             [Highcharts] = "highcharts" 
             [options] = "chartOptions1"
             style = "width: 50%; height: 50%; display: inline-block;padding-right: 20px;"
@@ -18,7 +10,7 @@
             [Highcharts] = "highcharts"
             [options] = "chartOptions2"
             style = "width: 50%; height: 50%; display: inline-block;"
-        ></highcharts-chart> -->
+        ></highcharts-chart>
 
         <highcharts-chart
             [Highcharts] = "highcharts"

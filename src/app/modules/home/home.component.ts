@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../services/api.service';
-import { AplicacionService } from '../../services/modules/aplicacion.service';
 import * as Highcharts from 'highcharts';
 
 declare var $:any;
@@ -129,19 +128,7 @@ export class HomeComponent implements OnInit {
       }]
    };
 
-  constructor(private api: ApiService, private app: AplicacionService) {}
+  constructor(private api: ApiService) {}
 
-  ngOnInit(): void {
-     this.getAplicaciones();
-  }
-
-  getAplicaciones() {
-   this.app.getAplicacionesFull().subscribe(data => {
-     let response: any = this.api.ProcesarRespuesta(data);
-     if (response.tipo == 0) {
-       this.varAplicacion = response.result;
-     }
-   });
- }
-
+  ngOnInit(): void {}
 }
