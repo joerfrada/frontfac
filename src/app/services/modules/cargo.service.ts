@@ -15,15 +15,15 @@ export class CargoService {
   private apiCreateCargos = this.api.getBaseUrl + "cargo/crearCargos";
   private apiUpdateCargos = this.api.getBaseUrl + "cargo/actualizarCargos";
 
-  // Rutas y Requisitos
-  private apiGetRutasRequisitos = this.api.getBaseUrl + "cargo/getRutasRequisitos";
-  private apiCreateRutasRequisitos = this.api.getBaseUrl + "cargo/crearRutasRequisitos";
-  private apiUpdateRutasRequisitos = this.api.getBaseUrl + "cargo/actualizarRutasRequisitos";
+  // Cargos Grados
+  private apiGetCargosGrados = this.api.getBaseUrl + "cargo/getCargosGradosByCargoId";
+  private apiCreateCargosGrados = this.api.getBaseUrl + "cargo/crearCargosGrados";
+  private apiUpdateCargosGrados = this.api.getBaseUrl + "cargo/actualizarCargosGrados";
 
-  // Educaciones y Conocimientos
-  private apiGetEducaciones = this.api.getBaseUrl + "cargo/getEducaciones";
-  private apiCreateEducaciones = this.api.getBaseUrl + "cargo/crearEducaciones";
-  private apiUpdateEducaciones = this.api.getBaseUrl + "cargo/actualizarEducaciones";
+  // Cargos Configuracion
+  private apiGetCargosConfiguracion = this.api.getBaseUrl + "cargo/getCargosConfiguracionByCargoGradoId";
+  private apiCreateCargosConfiguracion = this.api.getBaseUrl + "cargo/crearCargosConfiguracion";
+  private apiUpdateCargosConfiguracion = this.api.getBaseUrl + "cargo/actualizarCargosConfiguracion";
 
   constructor(private http: HttpClient, private api: ApiService) { }
 
@@ -48,35 +48,35 @@ export class CargoService {
     .pipe(retry(1), catchError(this.api.errorHandle));
   }
 
-  // Rutas y Requisitos
-  public getRutasRequisitos(data: any): Observable<any> {
-    return this.http.post<any>(this.apiGetRutasRequisitos, JSON.stringify(data), this.api.getHttpOptions('g'))
+  // Cargos Grados
+  public getCargosGrados(data: any): Observable<any> {
+    return this.http.post<any>(this.apiGetCargosGrados, JSON.stringify(data), this.api.getHttpOptions('g'))
     .pipe(retry(1), catchError(this.api.errorHandle));
   }
 
-  public createRutasRequisitos(data: any): Observable<any> {
-    return this.http.post<any>(this.apiCreateRutasRequisitos, JSON.stringify(data), this.api.getHttpOptions('g'))
+  public createCargosGrados(data: any): Observable<any> {
+    return this.http.post<any>(this.apiCreateCargosGrados, JSON.stringify(data), this.api.getHttpOptions('g'))
     .pipe(retry(1), catchError(this.api.errorHandle));
   }
 
-  public updateRutasRequisitos(data: any): Observable<any> {
-    return this.http.post<any>(this.apiUpdateRutasRequisitos, JSON.stringify(data), this.api.getHttpOptions('g'))
+  public updateteCargosGrados(data: any): Observable<any> {
+    return this.http.post<any>(this.apiUpdateCargosGrados, JSON.stringify(data), this.api.getHttpOptions('g'))
     .pipe(retry(1), catchError(this.api.errorHandle));
   }
 
-  // Educaciones y Conocimientos
-  public getEducaciones(data: any): Observable<any> {
-    return this.http.post<any>(this.apiGetEducaciones, JSON.stringify(data), this.api.getHttpOptions('g'))
+  // Cargos Configuracion
+  public getCargosConfiguracion(data: any): Observable<any> {
+    return this.http.post<any>(this.apiGetCargosConfiguracion, JSON.stringify(data), this.api.getHttpOptions('g'))
     .pipe(retry(1), catchError(this.api.errorHandle));
   }
 
-  public createEducaciones(data: any): Observable<any> {
-    return this.http.post<any>(this.apiCreateEducaciones, JSON.stringify(data), this.api.getHttpOptions('g'))
+  public createCargosConfiguracion(data: any): Observable<any> {
+    return this.http.post<any>(this.apiCreateCargosConfiguracion, JSON.stringify(data), this.api.getHttpOptions('g'))
     .pipe(retry(1), catchError(this.api.errorHandle));
   }
 
-  public updateEducaciones(data: any): Observable<any> {
-    return this.http.post<any>(this.apiUpdateEducaciones, JSON.stringify(data), this.api.getHttpOptions('g'))
+  public updateCargosConfiguracion(data: any): Observable<any> {
+    return this.http.post<any>(this.apiUpdateCargosConfiguracion, JSON.stringify(data), this.api.getHttpOptions('g'))
     .pipe(retry(1), catchError(this.api.errorHandle));
   }
 }

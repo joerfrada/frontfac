@@ -8,7 +8,6 @@ declare var swal:any;
   providedIn: 'root'
 })
 export class ApiService {
-
   // private baseurl = "http://localhost:8000/api/";
   private baseurl = "http://localhost:82/api/";
 
@@ -86,7 +85,7 @@ export class ApiService {
   }
 
   public ProcesarRespuesta(request: any) {
-    console.log('Procesar Respuesta:', request);
+    //console.log('Procesar Respuesta:', request);
     if (request != undefined && request.tipo != 0 && request.tipo != -1) {
       swal({
         title: 'ERROR EN EL SISTEMA',
@@ -104,6 +103,18 @@ export class ApiService {
         showConfirmButton: true,
         type: 'warning'
       })
+    }
+    if (request != undefined && request.tipo == -1 && request.codigo == 2) {
+      swal({
+        title: 'ADVERTENCIA',
+        type: 'error',
+        text: request.mensaje
+      }).then((result: any) => {
+        setTimeout(() => {
+          localStorage.clear();
+          window.location.href = '/login';
+        }, 500);
+      });
     }
 
     return request;

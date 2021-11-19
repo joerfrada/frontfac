@@ -137,6 +137,9 @@ a {
     margin-top: 70px;
     display: flex;
     flex-direction: column;
+    -webkit-transition: left 0.3s ease, width 0.3s ease;
+    -o-transition: left 0.3s ease, width 0.3s ease;
+    transition: left 0.3s ease, width 0.3s ease;
 
     .app-content-inner {
         flex: 1;
@@ -163,6 +166,9 @@ a {
     display: flex;
     height: 40px;
     z-index: 1032;
+    -webkit-transition: left 0.3s ease, width 0.3s ease;
+    -o-transition: left 0.3s ease, width 0.3s ease;
+    transition: left 0.3s ease, width 0.3s ease;
 }
 
 .app-content-tile {
@@ -309,6 +315,30 @@ a {
     -o-transition: transform 0.3s ease;
     transition: transform 0.3s ease;
     transition: transform 0.3s ease, -webkit-transform 0.3s ease;
+}
+
+.hide-sideBar .app-sidebar {
+    width: 50px;
+}
+
+.hide-sideBar .app-content {
+    margin-left: 50px !important;
+}
+
+.hide-sideBar .app-footer {
+    left: 50px !important;
+}
+
+.hide-sideBar .app-menu-label {
+    display: none;
+}
+
+.hide-sideBar .treeview-menu-item {
+    padding-left: 15px;
+}
+
+.hide-sideBar .treeview-indicator {
+    display: none;
 }
 
 .modal, .modal-workflow, .modal-viewcargo, .modal-detalle, .modal-piramide {
@@ -1108,7 +1138,7 @@ a {
 .table-content table.flex-table tr th {
     display: block;
     flex: 1;
-    word-break: break-all;
+    //word-break: break-all;
     position: relative;
 }
 
@@ -1583,5 +1613,93 @@ textarea {
 
     .btn-arrows:first-child {
         margin-bottom: 10px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .app-sidebar {
+        width: 50px;
+    }
+    
+    .app-content {
+        margin-left: 50px !important;
+    }
+    
+    .app-footer {
+        left: 50px !important;
+    }
+    
+    .app-menu-label {
+        display: none;
+    }
+    
+    .treeview-menu-item {
+        padding-left: 15px;
+    }
+    
+    .treeview-indicator {
+        display: none;
+    }
+
+    .filter-content .button {
+        width: 53px;
+    }
+
+    #modal-md .modal-box, #modal-md-2 .modal-box,
+    #modal-sm .modal-box, #modal-sm-1 .modal-box {
+        width: 90vw;
+    }
+
+    #modal-tm .modal-box {
+        width: 60vw;
+    }
+
+    #modal-sm .modal-box-scrollable, #modal-sm .modal-box-centered {
+        height: calc(100% - 24.5rem);
+    }
+
+    #modal-sm-1 .modal-box-scrollable, #modal-sm-1 .modal-box-centered {
+        height: calc(100% - 15.5rem);
+    }
+
+    #modal-tm .modal-box-scrollable, #modal-tm .modal-box-centered {
+        height: calc(100% - 27.5rem);
+    }
+
+    #modal-tm .btn {
+        width: 93%;
+        font: 12px/100% Arial, Helvetica, sans-serif;
+    }
+
+    #modal-tm .modal-footer .btn {
+        margin-bottom: 5px;
+    }
+
+    #modal-piramide-md .modal-box {
+        width: 90vw;
+    }
+
+    #modal-detalle-sm .modal-box {
+        width: 60vw;
+    }
+
+    .button {
+        width: 100%;
+    }
+
+    .flex-content input[type=search] {
+        width: 190px !important;
+    }
+
+    .table-content table.flex-table tr td, .table-content table.flex-table tr th {
+        font-size: 10px;
+    }
+
+    .app-sidebar .app-sidebar-user-info {
+        font-size: 10px;
+    }
+
+    .app-sidebar .app-sidebar-user-info img {
+        width: 100%;
     }
 }

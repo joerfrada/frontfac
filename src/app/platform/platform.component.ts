@@ -11,6 +11,7 @@ declare var $:any;
 })
 export class PlatformComponent implements OnInit {
 
+  sideBarOpen = true;
   modal: boolean = false;
 
   constructor(private api: ApiService, private listaDinamica: ListaDinamicaService) {}
@@ -34,6 +35,10 @@ export class PlatformComponent implements OnInit {
   
   closeModal(bol: any) {
     this.modal = bol;
+  }
+
+  sideBarToggler() {
+    this.sideBarOpen = !this.sideBarOpen;
   }
 
 }

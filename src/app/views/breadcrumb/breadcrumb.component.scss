@@ -56,3 +56,9 @@
     color: #6c757d;
     content: "/";
 }
+
+@media screen and (max-width: 480px) {
+    .app-content-header .app-content-header-title {
+        font-size: 7px !important;
+    }
+}

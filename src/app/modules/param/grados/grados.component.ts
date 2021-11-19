@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ApiService } from '../../../services/api.service';
 import { GradoService } from '../../../services/modules/grado.service';
+
+declare var swal: any;
 
 export class Model {
   title: any;
@@ -40,7 +43,7 @@ export class GradosComponent implements OnInit {
 
   currentUser: any;
 
-  constructor(private api: ApiService, private grado: GradoService) { 
+  constructor(private api: ApiService, private grado: GradoService, private router: Router) { 
     this.currentUser = JSON.parse(localStorage.getItem("currentUser") as any)[0];
     this.model.varGrado.usuario_creador = this.currentUser.usuario;
     this.model.varGrado.usuario_modificador = this.currentUser.usuario;
@@ -49,6 +52,13 @@ export class GradosComponent implements OnInit {
   ngOnInit(): void {
     this.getGrados();
     this.getListas();
+  }
+
+  reload() {
+    let currentUrl = this.router.url;
+    this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
+      this.router.navigate([currentUrl]);
+    });
   }
 
   getGrados() {
@@ -135,6 +145,22 @@ export class GradosComponent implements OnInit {
       this.model.varGrado.categoria_id = null;
 
     console.log(this.model.varGrado);
+
+    this.grado.createGrados(this.model.varGrado).subscribe(data => {
+      let response: any = this.api.ProcesarRespuesta(data);
+      if (response.tipo == 0) {
+        swal({
+          title: 'Grados',
+          text: response.mensaje,
+          allowOutsideClick: false,
+          showConfirmButton: true,
+          type: 'success'
+        }).then((result: any) => {
+          this.modal = false;
+          this.reload();
+        })
+      }
+    });
   }
 
   updateGrado() {
@@ -155,6 +181,22 @@ export class GradosComponent implements OnInit {
       this.model.varGrado.categoria_id = null;
 
     console.log(this.model.varGrado);
-  }
 
+    this.grado.updateGrados(this.model.varGrado).subscribe(data => {
+      let response: any = this.api.ProcesarRespuesta(data);
+      if (response.tipo == 0) {
+        swal({
+          title: 'Grados',
+          text: response.mensaje,
+          allowOutsideClick: false,
+          showConfirmButton: true,
+          type: 'success'
+        }).then((result: any) => {
+          this.modal = false;
+          this.reload();
+        })
+      }
+    });
+  }
+  
 }
