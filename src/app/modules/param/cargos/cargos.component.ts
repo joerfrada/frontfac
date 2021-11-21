@@ -6,8 +6,8 @@ import { AreaService } from 'src/app/services/modules/area.service';
 import { EspecialidadService } from 'src/app/services/modules/especialidad.service';
 import { CuerpoService } from 'src/app/services/modules/cuerpo.service';
 import { GradoService } from 'src/app/services/modules/grado.service';
-import { timeStamp } from 'console';
 
+declare var $:any;
 declare var swal:any;
 
 export class Model {
@@ -16,6 +16,8 @@ export class Model {
   grado = "";
   cargo = "";
   categoria = "";
+  texto = "";
+  pag = 0;
 
   varCargo: any = {
     cargo_id: 0,
@@ -108,6 +110,7 @@ export class CargosComponent implements OnInit {
   tab: any;
 
   varhistorial: any = [];
+  varhistorialTemp: any = [];
   varclase: any = [];
   varcategoria: any = [];
 
@@ -165,6 +168,24 @@ export class CargosComponent implements OnInit {
     });
   }
 
+  search(e: any) {
+    let filtro = e.target.value.trim().toLowerCase();
+    if (filtro.length == 0) {
+      this.varhistorial = this.varhistorialTemp;
+    }
+    else {
+      this.varhistorial = this.varhistorialTemp.filter((item: any) => {
+        if (item.cargo.toString().toLowerCase().indexOf(filtro) !== -1 ||
+            item.descripcion.toString().toLowerCase().indexOf(filtro) !== -1 ||
+            item.clase_cargo.toString().toLowerCase().indexOf(filtro) !== -1 ||
+            item.categoria.toString().toLowerCase().indexOf(filtro) !== -1) {
+            return true;
+        }
+        return false;
+      });
+    }
+  }
+
   getCargos() {
     let json: any = {
       filtro: 0
@@ -173,7 +194,13 @@ export class CargosComponent implements OnInit {
     this.cargo.getCargos(json).subscribe(data => {
       let response: any = this.api.ProcesarRespuesta(data);
       if (response.tipo == 0) {
+        response.result.forEach((element: any) => {
+          if (element.descripcion == null) {
+            element.descripcion = 'x';
+          }
+        });
         this.varhistorial = response.result;
+        this.varhistorialTemp = response.result;
       }
     })
 

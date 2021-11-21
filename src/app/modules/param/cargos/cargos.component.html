@@ -9,7 +9,7 @@
                     </li>
                     <li class="filter-item">
                         <div class="input-group-btn">
-                            <input type="search" placeholder="Buscar...">
+                            <input type="search" placeholder="Buscar..." (keyup)="search($event)">
                             <button type="button" class="button btn-default">
                                 <i class="fa fa-search"></i>
                             </button>
@@ -18,7 +18,7 @@
                 </ul>
             </div>
             <div class="table-content">
-                <table class="table flex-table">
+                <table id="table" class="table flex-table">
                     <thead>
                         <tr>
                             <th>Cargo</th>

@@ -9,7 +9,7 @@
                     </li>
                     <li class="filter-item">
                         <div class="input-group-btn">
-                            <input type="search" placeholder="Buscar...">
+                            <input type="search" placeholder="Buscar..." (keyup)="search($event)">
                             <button type="button" class="button btn-default">
                                 <i class="fa fa-search"></i>
                             </button>
@@ -87,6 +87,7 @@
                 <div class="label-row">Grado Previo</div>
                 <select [(ngModel)]="model.varGrado.grado_previo_id">
                     <option value="0">Seleccionar</option>
+                    <option *ngFor="let item of vargrado_prev" value="{{item.grado_id}}">{{item.grado}} - {{item.descripcion}}</option>
                 </select>
             </div>
             <div class="col col15">

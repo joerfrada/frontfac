@@ -46,9 +46,11 @@ export class ValoresFlexiblesComponent implements OnInit {
   editValorModal: any;
 
   varhistorial: any = [];
+  varhistorialTemp: any = [];
   varnombreLista: any = [];
 
   varvalor: any = [];
+  varvalorTemp: any = [];
   varlista: any = [];
 
   currentUser: any;
@@ -70,6 +72,36 @@ export class ValoresFlexiblesComponent implements OnInit {
     });
   }
 
+  searchLista(e: any) {
+    let filtro = e.target.value.trim().toLowerCase();
+    if (filtro.length == 0) {
+      this.varhistorial = this.varhistorialTemp;
+    }
+    else {
+      this.varhistorial = this.varhistorialTemp.filter((item: any) => {
+        if (item.nombre_lista.toString().toLowerCase().indexOf(filtro) !== -1) {
+            return true;
+        }
+        return false;
+      });
+    }
+  }
+
+  searchValor(e: any) {
+    let filtro = e.target.value.trim().toLowerCase();
+    if (filtro.length == 0) {
+      this.varvalor = this.varvalorTemp;
+    }
+    else {
+      this.varvalor = this.varvalorTemp.filter((item: any) => {
+        if (item.lista_dinamica.toString().toLowerCase().indexOf(filtro) !== -1) {
+            return true;
+        }
+        return false;
+      });
+    }
+  }
+
   getNombresListasFull() {
     this.listaDinamica.getNombresListasFull().subscribe(data => {
       let response: any = this.api.ProcesarRespuesta(data);
@@ -87,6 +119,7 @@ export class ValoresFlexiblesComponent implements OnInit {
       let response: any = this.api.ProcesarRespuesta(data);
       if (response.tipo == 0) {
         this.varhistorial = response.result;
+        this.varhistorialTemp = response.result;
       }
     });
   }
@@ -121,6 +154,7 @@ export class ValoresFlexiblesComponent implements OnInit {
   openValor(data: any) {
     this.valorModal = true;
     this.varvalor = this.varlista.filter((x: any) => x.nombre_lista_id == data.nombre_lista_id);
+    this.varvalorTemp = this.varlista.filter((x: any) => x.nombre_lista_id == data.nombre_lista_id);
     this.model.title = "Listas Dinámicas - " + data.nombre_lista;
 
     this.nombre_lista_id = data.nombre_lista_id;

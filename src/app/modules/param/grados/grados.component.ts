@@ -35,11 +35,13 @@ export class GradosComponent implements OnInit {
   modal: any;
 
   varhistorial: any = [];
+  varhistorialTemp: any = [];
   varcategoria: any = [];
   varnivel: any = [];
   varnivelTemp: any = [];
   varnivel_oficial: any = [];
   varnivel_suboficial: any = [];
+  vargrado_prev: any = [];
 
   currentUser: any;
 
@@ -61,6 +63,22 @@ export class GradosComponent implements OnInit {
     });
   }
 
+  search(e: any) {
+    let filtro = e.target.value.trim().toLowerCase();
+    if (filtro.length == 0) {
+      this.varhistorial = this.varhistorialTemp;
+    }
+    else {
+      this.varhistorial = this.varhistorialTemp.filter((item: any) => {
+        if (item.grado.toString().toLowerCase().indexOf(filtro) !== -1 ||
+            item.descripcion.toString().toLowerCase().indexOf(filtro) !== -1) {
+            return true;
+        }
+        return false;
+      });
+    }
+  }
+
   getGrados() {
     let json: any = {
       filtro: 0
@@ -70,6 +88,14 @@ export class GradosComponent implements OnInit {
       let response: any = this.api.ProcesarRespuesta(data);
       if (response.tipo == 0) {
         this.varhistorial = response.result;
+        this.varhistorialTemp = response.result;
+      }
+    });
+
+    this.grado.getGradosFull().subscribe(data => {
+      let response: any = this.api.ProcesarRespuesta(data);
+      if (response.tipo == 0) {
+        this.vargrado_prev = response.result;
       }
     });
   }

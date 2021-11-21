@@ -35,6 +35,7 @@ export class RequerimientosComponent implements OnInit {
   modal: any;
 
   varhistorial: any = [];
+  varhistorialTemp: any = [];
   varcategoria: any = [];
   varespecialidad: any = [];
   varespecialidadTemp: any = [];
@@ -67,6 +68,24 @@ export class RequerimientosComponent implements OnInit {
     });
   }
 
+  search(e: any) {
+    let filtro: string = e.target.value.trim().toLowerCase();
+    if (filtro.length == 0) {
+      this.varhistorial = this.varhistorialTemp;
+    }
+    else {
+      this.varhistorial = this.varhistorialTemp.filter((item: any) => {
+        if (item.requerimiento.toString().toLowerCase().indexOf(filtro) !== -1 ||
+            item.categoria.toString().toLowerCase().indexOf(filtro) !== -1 ||
+            item.especialidad.toString().toLowerCase().indexOf(filtro) !== -1 ||
+            item.grado.toString().toLowerCase().indexOf(filtro) !== -1) {
+            return true;
+        }
+        return false;
+      });
+    }
+  }
+
   getRequerimientos() {
     let json: any = {
       filtro: 0
@@ -76,6 +95,7 @@ export class RequerimientosComponent implements OnInit {
       let response: any = this.api.ProcesarRespuesta(data);
       if (response.tipo == 0) {
         this.varhistorial = response.result;
+        this.varhistorialTemp = response.result;
       }
     });
   }

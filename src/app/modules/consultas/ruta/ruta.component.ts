@@ -42,6 +42,7 @@ export class RutaComponent implements OnInit {
   detalleModal: any;
 
   varhistorial: any = [];
+  varhistorialTemp: any = [];
 
   varlinea: any = [];
 
@@ -207,6 +208,22 @@ export class RutaComponent implements OnInit {
     });
   }
 
+  search(e: any) {
+    let filtro = e.target.value.trim().toLowerCase();
+    if (filtro.length == 0) {
+      this.varhistorial = this.varhistorialTemp;
+    }
+    else {
+      this.varhistorial = this.varhistorialTemp.filter((item: any) => {
+        if (item.cuerpo.toString().toLowerCase().indexOf(filtro) !== -1 ||
+            item.especialidad.toString().toLowerCase().indexOf(filtro) !== -1) {
+            return true;
+        }
+        return false;
+      });
+    }
+  }
+
   getRutaCarrera() {
     let json = {
       filtro: 0
@@ -216,6 +233,7 @@ export class RutaComponent implements OnInit {
       let response: any = this.api.ProcesarRespuesta(data);
       if (response.tipo == 0) {
         this.varhistorial = response.result;
+        this.varhistorialTemp = response.result;
       }
     });
   }
@@ -453,5 +471,36 @@ export class RutaComponent implements OnInit {
     this.model.varRuta.tipo_categoria_id = Number(this.model.varRuta.tipo_categoria_id);
 
     console.log(this.model.varRuta);
+
+    this.ruta.updateRutaCarrera(this.model.varRuta).subscribe(data => {
+      let response: any = this.api.ProcesarRespuesta(data);
+      if (response.tipo == 0) {
+        if (this.varlinea.length > 0) {
+          this.varlinea.forEach((x: any) => {
+            x.ruta_carrera_id = this.model.varRuta.ruta_carrera_id;
+            x.cargo_ruta_id = Number(x.cargo_ruta_id);
+            x.tipo_cargo_id = Number(x.tipo_cargo_id);
+            x.tipo_ruta_id = Number(x.tipo_ruta_id);
+
+            if (x.NuevoRegistro == true) {
+              this.ruta.createLineasCargos(x).subscribe(data1 => {});
+            }
+            else {
+              this.ruta.updateLineasCargos(x).subscribe(data1 => {});
+            }
+          });
+        }
+        swal({
+          title: 'Ruta de Carrera',
+          text: response.mensaje,
+          allowOutsideClick: false,
+          showConfirmButton: true,
+          type: 'success'
+        }).then((result: any) => {
+          this.modal = false;
+          this.reload();
+        });
+      }
+    });
   }
 }
