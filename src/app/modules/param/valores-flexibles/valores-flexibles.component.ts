@@ -103,7 +103,7 @@ export class ValoresFlexiblesComponent implements OnInit {
   }
 
   getNombresListasFull() {
-    this.listaDinamica.getNombresListasFull().subscribe(data => {
+    this.listaDinamica.getListasDinamicasFull().subscribe(data => {
       let response: any = this.api.ProcesarRespuesta(data);
       if (response.tipo == 0) {
         this.varnombreLista = response.result;
@@ -124,7 +124,7 @@ export class ValoresFlexiblesComponent implements OnInit {
     });
   }
 
-  getListasDinamicasFull() {
+  getListasDinamicasFull(update: any = false) {
     this.listaDinamica.getListasDinamicasFull().subscribe(data => {
       let response: any = this.api.ProcesarRespuesta(data);
       if (response.tipo == 0) {
@@ -133,8 +133,18 @@ export class ValoresFlexiblesComponent implements OnInit {
           x.detalle = x.lista_dinamica;
         });
         this.varlista = response.result;
+        if (update == true) {
+          setTimeout(() => {
+            localStorage.setItem("listasDinamicasFull", JSON.stringify(response.result));
+          }, 500);
+        }
       }
     })
+  }
+
+  updateListasDinamicasFull() {
+    localStorage.removeItem("listasDinamicasFull");
+    this.getListasDinamicasFull(true);
   }
 
   openModal() {
@@ -153,13 +163,32 @@ export class ValoresFlexiblesComponent implements OnInit {
 
   openValor(data: any) {
     this.valorModal = true;
-    this.varvalor = this.varlista.filter((x: any) => x.nombre_lista_id == data.nombre_lista_id);
-    this.varvalorTemp = this.varlista.filter((x: any) => x.nombre_lista_id == data.nombre_lista_id);
     this.model.title = "Listas Dinámicas - " + data.nombre_lista;
 
     this.nombre_lista_id = data.nombre_lista_id;
+    this.model.varListaDinamica.nombre_lista_id = data.nombre_lista_id;
     this.model.varListaDinamica.usuario_creador = this.currentUser.usuario;
     this.model.varListaDinamica.usuario_modificador = this.currentUser.usuario;
+
+    console.log(this.model.varListaDinamica);
+
+    this.listaDinamica.getListasDinamicas({ nombre_lista_id: data.nombre_lista_id }).subscribe(data => {
+      let response: any = this.api.ProcesarRespuesta(data);
+      if (response.tipo == 0) {
+        this.varvalor = response.result;
+        this.varvalorTemp = response.result;
+      }
+    });
+  }
+
+  openValorById(id: any) {
+    this.listaDinamica.getListasDinamicas({ nombre_lista_id: id }).subscribe(data => {
+      let response: any = this.api.ProcesarRespuesta(data);
+      if (response.tipo == 0) {
+        this.varvalor = response.result;
+        this.varvalorTemp = response.result;
+      }
+    });
   }
 
   closeValorModal(bol: any) {
@@ -226,6 +255,7 @@ export class ValoresFlexiblesComponent implements OnInit {
           type: 'success'
         }).then((result: any) => {
           this.modal = false;
+          this.openValorById(this.model.varNombreLista.nombre_lista_id);
           this.reload();
         })
       }
@@ -283,7 +313,8 @@ export class ValoresFlexiblesComponent implements OnInit {
           type: 'success'
         }).then((result: any) => {
           this.editValorModal = false;
-          this.reload();
+          this.openValorById(this.model.varListaDinamica.nombre_lista_id);
+          this.updateListasDinamicasFull();
         })
       }
     }));
@@ -308,7 +339,8 @@ export class ValoresFlexiblesComponent implements OnInit {
           type: 'success'
         }).then((result: any) => {
           this.editValorModal = false;
-          this.reload();
+          this.openValorById(this.model.varListaDinamica.nombre_lista_id);
+          this.updateListasDinamicasFull();
         })
       }
     }));

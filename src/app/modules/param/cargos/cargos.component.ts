@@ -127,6 +127,8 @@ export class CargosComponent implements OnInit {
   vareducacionTemp: any = [];
   varconocimiento: any = [];
   varconocimientoTemp: any = [];
+  varexperiencia: any = [];
+  varcompetencia: any = [];
 
   varitems: any = [];
   varselectedItems: any = [];
@@ -377,6 +379,16 @@ export class CargosComponent implements OnInit {
       x.descripcion = x.lista_dinamica;
       x.indice = 5;
     })
+    this.varexperiencia = varlistas.filter((x: any) => x.nombre_lista == 'BAS_EXPERIENCIA');
+    this.varexperiencia.forEach((x: any) => {
+      x.id = x.lista_dinamica_id;
+      x.detalle = x.lista_dinamica;
+    });
+    this.varcompetencia = varlistas.filter((x: any) => x.nombre_lista == 'BAS_COMPETENCIA');
+    this.varcompetencia.forEach((x: any) => {
+      x.id = x.lista_dinamica_id;
+      x.detalle = x.lista_dinamica;
+    });
   }
 
   addGrado() {

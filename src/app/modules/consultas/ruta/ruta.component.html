@@ -168,6 +168,7 @@
                 <div class="label-row">Especialidad</div>
                 <select>
                     <option value="0">Seleccionar</option>
+                    <option *ngFor="let item of lstEspecialidad" value="{{item.id}}">{{item.especialidad}}</option>
                 </select>
             </div>
         </div>

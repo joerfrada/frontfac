@@ -55,6 +55,8 @@ export class RutaComponent implements OnInit {
   vartiporuta: any = [];
   vartipocargo: any = [];
 
+  lstEspecialidad: any = [];
+
   varitem = [
     {
       id: 1,
@@ -232,8 +234,12 @@ export class RutaComponent implements OnInit {
     this.ruta.getRutaCarrera(json).subscribe(data => {
       let response: any = this.api.ProcesarRespuesta(data);
       if (response.tipo == 0) {
+        response.result.forEach((x: any) => {
+          x.id = x.ruta_carrera_id;
+        });
         this.varhistorial = response.result;
         this.varhistorialTemp = response.result;
+        this.lstEspecialidad = response.result;
       }
     });
   }

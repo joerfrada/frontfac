@@ -326,9 +326,10 @@
                         <div class="col col20">
                             <select [(ngModel)]="model.varConfiguracion.experiencia1">
                                 <option value="0">Seleccionar</option>
+                                <option *ngFor="let item of varexperiencia" value="{{item.id}}">{{item.detalle}}</option>
                             </select>
                         </div>
-                        <div class="col col20">
+                        <!-- <div class="col col20">
                             <select [(ngModel)]="model.varConfiguracion.experiencia2">
                                 <option value="0">Seleccionar</option>
                             </select>
@@ -347,15 +348,16 @@
                             <select [(ngModel)]="model.varConfiguracion.experiencia5">
                                 <option value="0">Seleccionar</option>
                             </select>
-                        </div>
+                        </div> -->
                         <div class="col col100 title-row">Competencias Requeridas</div>
                         <div class="line-col"></div>
                         <div class="col col20">
                             <select [(ngModel)]="model.varConfiguracion.competencia1">
                                 <option value="0">Seleccionar</option>
+                                <option *ngFor="let item of varcompetencia" value="{{item.id}}">{{item.detalle}}</option>
                             </select>
                         </div>
-                        <div class="col col20">
+                        <!-- <div class="col col20">
                             <select [(ngModel)]="model.varConfiguracion.competencia2">
                                 <option value="0">Seleccionar</option>
                             </select>
@@ -374,7 +376,7 @@
                             <select [(ngModel)]="model.varConfiguracion.competencia5">
                                 <option value="0">Seleccionar</option>
                             </select>
-                        </div>
+                        </div> -->
                         <div class="col col100 title-row">Observaciones Generales</div>
                         <div class="line-col"></div>
                         <div class="col col100">
