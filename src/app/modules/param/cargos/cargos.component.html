@@ -69,19 +69,26 @@
                 <div class="label-row">Categoría</div>
                 <select [(ngModel)]="model.varCargo.categoria_id" (change)="changeCategoria(model.varCargo.categoria_id)">
                     <option value="0">Seleccionar</option>
-                    <option *ngFor="let item1 of varcategoria" value="{{item1.id}}">{{item1.detalle}}</option>
+                    <option *ngFor="let item of varcategoria" value="{{item.id}}">{{item.detalle}}</option>
                 </select>
             </div>
             <div class="col col25">
                 <div class="label-row">Clase de Cargo</div>
                 <select [(ngModel)]="model.varCargo.clase_cargo_id">
                     <option value="0">Seleccionar</option>
-                    <option *ngFor="let item2 of varclase" value="{{item2.id}}">{{item2.detalle}}</option>
+                    <option *ngFor="let item of varclase" value="{{item.id}}">{{item.detalle}}</option>
+                </select>
+            </div>
+            <div class="col col25">
+                <div class="label-row">Cargo Ruta</div>
+                <select [(ngModel)]="model.varCargo.cargo_ruta_id">
+                    <option value="0">Seleccionar</option>
+                    <option *ngFor="let item of varcargoruta" value="{{item.id}}">{{item.detalle}}</option>
                 </select>
             </div>
             <div class="col col25">
                 <div class="label-row">Activo</div>
-                <div class="checkbox-component">
+                <div class="checkbox-component" style="padding-bottom: 15px;padding-top: 0 !important;">
                     <label>
                         <input type="checkbox" checked="checked" [(ngModel)]="model.varCargo.activo">
                         <span class="checkmark"></span>
@@ -321,9 +328,8 @@
                         </div>
                     </div>
                     <div class="tabs-content" *ngIf="tab === 4">
-                        <div class="col col100 title-row">Experiencia de Conocimiento</div>
-                        <div class="line-col"></div>
-                        <div class="col col20">
+                        <div class="col col25">
+                            <div class="label-row">Experiencia de Conocimiento</div>
                             <select [(ngModel)]="model.varConfiguracion.experiencia1">
                                 <option value="0">Seleccionar</option>
                                 <option *ngFor="let item of varexperiencia" value="{{item.id}}">{{item.detalle}}</option>
@@ -349,9 +355,8 @@
                                 <option value="0">Seleccionar</option>
                             </select>
                         </div> -->
-                        <div class="col col100 title-row">Competencias Requeridas</div>
-                        <div class="line-col"></div>
-                        <div class="col col20">
+                        <div class="col col25">
+                            <div class="label-row">Competencias Requeridas</div>
                             <select [(ngModel)]="model.varConfiguracion.competencia1">
                                 <option value="0">Seleccionar</option>
                                 <option *ngFor="let item of varcompetencia" value="{{item.id}}">{{item.detalle}}</option>

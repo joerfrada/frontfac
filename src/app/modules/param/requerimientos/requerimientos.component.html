@@ -33,8 +33,8 @@
                         <tr *ngFor="let item of varhistorial; let i = index">
                             <td>{{item.requerimiento}}</td>
                             <td>{{item.categoria}}</td>
-                            <td>{{item.especialidad}}</td>
-                            <td>{{item.grado}}</td>
+                            <td>{{item.especialidadDescripcion}}</td>
+                            <td>{{item.gradoDescripcion}}</td>
                             <td>
                                 <i class="fa fa-1m5x fa-check-circle" *ngIf="item.activo == 'S'"></i>
                                 <i class="fa fa-1m5x fa-times-circle" *ngIf="item.activo == 'N'"></i>
@@ -74,17 +74,11 @@
             </div>
             <div class="col col30">
                 <div class="label-row">Especialidad</div>
-                <select [(ngModel)]="model.varRequerimiento.especialidad_id">
-                    <option value="0">Seleccionar</option>
-                    <option *ngFor="let item1 of varespecialidad" value="{{item1.especialidad_id}}">{{item1.especialidad}}</option>
-                </select>
+                <input type="text" placeholder="Selecciona..." (click)="saveEspecialidad()" [(ngModel)]="model.varRequerimiento.especialidad">
             </div>
             <div class="col col25">
                 <div class="label-row">Grado</div>
-                <select [(ngModel)]="model.varRequerimiento.grado_id">
-                    <option value="0">Seleccionar</option>
-                    <option *ngFor="let item2 of vargrado" value="{{item2.grado_id}}">{{item2.grado}}</option>
-                </select>
+                <input type="text" placeholder="Selecciona..." (click)="saveGrado()" [(ngModel)]="model.varRequerimiento.grado">
             </div>
             <div class="col col25">
                 <div class="label-row">Activo</div>
@@ -103,3 +97,5 @@
         <button *ngIf="model.tipo == 'U'" type="button" class="btn btn-blue" (click)="updateRequerimiento()">Guardar</button>
     </div>
 </app-modal>
+
+<app-select-modal [title]="titleModal" [show]="selectModal" [array]="array" [arrayTemp]="array" (output)="dataform(indexform, $event)" (close)="closeSelectModal($event)"></app-select-modal>

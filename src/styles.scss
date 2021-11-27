@@ -388,11 +388,11 @@ a {
 
 #modal-view-sm {
     .modal-box {
-        width: 20vw;
+        width: 40vw;
     }
 
     .modal-box-centered {
-        min-height: calc(100% - 30rem);
+        height: calc(100% - 30rem);
     }
 
     .modal-header, .modal-body, .modal-footer1 {
@@ -484,7 +484,7 @@ a {
 
 #modal-select-list {
     .modal-box {
-        width: 30vw;
+        width: 60vw;
     }
 
     .modal-box-centered {

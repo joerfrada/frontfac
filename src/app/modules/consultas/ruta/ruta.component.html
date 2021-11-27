@@ -26,14 +26,16 @@
                         <tr>
                             <th>Cuerpo</th>
                             <th>Especialidad</th>
+                            <th>Área de Conocimiento</th>
                             <th>Estado</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody class="scroll">
                         <tr *ngFor="let item of varhistorial; let i = index">
-                            <td>{{item.cuerpo}}</td>
-                            <td>{{item.especialidad}}</td>
+                            <td>{{item.cuerpoDescripcion}}</td>
+                            <td>{{item.especialidadDescripcion}}</td>
+                            <td>{{item.areaDescripcion}}</td>
                             <td>
                                 <i class="fa fa-1m5x fa-check-circle" *ngIf="item.activo == 'S'"></i>
                                 <i class="fa fa-1m5x fa-times-circle" *ngIf="item.activo == 'N'"></i>
@@ -62,44 +64,49 @@
         <div class="inner-col">
             <div class="col col25">
                 <div class="label-row">Categoría</div>
-                <select [(ngModel)]="model.varRuta.tipo_categoria_id" (change)="changeCategoria(model.varRuta.tipo_categoria_id)">
+                <select [(ngModel)]="model.varRutaCarrera.tipo_categoria_id" (change)="changeCategoria(model.varRutaCarrera.tipo_categoria_id)">
                     <option value="0">Seleccionar</option>
                     <option *ngFor="let item of varcategoria" value="{{item.id}}">{{item.detalle}}</option>
                 </select>
             </div>
-            <div class="col col33">
+            <div class="col col25">
                 <div class="label-row">Cuerpo</div>
-                <select [(ngModel)]="model.varRuta.cuerpo_id">
-                    <option value="0">Seleccionar</option>
-                    <option *ngFor="let item of varcuerpo" value="{{item.cuerpo_id}}">{{item.cuerpo}}</option>
-                </select>
+                <input type="text" placeholder="Selecciona..." (click)="saveCuerpo()" [(ngModel)]="model.varRutaCarrera.cuerpo">
             </div>
-            <div class="col col33">
+            <div class="col col25">
                 <div class="label-row">Especialidad</div>
-                <select [(ngModel)]="model.varRuta.especialidad_id">
+                <input type="text" placeholder="Selecciona..." (click)="saveEspecialidad()" [(ngModel)]="model.varRutaCarrera.especialidad">
+            </div>
+            <div class="col col25">
+                <div class="label-row">Área de Conocimiento</div>
+                <input type="text" placeholder="Selecciona..." (click)="saveArea()" [(ngModel)]="model.varRutaCarrera.area">
+            </div>
+            <div class="col col25">
+                <div class="label-row">Tipo Ruta</div>
+                <select [(ngModel)]="model.varRutaCarrera.tipo_ruta_id">
                     <option value="0">Seleccionar</option>
-                    <option *ngFor="let item of varespecialidad" value="{{item.especialidad_id}}">{{item.especialidad}}</option>
+                    <option *ngFor="let item of vartiporuta" value="{{item.id}}">{{item.detalle}}</option>
                 </select>
             </div>
             <div class="col col50">
                 <div class="label-row">Descripción</div>
-                <input type="text" [(ngModel)]="model.varRuta.descripcion">
+                <input type="text" [(ngModel)]="model.varRutaCarrera.descripcion">
             </div>
-            <div class="col col10">
+            <div class="col col25">
                 <div class="label-row">Activo</div>
                 <div class="checkbox-component">
                     <label>
-                        <input type="checkbox" checked="checked" [(ngModel)]="model.varRuta.activo">
+                        <input type="checkbox" checked="checked" [(ngModel)]="model.varRutaCarrera.activo">
                         <span class="checkmark"></span>
                     </label>
                 </div>
             </div>
-            <div class="col col25">
+            <div class="col col50">
                 <div class="label-row">&nbsp;</div>
                 <button type="button" class="button btn-default">Previsualizar</button>
             </div>
             <div class="line-col"></div>
-            <div class="col col100 title-row">Línea de Cargo</div>
+            <!-- <div class="col col100 title-row">Línea de Cargo</div>
             <div class="table-content">
                 <table class="table flex-table">
                     <thead>
@@ -116,7 +123,7 @@
                             <td>
                                 <select [(ngModel)]="varlinea[i].cargo_ruta_id">
                                     <option value="0">Seleccionar</option>
-                                    <option *ngFor="let item of varcargoruta" value="{{item.id}}">{{item.detalle}}</option>
+                                    <option *ngFor="let item of varcargo" value="{{item.cargo_id}}">{{item.cargo}}</option>
                                 </select>
                             </td>
                             <td>
@@ -128,14 +135,14 @@
                             <td>
                                 <select [(ngModel)]="varlinea[i].tipo_cargo_id">
                                     <option value="0">Seleccionar</option>
-                                    <option *ngFor="let item of vartipocargo" value="{{item.id}}">{{item.detalle}}</option>
+                                    <option *ngFor="let item of varcargoruta" value="{{item.id}}">{{item.detalle}}</option>
                                 </select>
                             </td>
                             <td>
                                 <div class="table-checkbox-component">
                                     <label>
                                         <input type="checkbox" checked="checked" [(ngModel)]="varlinea[i].activo">
-                                        <!-- <span class="checkmark"></span> -->
+                                        <span class="checkmark"></span>
                                     </label>
                                 </div>
                             </td>
@@ -145,6 +152,64 @@
                         </tr>
                         <tr class="add_row_full">
                             <button type="button" class="button btn-blue" (click)="addLinea()">Agregar</button>
+                        </tr>
+                        </tr>
+                    </tbody>
+                </table>
+            </div> -->
+            <div class="col col100 title-row">Rutas</div>
+            <div class="table-content">
+                <table class="table flex-table">
+                    <thead>
+                        <tr>
+                            <th>Cargo</th>
+                            <th>Cargo Previo</th>
+                            <th>Tipo Cargo</th>
+                            <th>Grado</th>
+                            <th>Activo</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody class="scroll">
+                        <tr *ngFor="let item of varruta;let i=index">
+                            <td>
+                                <select [(ngModel)]="varruta[i].cargo_id">
+                                    <option value="0">Seleccionar</option>
+                                    <option *ngFor="let item of varcargo" value="{{item.cargo_id}}">{{item.cargo}}</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select [(ngModel)]="varruta[i].cargo_prev_id">
+                                    <option value="0">Seleccionar</option>
+                                    <option *ngFor="let item of varcargo" value="{{item.cargo_id}}">{{item.cargo}}</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select [(ngModel)]="varruta[i].tipo_cargo_id">
+                                    <option value="0">Seleccionar</option>
+                                    <option *ngFor="let item of varcargoruta" value="{{item.id}}">{{item.detalle}}</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select [(ngModel)]="varruta[i].grado_id">
+                                    <option value="0">Seleccionar</option>
+                                    <option *ngFor="let item of vargrado" value="{{item.grado_id}}">{{item.grado}} - {{item.descripcion}}</option>
+                                </select>
+                            </td>
+                            <td>
+                                <div class="table-checkbox-component">
+                                    <label>
+                                        <input type="checkbox" checked="checked" [(ngModel)]="varruta[i].activo">
+                                        <!-- <span class="checkmark"></span> -->
+                                    </label>
+                                </div>
+                            </td>
+                            <td>
+                                <i class="fa fa-1m5x fa-times-circle pointer noselect" style="color: black !important;" *ngIf="varruta[i].NuevoRegistro" (click)="deleteRuta(i)"></i>
+                            </td>
+                        </tr>
+                        <tr class="add_row_full">
+                            <button type="button" class="button btn-blue" (click)="addRuta()">Agregar</button>
                         </tr>
                         <!-- <tr *ngIf="varlinea?.length == 0">
                             <div class="dbempty">No hay datos.</div>
@@ -166,9 +231,16 @@
         <div class="inner-col">
             <div class="col col50">
                 <div class="label-row">Especialidad</div>
-                <select>
+                <select [(ngModel)]="model.varConsulta.especialidad_id">
                     <option value="0">Seleccionar</option>
-                    <option *ngFor="let item of lstEspecialidad" value="{{item.id}}">{{item.especialidad}}</option>
+                    <option *ngFor="let item of lstEspecialidad" value="{{item.especialidad_id}}">{{item.especialidad}}</option>
+                </select>
+            </div>
+            <div class="col col50">
+                <div class="label-row">Tipo Ruta</div>
+                <select [(ngModel)]="model.varConsulta.tipo_ruta_id">
+                    <option value="0">Seleccionar</option>
+                    <option *ngFor="let item of vartiporuta" value="{{item.id}}">{{item.detalle}}</option>
                 </select>
             </div>
         </div>
@@ -212,7 +284,12 @@
     <div id="chart-container"></div>
 </workflow-modal>
 
-<viewcargo-modal [title]="tituloCargo" [show]="viewCargoModal" [size]="'modal-view-sm'" [data]="datos" (close)="closeViewCargoModal($event)">
+<viewcargo-modal [title]="tituloCargo" [show]="viewCargoModal" [size]="'modal-view-sm'" (close)="closeViewCargoModal($event)">
+    <div role="body">
+        <div class="view-cargo">
+            <div id="textcargo"></div>
+        </div>
+    </div>
     <div role="footer1">
         <button type="button" class="btn btn-blue">Detalle del Cargo</button>
         <button type="button" class="btn btn-blue">Imprimir PDF</button>
@@ -220,35 +297,54 @@
 </viewcargo-modal>
 
 <piramide-modal [title]="'Pirámide (Especialidad)'" [show]="piramideModal" [size]="'modal-piramide-md'" (close)="closePiramideModal($event)">
-    <div class="table-content">
-        <table class="table table-piramide">
-            <tbody class="scroll">
-                <tr *ngFor="let item of varPiramide; let i = index">
-                    <td>
-                        <div class="title-grado">{{item.grado}}</div>
-                        <div class="duration-grado">{{item.duracion}}</div>
-                        <div class="requisito-grado">
-                            <button type="button" class="button btn-edit" (click)="openDetalle(item.requisitos.detalle, 1)">Requisitos de Ley</button>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="trapeze-grado">
-                            <div class="trapeze-grado-inner">
-                                <div class="title-grado-inner">{{item.grado}}</div>
-                                <div class="detalle-grado">
-                                    <button type="button" class="button btn-edit" (click)="openDetalle(item.detalleGrado.grado, 2)">Detalle</button>
+    <div class="col col100" *ngIf="varPiramide1?.length != 0 && varPiramide2.length != 0">
+        <div class="col col50">
+            <div class="table-content">
+                <table class="table table-piramide">
+                    <tbody class="scroll">
+                        <tr *ngFor="let item of varPiramide1; let i = index">
+                            <td>
+                                <div class="title-grado">{{item.grado}}</div>
+                                <div class="duration-grado">{{item.duracion}}</div>
+                                <div class="requisito-grado">
+                                    <button type="button" class="button btn-edit" (click)="openDetalle(item)">Requisitos de Ley</button>
                                 </div>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col col50">
+            <div class="table-content">
+                <table class="table table-piramide">
+                    <tbody class="scroll">
+                        <tr *ngFor="let item of varPiramide2; let i = index">
+                            <td>
+                                <div class="trapeze-grado">
+                                    <div class="trapeze-grado-inner">
+                                        <div class="title-grado-inner">{{item.grado}}</div>
+                                        <div class="detalle-grado">
+                                            <button type="button" class="button btn-edit" (click)="openDetalleGrado(item)">Detalle</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col col100" *ngIf="varPiramide1?.length == 0 && varPiramide2.length == 0">
+        <div class="dbEmptyPiramide">Sin Resultados</div>
     </div>
 </piramide-modal>
 
 <detalle-modal [title]="titleDetalle" [show]="detalleModal" [size]="'modal-detalle-sm'" (close)="closeDetalleModal($event)">
     <div class="view-detail">
-        <textarea [(ngModel)]="detalle" rows="10" cols="20" style="resize: none; height: 100%;" disabled></textarea>
+        <div id="text"></div>
     </div>
 </detalle-modal>
+
+<app-select-modal [title]="titleModal" [show]="selectModal" [array]="array" [arrayTemp]="array" (output)="dataform(indexform, $event)" (close)="closeSelectModal($event)"></app-select-modal>

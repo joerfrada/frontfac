@@ -11,7 +11,9 @@
                     </li>
                     <li class="filter-item">
                         <div class="input-group-btn">
-                            <input type="search" placeholder="Buscar...">
+                            <input type="search" placeholder="Buscar..." *ngIf="tab === 1" (keyup)="searchCuerpo($event)">
+                            <input type="search" placeholder="Buscar..." *ngIf="tab === 2" (keyup)="searchEspecialidad($event)">
+                            <input type="search" placeholder="Buscar..." *ngIf="tab === 3" (keyup)="searchArea($event)">
                             <button type="button" class="button btn-default">
                                 <i class="fa fa-search"></i>
                             </button>
@@ -160,7 +162,7 @@
         <div class="inner-col">
             <div class="col col25">
                 <div class="label-row">Tipo de Categoría</div>
-                <select [(ngModel)]="model.varEspecialidad.tipo_categoria_id">
+                <select [(ngModel)]="model.varEspecialidad.tipo_categoria_id" (change)="changeCategoriaEspecialidad(model.varEspecialidad.tipo_categoria_id)">
                     <option value="0">Seleccionar</option>
                     <option *ngFor="let item of varcategoria" value="{{item.id}}">{{item.detalle}}</option>
                 </select>
@@ -172,6 +174,13 @@
             <div class="col col50">
                 <div class="label-row">Especialidad</div>
                 <input type="text" [(ngModel)]="model.varEspecialidad.especialidad">
+            </div>
+            <div class="col col25">
+                <div class="label-row">Cuerpo</div>
+                <select [(ngModel)]="model.varEspecialidad.cuerpo_id">
+                    <option value="0">Seleccionar</option>
+                    <option *ngFor="let item of lstCuerpo" value="{{item.cuerpo_id}}">{{item.cuerpo}}</option>
+                </select>
             </div>
         </div>
     </div>
@@ -187,7 +196,7 @@
         <div class="inner-col">
             <div class="col col25">
                 <div class="label-row">Tipo de Categoría</div>
-                <select [(ngModel)]="model.varArea.tipo_categoria_id">
+                <select [(ngModel)]="model.varArea.tipo_categoria_id" (change)="changeCategoriaArea(model.varArea.tipo_categoria_id)">
                     <option value="0">Seleccionar</option>
                     <option *ngFor="let item of varcategoria" value="{{item.id}}">{{item.detalle}}</option>
                 </select>
@@ -199,6 +208,13 @@
             <div class="col col50">
                 <div class="label-row">Área</div>
                 <input type="text" [(ngModel)]="model.varArea.area">
+            </div>
+            <div class="col col25">
+                <div class="label-row">Especialidad</div>
+                <select [(ngModel)]="model.varArea.especialidad_id">
+                    <option value="0">Seleccionar</option>
+                    <option *ngFor="let item of lstEspecialidad" value="{{item.especialidad_id}}">{{item.especialidad}}</option>
+                </select>
             </div>
         </div>
     </div>

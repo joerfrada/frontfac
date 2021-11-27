@@ -21,7 +21,7 @@ export class SidebarComponent implements OnInit {
       element.submenus = element.submenus.filter((x: any) => x.menu_id != 14);
     });
     this.allMenu = menus;
-    console.log(this.allMenu);
+    // console.log(this.allMenu);
   }
 
   ngOnInit(): void {

@@ -16,7 +16,9 @@ export class Model {
     requerimiento: "",
     categoria_id: 0,
     especialidad_id: 0,
+    especialidad: "",
     grado_id: 0,
+    grado: "",
     activo: true,
     usuario_creador: "",
     usuario_modificador: ""
@@ -41,6 +43,13 @@ export class RequerimientosComponent implements OnInit {
   varespecialidadTemp: any = [];
   vargrado: any = [];
   vargradoTemp: any = [];
+  vargradoOficial: any = [];
+  vargradoSubOficial: any = [];
+
+  titleModal = "";
+  selectModal: any;
+  array: any = [];
+  indexform: any;
 
   currentUser: any
 
@@ -57,8 +66,8 @@ export class RequerimientosComponent implements OnInit {
   ngOnInit(): void {
     this.getRequerimientos();
     this.getListas();
-    this.getEspecialidades();
-    this.getGrados();
+    this.getEspecialidadesFull();
+    this.getGradosFull();
   }
 
   reload() {
@@ -109,21 +118,25 @@ export class RequerimientosComponent implements OnInit {
     });
   }
 
-  getEspecialidades() {
+  getEspecialidadesFull() {
     this.especialidad.getEspecialidadesFull().subscribe(data => {
       let response: any = this.api.ProcesarRespuesta(data);
       if (response.tipo == 0) {
-        this.varespecialidad = response.result;
+        response.result.forEach((x: any) => {
+          x.descripcion = x.especialidad;
+        });
         this.varespecialidadTemp = response.result;
       }
-    });
+    })
   }
 
-  getGrados() {
+  getGradosFull() {
     this.grado.getGradosFull().subscribe(data => {
       let response: any = this.api.ProcesarRespuesta(data);
       if (response.tipo == 0) {
-        this.vargrado = response.result;
+        response.result.forEach((x: any) => {
+          x.sigla = x.grado;
+        });
         this.vargradoTemp = response.result;
       }
     });
@@ -163,13 +176,15 @@ export class RequerimientosComponent implements OnInit {
     this.model.varRequerimiento.requerimiento = data.requerimiento;
     this.model.varRequerimiento.categoria_id = data.categoria_id;
     this.model.varRequerimiento.especialidad_id = data.especialidad_id;
+    this.model.varRequerimiento.especialidad = data.especialidad;
     this.model.varRequerimiento.grado_id = data.grado_id;
+    this.model.varRequerimiento.grado = data.grado;
     this.model.varRequerimiento.activo = (data.activo == 'S') ? true : false;
 
     this.model.varRequerimiento.usuario_creador = this.currentUser.usuario;
     this.model.varRequerimiento.usuario_modificador = this.currentUser.usuario;
 
-    console.log(this.model.varRequerimiento);
+    this.changeCategoria(data.categoria_id);
   }
 
   changeCategoria(id: any) {
@@ -243,4 +258,35 @@ export class RequerimientosComponent implements OnInit {
     });
   }
 
+  closeSelectModal(bol: any) {
+    this.selectModal = bol;
+  }
+
+  saveEspecialidad() {
+    this.titleModal = 'Especialidades';
+    this.array = this.varespecialidad;
+    this.indexform = 'especialidad';
+    this.selectModal = true;
+  }
+
+  saveGrado() {
+    this.titleModal = 'Grados';
+    this.array = this.vargrado;
+    this.indexform = 'grado';
+    this.selectModal = true;
+  }
+
+  dataform(indexform: any, data: any) {
+    this.selectModal = false;
+
+    if (indexform == 'especialidad') {
+      this.model.varRequerimiento.especialidad_id = data.especialidad_id;
+      this.model.varRequerimiento.especialidad = data.descripcion;
+    }
+
+    if (indexform == 'grado') {
+      this.model.varRequerimiento.grado_id = data.grado_id;
+      this.model.varRequerimiento.grado = data.grado;
+    }
+  }
 }

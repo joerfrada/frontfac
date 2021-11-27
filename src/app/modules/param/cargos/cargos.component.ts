@@ -25,6 +25,7 @@ export class Model {
     descripcion: "",
     clase_cargo_id: 0,
     categoria_id: 0,
+    cargo_ruta_id: 0,
     activo: true,
     usuario_creador: "",
     usuario_modificador: ""
@@ -113,8 +114,11 @@ export class CargosComponent implements OnInit {
   varhistorialTemp: any = [];
   varclase: any = [];
   varcategoria: any = [];
+  varcargoruta: any = [];
 
   lstGrados: any = [];
+  vargradoOficial: any = [];
+  vargradoSubOficial: any = [];
 
   varcuerpo: any = [];
   varcuerpoTemp: any = [];
@@ -129,6 +133,8 @@ export class CargosComponent implements OnInit {
   varconocimientoTemp: any = [];
   varexperiencia: any = [];
   varcompetencia: any = [];
+
+  tipo_categoria_id: any;
 
   varitems: any = [];
   varselectedItems: any = [];
@@ -239,7 +245,8 @@ export class CargosComponent implements OnInit {
     this.grado.getGradosFull().subscribe(data => {
       let response: any = this.api.ProcesarRespuesta(data);
       if (response.tipo == 0) {
-        this.lstGrados = response.result;
+        this.vargradoOficial = response.result.filter((x: any) => x.categoria_id == 5);
+        this.vargradoSubOficial = response.result.filter((x: any) => x.categoria_id == 6);
       }
     })
   }
@@ -258,6 +265,14 @@ export class CargosComponent implements OnInit {
 
   changeCategoria(id: any) {
     this.model.categoria = this.varcategoria.filter((x: any) => x.id == Number(id))[0].detalle;
+    this.tipo_categoria_id = id;
+
+    if (id == 5) {
+      this.lstGrados = this.vargradoOficial;
+    }
+    else if (id == 6) {
+      this.lstGrados = this.vargradoSubOficial;
+    }
   }
 
   changeGrado(index: any) {
@@ -277,41 +292,41 @@ export class CargosComponent implements OnInit {
     this.model.grado = data.descripcion;
     this.model.varConfiguracion.cargo_grado_id = data.cargo_grado_id;
 
-    console.log(this.model.varConfiguracion.cargo_grado_id);
-
     if (data.cargo_grado_id != 0 && data.cargo_grado_id != null) {
       this.cargo.getCargosConfiguracion({cargo_grado_id: data.cargo_grado_id}).subscribe(data => {
         let response: any = this.api.ProcesarRespuesta(data);
         if (response.tipo == 0) {
           console.log(response.result);
-          let cargo = response.result[0];
-          this.model.varConfiguracion.cargo_configuracion_id = cargo.cargo_configuracion_id;
-          this.model.varConfiguracion.puesto_cantidad = cargo.puesto_cantidad;
-          this.model.varConfiguracion.cargo_jefe_inmediato_id = cargo.cargo_jefe_inmediato_id;
-          this.model.varConfiguracion.cargo_jefe_inmediato = cargo.cargo_jefe_inmediato;
-          this.model.varConfiguracion.nivel1 = cargo.nivel1;
-          this.model.varConfiguracion.nivel2 = cargo.nivel2;
-          this.model.varConfiguracion.nivel3 = cargo.nivel3;
-          this.model.varConfiguracion.nivel4 = cargo.nivel4;
-          this.model.varConfiguracion.nivel5 = cargo.nivel5;
-          this.model.varConfiguracion.duracion = cargo.duracion;
-          this.model.varConfiguracion.requisito_cargo = cargo.requisito_cargo;
-          this.model.varCuerpo.cuerpo = cargo.cuerpo;
-          this.model.varEspecialidad.especialidad = cargo.especialidad;
-          this.model.varArea.area = cargo.area;
-          this.model.varEducacion.educacion = cargo.educacion;
-          this.model.varConocimiento.conocimiento = cargo.conocimiento;
-          this.model.varConfiguracion.experiencia1 = cargo.experiencia1;
-          this.model.varConfiguracion.experiencia2 = cargo.experiencia2;
-          this.model.varConfiguracion.experiencia3 = cargo.experiencia3;
-          this.model.varConfiguracion.experiencia4 = cargo.experiencia4;
-          this.model.varConfiguracion.experiencia5 = cargo.experiencia5;
-          this.model.varConfiguracion.competencia1 = cargo.competencia1;
-          this.model.varConfiguracion.competencia2 = cargo.competencia2;
-          this.model.varConfiguracion.competencia3 = cargo.competencia3;
-          this.model.varConfiguracion.competencia4 = cargo.competencia4;
-          this.model.varConfiguracion.competencia5 = cargo.competencia5;
-          this.model.varConfiguracion.observaciones = cargo.observaciones;
+          if (response.result.length > 0) {
+            let cargo = response.result[0];
+            this.model.varConfiguracion.cargo_configuracion_id = cargo.cargo_configuracion_id;
+            this.model.varConfiguracion.puesto_cantidad = cargo.puesto_cantidad;
+            this.model.varConfiguracion.cargo_jefe_inmediato_id = cargo.cargo_jefe_inmediato_id;
+            this.model.varConfiguracion.cargo_jefe_inmediato = cargo.cargo_jefe_inmediato;
+            this.model.varConfiguracion.nivel1 = cargo.nivel1;
+            this.model.varConfiguracion.nivel2 = cargo.nivel2;
+            this.model.varConfiguracion.nivel3 = cargo.nivel3;
+            this.model.varConfiguracion.nivel4 = cargo.nivel4;
+            this.model.varConfiguracion.nivel5 = cargo.nivel5;
+            this.model.varConfiguracion.duracion = cargo.duracion;
+            this.model.varConfiguracion.requisito_cargo = cargo.requisito_cargo;
+            this.model.varCuerpo.cuerpo = cargo.cuerpo;
+            this.model.varEspecialidad.especialidad = cargo.especialidad;
+            this.model.varArea.area = cargo.area;
+            this.model.varEducacion.educacion = cargo.educacion;
+            this.model.varConocimiento.conocimiento = cargo.conocimiento;
+            this.model.varConfiguracion.experiencia1 = cargo.experiencia1;
+            this.model.varConfiguracion.experiencia2 = cargo.experiencia2;
+            this.model.varConfiguracion.experiencia3 = cargo.experiencia3;
+            this.model.varConfiguracion.experiencia4 = cargo.experiencia4;
+            this.model.varConfiguracion.experiencia5 = cargo.experiencia5;
+            this.model.varConfiguracion.competencia1 = cargo.competencia1;
+            this.model.varConfiguracion.competencia2 = cargo.competencia2;
+            this.model.varConfiguracion.competencia3 = cargo.competencia3;
+            this.model.varConfiguracion.competencia4 = cargo.competencia4;
+            this.model.varConfiguracion.competencia5 = cargo.competencia5;
+            this.model.varConfiguracion.observaciones = cargo.observaciones;
+          }
         }
       });
     }
@@ -389,6 +404,11 @@ export class CargosComponent implements OnInit {
       x.id = x.lista_dinamica_id;
       x.detalle = x.lista_dinamica;
     });
+    this.varcargoruta = varlistas.filter((x: any) => x.nombre_lista == 'BAS_CARGO_RUTA');
+    this.varcargoruta.forEach((x: any) => {
+      x.id = x.lista_dinamica_id;
+      x.detalle = x.lista_dinamica;
+    });
   }
 
   addGrado() {
@@ -409,6 +429,7 @@ export class CargosComponent implements OnInit {
     this.model.varCargo.descripcion = data.descripcion;
     this.model.varCargo.clase_cargo_id = data.clase_cargo_id;
     this.model.varCargo.categoria_id = data.categoria_id;
+    this.model.varCargo.cargo_ruta_id = data.cargo_ruta_id;
     this.model.varCargo.activo = (data.activo == 'S') ? true : false;
 
     this.model.cargo = data.cargo;
@@ -432,18 +453,31 @@ export class CargosComponent implements OnInit {
 
     this.model.varCargo.clase_cargo_id = Number(this.model.varCargo.clase_cargo_id);
     this.model.varCargo.categoria_id = Number(this.model.varCargo.categoria_id);
+    this.model.varCargo.cargo_ruta_id = Number(this.model.varCargo.cargo_ruta_id);
 
     if (this.model.varCargo.clase_cargo_id == 0)
       this.model.varCargo.clase_cargo_id = null;
 
     if (this.model.varCargo.categoria_id == 0)
       this.model.varCargo.categoria_id = null;
+    
+    if (this.model.varCargo.cargo_ruta_id == 0)
+      this.model.varCargo.cargo_ruta_id = null;
 
     this.cargo.createCargos(this.model.varCargo).subscribe(data => {
       let response: any = this.api.ProcesarRespuesta(data);
       if (response.tipo == 0) {
         if (this.model.varGrados.length > 0) {
-          this.createCargosGrados(response.id);
+          this.model.varGrados.forEach((x: any) => {
+            x.cargo_id = response.id;
+            x.grado_id = Number(x.grado_id);
+            x.usuario_creador = this.currentUser.usuario;
+            x.usuario_modificador = this.currentUser.usuario;
+      
+            if (x.NuevoRegistro == true) {
+              this.cargo.createCargosGrados(x).subscribe(data1 => {});
+            }
+          });
         }
         swal({
           title: 'Cargos',
@@ -466,6 +500,7 @@ export class CargosComponent implements OnInit {
     
     this.model.varCargo.clase_cargo_id = Number(this.model.varCargo.clase_cargo_id);
     this.model.varCargo.categoria_id = Number(this.model.varCargo.categoria_id);
+    this.model.varCargo.cargo_ruta_id = Number(this.model.varCargo.cargo_ruta_id);
 
     if (this.model.varCargo.clase_cargo_id == 0)
       this.model.varCargo.clase_cargo_id = null;
@@ -473,11 +508,28 @@ export class CargosComponent implements OnInit {
     if (this.model.varCargo.categoria_id == 0)
       this.model.varCargo.categoria_id = null;
 
+    if (this.model.varCargo.cargo_ruta_id == 0)
+      this.model.varCargo.cargo_ruta_id = null;
+
+    console.log(this.model.varCargo);
+
     this.cargo.updateCargos(this.model.varCargo).subscribe(data => {
       let response: any = this.api.ProcesarRespuesta(data);
       if (response.tipo == 0) {
         if (this.model.varGrados.length > 0) {
-          this.createCargosGrados(this.model.varCargo.cargo_id);
+          this.model.varGrados.forEach((x: any) => {
+            x.cargo_id = this.model.varCargo.cargo_id;
+            x.grado_id = Number(x.grado_id);
+            x.usuario_creador = this.currentUser.usuario;
+            x.usuario_modificador = this.currentUser.usuario;
+      
+            if (x.NuevoRegistro == true) {
+              this.cargo.createCargosGrados(x).subscribe(data1 => {});
+            }
+            else {
+              this.cargo.updateteCargosGrados(x).subscribe(data1 => {});
+            }
+          });
         }
         swal({
           title: 'Cargos',
@@ -490,37 +542,13 @@ export class CargosComponent implements OnInit {
           this.reload();
         })
       }
-    })
-  }
-
-  createCargosGrados(cargo_id: any) {
-    this.model.varGrados.forEach((x: any) => {
-      x.cargo_id = cargo_id;
-      x.grado_id = Number(x.grado_id);
-      x.usuario_creador = this.currentUser.usuario;
-      x.usuario_modificador = this.currentUser.usuario;
-
-      if (x.NuevoRegistro == true)
-        this.cargo.createCargosGrados(x).subscribe(data => {});
-    });
-  }
-
-  updateCargosGrados(cargo_id: any) {
-    this.model.varGrados.forEach((x: any) => {
-      x.cargo_id = cargo_id;
-      x.grado_id = Number(x.grado_id);
-      x.usuario_creador = this.currentUser.usuario;
-      x.usuario_modificador = this.currentUser.usuario;
-
-      if (x.NuevoRegistro == false)
-        this.cargo.updateteCargosGrados(x).subscribe(data => {});
     });
   }
 
   openCuerpoSelect() {
     this.selectModal = true;
     this.indexform = 1;
-    this.varitems = this.varcuerpo;
+    this.varitems = this.varcuerpo.filter((x: any) => x.tipo_categoria_id == this.tipo_categoria_id);
     this.titleSelect = "Cuerpos";
     if (this.varcuerpoTemp.length > 0) {
       this.varselectedItems = this.varcuerpoTemp.filter((x: any) => x.indice == 1);
@@ -531,7 +559,7 @@ export class CargosComponent implements OnInit {
   openEspecialidadSelect() {
     this.selectModal = true;
     this.indexform = 2;
-    this.varitems = this.varespecialidad;
+    this.varitems = this.varespecialidad.filter((x: any) => x.tipo_categoria_id == this.tipo_categoria_id);
     this.titleSelect = "Especialidades";
     if (this.varespecialidadTemp.length > 0) {
       this.varselectedItems = this.varespecialidadTemp.filter((x: any) => x.indice == 2);
@@ -542,7 +570,7 @@ export class CargosComponent implements OnInit {
   openAreaSelect() {
     this.selectModal = true;
     this.indexform = 3;
-    this.varitems = this.vararea;
+    this.varitems = this.vararea.filter((x: any) => x.tipo_categoria_id == this.tipo_categoria_id);;
     this.titleSelect = "Áreas";
     if (this.varareaTemp.length > 0) {
       this.varselectedItems = this.varareaTemp.filter((x: any) => x.indice == 3);

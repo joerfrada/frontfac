@@ -25,6 +25,7 @@ export class Model {
     tipo_categoria_id: 0,
     sigla: "",
     especialidad: "",
+    cuerpo_id: 0,
     usuario_creador: "",
     usuario_modificador: ""
   }
@@ -34,6 +35,7 @@ export class Model {
     tipo_categoria_id: 0,
     sigla: "",
     area: "",
+    especialidad_id: 0,
     usuario_creador: "",
     usuario_modificador: ""
   }
@@ -51,8 +53,16 @@ export class SiglasComponent implements OnInit {
   tab: any;
 
   varcuerpo: any = [];
+  varcuerpoTemp: any = [];
   varespecialidad: any = [];
+  varespecialidadTemp: any = [];
   vararea: any = [];
+  varareaTemp: any = [];
+
+  lstEspecialidad: any = [];
+  lstEspecialidadTemp: any = [];
+  lstCuerpo: any = [];
+  lstCuerpoTemp: any = [];
 
   currentUser: any;
 
@@ -96,7 +106,7 @@ export class SiglasComponent implements OnInit {
       let response: any = this.api.ProcesarRespuesta(data);
       if (response.tipo == 0) {
         this.vararea =  response.result;
-        console.log('Areas', response.result);
+        this.varareaTemp = response.result;
       }
     });
 
@@ -104,7 +114,7 @@ export class SiglasComponent implements OnInit {
       let response: any = this.api.ProcesarRespuesta(data);
       if (response.tipo == 0) {
         this.varcuerpo = response.result;
-        console.log('Cuerpos', response.result);
+        this.varcuerpoTemp = response.result;
       }
     });
 
@@ -112,9 +122,73 @@ export class SiglasComponent implements OnInit {
       let response: any = this.api.ProcesarRespuesta(data);
       if (response.tipo == 0) {
         this.varespecialidad = response.result;
-        console.log('Especialidades', response.result);
+        this.varespecialidadTemp = response.result;
       }
     });
+
+    this.cuerpo.getCuerposFull().subscribe(data => {
+      let response: any = this.api.ProcesarRespuesta(data);
+      if (response.tipo == 0) {
+        this.lstCuerpo = response.result;
+        this.lstCuerpoTemp = response.result;
+      }
+    });
+
+    this.especialidad.getEspecialidadesFull().subscribe(data => {
+      let response: any = this.api.ProcesarRespuesta(data);
+      if (response.tipo == 0) {
+        this.lstEspecialidad = response.result;
+        this.lstEspecialidadTemp = response.result;
+      }
+    });
+  }
+
+  searchCuerpo(e: any) {
+    let filtro = e.target.value.trim().toLowerCase();
+    if (filtro.length == 0) {
+      this.varcuerpo = this.varcuerpoTemp;
+    }
+    else {
+      this.varcuerpo = this.varcuerpoTemp.filter((item: any) => {
+        if (item.sigla.toString().toLowerCase().indexOf(filtro) !== -1 ||
+            item.cuerpo.toString().toLowerCase().indexOf(filtro) !== -1) {
+            return true;
+        }
+        return false;
+      });
+    }
+  }
+
+  searchEspecialidad(e: any) {
+    let filtro = e.target.value.trim().toLowerCase();
+    if (filtro.length == 0) {
+      this.varespecialidad = this.varespecialidadTemp;
+    }
+    else {
+      this.varespecialidad = this.varespecialidadTemp.filter((item: any) => {
+        if (item.sigla.toString().toLowerCase().indexOf(filtro) !== -1 ||
+            item.especialidad.toString().toLowerCase().indexOf(filtro) !== -1) {
+            return true;
+        }
+        return false;
+      });
+    }
+  }
+
+  searchArea(e: any) {
+    let filtro = e.target.value.trim().toLowerCase();
+    if (filtro.length == 0) {
+      this.vararea = this.varareaTemp;
+    }
+    else {
+      this.vararea = this.varareaTemp.filter((item: any) => {
+        if (item.sigla.toString().toLowerCase().indexOf(filtro) !== -1 ||
+            item.area.toString().toLowerCase().indexOf(filtro) !== -1) {
+            return true;
+        }
+        return false;
+      });
+    }
   }
 
   getListas() {
@@ -141,7 +215,7 @@ export class SiglasComponent implements OnInit {
     }
     else if (tipo == 3) {
       this.areaModal = true;
-      this.model.title = "Crear Área";
+      this.model.title = "Crear Área de Conocimiento";
     }
   }
 
@@ -167,19 +241,25 @@ export class SiglasComponent implements OnInit {
       this.especialidadModal = true;
       this.model.title = "Actualizar Especialidad";
 
-      this.model.varEspecialidad.cuerpo_id = data.especialidad_id;
+      this.model.varEspecialidad.especialidad_id = data.especialidad_id;
       this.model.varEspecialidad.tipo_categoria_id = data.tipo_categoria_id;
       this.model.varEspecialidad.sigla = data.sigla;
       this.model.varEspecialidad.especialidad = data.especialidad;
+      this.model.varEspecialidad.cuerpo_id = data.cuerpo_id;
+
+      this.changeCategoriaEspecialidad(data.tipo_categoria_id);
     }
     else if (tipo == 3) {
       this.areaModal = true;
-      this.model.title = "Actualizar Área";
+      this.model.title = "Actualizar Área de Conocimiento";
 
       this.model.varArea.area_id = data.area_id;
       this.model.varArea.tipo_categoria_id = data.tipo_categoria_id;
       this.model.varArea.sigla = data.sigla;
       this.model.varArea.area = data.area;
+      this.model.varArea.especialidad_id = data.especialidad_id;
+
+      this.changeCategoriaArea(data.tipo_categoria_id);
     }
   }
 
@@ -210,6 +290,7 @@ export class SiglasComponent implements OnInit {
     }
     else if (tipo == 2) {
       this.model.varEspecialidad.tipo_categoria_id = Number(this.model.varEspecialidad.tipo_categoria_id);
+      this.model.varEspecialidad.cuerpo_id = Number(this.model.varEspecialidad.cuerpo_id);
       this.model.varEspecialidad.usuario_creador = this.currentUser.usuario;
       this.model.varEspecialidad.usuario_modificador = this.currentUser.usuario;
 
@@ -233,6 +314,7 @@ export class SiglasComponent implements OnInit {
     }
     else if (tipo == 3) {
       this.model.varArea.tipo_categoria_id = Number(this.model.varArea.tipo_categoria_id);
+      this.model.varArea.especialidad_id = Number(this.model.varArea.especialidad_id);
       this.model.varArea.usuario_creador = this.currentUser.usuario;
       this.model.varArea.usuario_modificador = this.currentUser.usuario;
 
@@ -283,6 +365,7 @@ export class SiglasComponent implements OnInit {
     }
     else if (tipo == 2) {
       this.model.varEspecialidad.tipo_categoria_id = Number(this.model.varEspecialidad.tipo_categoria_id);
+      this.model.varEspecialidad.cuerpo_id = Number(this.model.varEspecialidad.cuerpo_id);
       this.model.varEspecialidad.usuario_creador = this.currentUser.usuario;
       this.model.varEspecialidad.usuario_modificador = this.currentUser.usuario;
 
@@ -307,6 +390,7 @@ export class SiglasComponent implements OnInit {
     }
     else if (tipo == 3) {
       this.model.varArea.tipo_categoria_id = Number(this.model.varArea.tipo_categoria_id);
+      this.model.varArea.especialidad_id = Number(this.model.varArea.especialidad_id);
       this.model.varArea.usuario_creador = this.currentUser.usuario;
       this.model.varArea.usuario_modificador = this.currentUser.usuario;
 
@@ -329,5 +413,17 @@ export class SiglasComponent implements OnInit {
         }
       });
     }
+  }
+
+  changeCategoriaEspecialidad(id: any) {
+    setTimeout(() => {
+      this.lstCuerpo = this.lstCuerpoTemp.filter((x: any) => x.tipo_categoria_id == id);
+    }, 100);
+  }
+
+  changeCategoriaArea(id: any) {
+    setTimeout(() => {
+      this.lstEspecialidad = this.lstEspecialidadTemp.filter((x: any) => x.tipo_categoria_id == id);
+    }, 100);
   }
 }
