@@ -62,6 +62,7 @@ export class RutaComponent implements OnInit {
   viewCargoModal: any;
   piramideModal: any;
   detalleModal: any;
+  loader = false;
 
   varhistorial: any = [];
   varhistorialTemp: any = [];
@@ -106,12 +107,11 @@ export class RutaComponent implements OnInit {
     }
   ];
 
-  datasource1: any = [];
-
   datasource = {
     'id': '1',
     'name': 'Cargo (Cargo 1)',
     'className': 'confianza',
+    'parent_id': null,
     'children': [
       { 
         'id': '2',
@@ -123,11 +123,13 @@ export class RutaComponent implements OnInit {
             'name': 'Cargo (Cargo 3)',
             'parent_id': '2',
             'className': 'clave',
+            'children': []
           },
           { 
             'name': 'Cargo (Cargo 4)',
             'parent_id': '2',
-            'className': 'critico'
+            'className': 'critico',
+            'children': []
           }
         ]
       },
@@ -136,6 +138,7 @@ export class RutaComponent implements OnInit {
         'name': 'Cargo (Cargo 5)',
         'parent_id': '1',
         'className': 'confianza',
+        'children': []
       },
       { 
         'id': '4',
@@ -145,17 +148,21 @@ export class RutaComponent implements OnInit {
           { 
             'name': 'Cargo (Cargo 7)',
             'parent_id': '4',
-            'className': 'confianza'
+            'className': 'confianza',
+            'children': []
           },
           { 
             'name': 'Cargo (Cargo 8)',
             'parent_id': '4',
-            'className': 'clave'
+            'className': 'clave',
+            'children': []
           }
         ]
       }
     ]
   };
+
+  datasource1: any = [];
 
   varPiramide1: any = [];
   varPiramide2: any = [];
@@ -193,6 +200,7 @@ export class RutaComponent implements OnInit {
     this.getAreasFull();
     this.getCargosFull();
     this.getGradosFull();
+    this.getCuerposEspecialidadesAreasRutaCarrera();
     this.getListas();
   }
 
@@ -291,6 +299,15 @@ export class RutaComponent implements OnInit {
         this.vargradoSubOficial = response.result.filter((x: any) => x.categoria_id == 6);
       }
     });
+  }
+
+  getCuerposEspecialidadesAreasRutaCarrera() {
+    this.ruta.getCuerposEspecialidadesAreasRutaCarrera().subscribe(data => {
+      let response: any = this.api.ProcesarRespuesta(data);
+      if (response.tipo == 0) {
+        console.log(response.result);
+      }
+    })
   }
 
   getListas() {
@@ -412,7 +429,6 @@ export class RutaComponent implements OnInit {
     this.ruta.getCargosByRutas(this.model.varConsulta).subscribe(data => {
       let response: any = this.api.ProcesarRespuesta(data);
       if (response.tipo == 0) {
-        console.log(JSON.stringify(response.result));
         this.datasource1 = response.result;
       }
     });
@@ -443,10 +459,15 @@ export class RutaComponent implements OnInit {
         $node.on('click', function() {
           th.viewCargoModal = true;
           th.tituloCargo = data.name;
-          th.ruta.getDetalleCargoRutaCarrera({cargo_id: Number(data.cargo_id)}).subscribe(data1 => {
+          th.ruta.getDetalleCargoRutaCarrera({cargo_id: Number(data.id)}).subscribe(data1 => {
             let response: any = th.api.ProcesarRespuesta(data1);
             if (response.tipo == 0) {
-              $('#textcargo').html(response.result[0].detalle);
+              if (response.result.length != 0) {
+                $('#textcargo').html(response.result[0].detalle);
+              }
+              else {
+                $('#textcargo').html('No hay información.');
+              }
             }
           });
         });
@@ -595,6 +616,8 @@ export class RutaComponent implements OnInit {
             element.tipo_cargo_id = Number(element.tipo_cargo_id);
             element.grado_id = Number(element.grado_id);
 
+            if (element.grado_id == 0) element.grado_id = null;
+
             if (element.NuevoRegistro == true)
               this.ruta.createRutas(element).subscribe(data1 => {});
 
@@ -645,6 +668,8 @@ export class RutaComponent implements OnInit {
             element.cargo_prev_id = Number(element.cargo_prev_id);
             element.tipo_cargo_id = Number(element.tipo_cargo_id);
             element.grado_id = Number(element.grado_id);
+
+            if (element.grado_id == 0) element.grado_id = null;
 
             if (element.NuevoRegistro == true) {
               this.ruta.createRutas(element).subscribe(data1 => {});

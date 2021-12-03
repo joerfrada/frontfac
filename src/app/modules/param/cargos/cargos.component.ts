@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ɵclearResolutionOfComponentResourcesQueue } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from '../../../services/api.service';
 import { CargoService } from '../../../services/modules/cargo.service';
@@ -116,6 +116,7 @@ export class CargosComponent implements OnInit {
   varcategoria: any = [];
   varcargoruta: any = [];
 
+  lstCargos: any = [];
   lstGrados: any = [];
   vargradoOficial: any = [];
   vargradoSubOficial: any = [];
@@ -184,7 +185,6 @@ export class CargosComponent implements OnInit {
     else {
       this.varhistorial = this.varhistorialTemp.filter((item: any) => {
         if (item.cargo.toString().toLowerCase().indexOf(filtro) !== -1 ||
-            item.descripcion.toString().toLowerCase().indexOf(filtro) !== -1 ||
             item.clase_cargo.toString().toLowerCase().indexOf(filtro) !== -1 ||
             item.categoria.toString().toLowerCase().indexOf(filtro) !== -1) {
             return true;
@@ -202,13 +202,15 @@ export class CargosComponent implements OnInit {
     this.cargo.getCargos(json).subscribe(data => {
       let response: any = this.api.ProcesarRespuesta(data);
       if (response.tipo == 0) {
-        response.result.forEach((element: any) => {
-          if (element.descripcion == null) {
-            element.descripcion = 'x';
-          }
-        });
         this.varhistorial = response.result;
         this.varhistorialTemp = response.result;
+      }
+    })
+
+    this.cargo.getCargosFull().subscribe(data => {
+      let response: any = this.api.ProcesarRespuesta(data);
+      if (response.tipo == 0) {
+        this.lstCargos = response.result;
       }
     })
 
@@ -291,13 +293,14 @@ export class CargosComponent implements OnInit {
     this.configModal = true;
     this.model.grado = data.descripcion;
     this.model.varConfiguracion.cargo_grado_id = data.cargo_grado_id;
+    console.log(data);
 
     if (data.cargo_grado_id != 0 && data.cargo_grado_id != null) {
       this.cargo.getCargosConfiguracion({cargo_grado_id: data.cargo_grado_id}).subscribe(data => {
         let response: any = this.api.ProcesarRespuesta(data);
         if (response.tipo == 0) {
           console.log(response.result);
-          if (response.result.length > 0) {
+          if (response.result.length != 0) {
             let cargo = response.result[0];
             this.model.varConfiguracion.cargo_configuracion_id = cargo.cargo_configuracion_id;
             this.model.varConfiguracion.puesto_cantidad = cargo.puesto_cantidad;
@@ -326,6 +329,35 @@ export class CargosComponent implements OnInit {
             this.model.varConfiguracion.competencia4 = cargo.competencia4;
             this.model.varConfiguracion.competencia5 = cargo.competencia5;
             this.model.varConfiguracion.observaciones = cargo.observaciones;
+          }
+          else {
+            this.model.varConfiguracion.cargo_configuracion_id = 0;
+            this.model.varConfiguracion.puesto_cantidad = 0;
+            this.model.varConfiguracion.cargo_jefe_inmediato_id = 0;
+            this.model.varConfiguracion.cargo_jefe_inmediato = "";
+            this.model.varConfiguracion.nivel1 = 0;
+            this.model.varConfiguracion.nivel2 = 0;
+            this.model.varConfiguracion.nivel3 = 0;
+            this.model.varConfiguracion.nivel4 = 0;
+            this.model.varConfiguracion.nivel5 = 0;
+            this.model.varConfiguracion.duracion = 0;
+            this.model.varConfiguracion.requisito_cargo = "";
+            this.model.varCuerpo.cuerpo = "";
+            this.model.varEspecialidad.especialidad = "";
+            this.model.varArea.area = "cargo.area";
+            this.model.varEducacion.educacion = "";
+            this.model.varConocimiento.conocimiento = "";
+            this.model.varConfiguracion.experiencia1 = 0;
+            this.model.varConfiguracion.experiencia2 = 0;
+            this.model.varConfiguracion.experiencia3 = 0;
+            this.model.varConfiguracion.experiencia4 = 0;
+            this.model.varConfiguracion.experiencia5 = 0;
+            this.model.varConfiguracion.competencia1 = 0;
+            this.model.varConfiguracion.competencia2 = 0;
+            this.model.varConfiguracion.competencia3 = 0;
+            this.model.varConfiguracion.competencia4 = 0;
+            this.model.varConfiguracion.competencia5 = 0;
+            this.model.varConfiguracion.observaciones = "";
           }
         }
       });

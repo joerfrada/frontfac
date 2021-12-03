@@ -59,7 +59,7 @@
     </div>
 </div>
 
-<app-modal [title]="model.title" [show]="modal" [size]="'modal-md'" (close)="closeModal($event)">
+<app-modal [title]="model.title" [show]="modal" [size]="'modal-md-w'" (close)="closeModal($event)">
     <div role="body">
         <div class="inner-col">
             <div class="col col25">
@@ -165,7 +165,7 @@
                             <th>Cargo</th>
                             <th>Cargo Previo</th>
                             <th>Tipo Cargo</th>
-                            <th>Grado</th>
+                            <!-- <th>Grado</th> -->
                             <th>Activo</th>
                             <th>Acciones</th>
                         </tr>
@@ -190,12 +190,12 @@
                                     <option *ngFor="let item of varcargoruta" value="{{item.id}}">{{item.detalle}}</option>
                                 </select>
                             </td>
-                            <td>
+                            <!-- <td>
                                 <select [(ngModel)]="varruta[i].grado_id">
                                     <option value="0">Seleccionar</option>
                                     <option *ngFor="let item of vargrado" value="{{item.grado_id}}">{{item.grado}} - {{item.descripcion}}</option>
                                 </select>
-                            </td>
+                            </td> -->
                             <td>
                                 <div class="table-checkbox-component">
                                     <label>
@@ -280,7 +280,7 @@
     </div>
 </app-modal>
 
-<workflow-modal [title]="'Workflow'" [show]="workflowModal" [size]="'modal-md-3'" (close)="closeWorkflowModal($event)">
+<workflow-modal [title]="'Ruta de Carrera'" [show]="workflowModal" [size]="'modal-md-3'" (close)="closeWorkflowModal($event)">
     <div id="chart-container"></div>
 </workflow-modal>
 

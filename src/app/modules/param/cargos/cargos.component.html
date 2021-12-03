@@ -61,7 +61,7 @@
 <app-modal [title]="model.title" [show]="modal" [size]="'modal-md'" (close)="closeModal($event)">
     <div role="body">
         <div class="inner-col">
-            <div class="col col25">
+            <div class="col col75">
                 <div class="label-row">Cargo</div>
                 <input type="text" [(ngModel)]="model.varCargo.cargo">
             </div>
@@ -182,10 +182,11 @@
                         </div>
                         <div class="col col50">
                             <div class="label-row">Cargo Jefe Inmediato</div>
-                            <!-- <select>
+                            <select [(ngModel)]="model.varConfiguracion.cargo_jefe_inmediato_id">
                                 <option value="0">Seleccionar</option>
-                            </select> -->
-                            <input type="text" [(ngModel)]="model.varConfiguracion.cargo_jefe_inmediato">
+                                <option *ngFor="let item of lstCargos" value="{{item.cargo_id}}">{{item.cargo}}</option>
+                            </select>
+                            <!-- <input type="text" [(ngModel)]="model.varConfiguracion.cargo_jefe_inmediato"> -->
                         </div>
 
                         <div class="col col100 title-row">Ubicaciones de Cargo</div>
