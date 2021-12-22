@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
+declare var swal:any;
 declare var $:any;
 
 @Component({
@@ -13,13 +14,14 @@ export class SelectListModalComponent implements OnInit {
   @Input() title?: String;
   @Input() size?: String;
   @Input() items?: any;
+  @Input() itemsTemp?: any;
   @Input() selectedItems?: any;
-  @Input() index?: any
   @Output() close = new EventEmitter<Boolean>();
   @Output() output = new EventEmitter<any>();
 
   selectedToAdd: any;
   selectedToRemove: any;
+  i = 0;
 
   constructor() { }
 
@@ -29,12 +31,41 @@ export class SelectListModalComponent implements OnInit {
     this.close.emit(false);
   }
 
+  search(e: any) {
+    let filter = e.target.value.trim().toLowerCase();
+    if (filter.length == 0) {
+      this.items = this.itemsTemp;
+    }
+    else {
+      this.items = this.itemsTemp.filter((item: any) => {
+        if (item.descr.toString().toLowerCase().indexOf(filter) !== -1 ||
+            item.sigla.toString().toLowerCase().indexOf(filter) !== -1) {
+              return true;
+            }
+        return false;
+      });
+    }
+  }
+
   btnRight() {
-    this.selectedItems = this.selectedItems.concat(this.selectedToAdd);
-    this.items = this.items.filter((selectedData: any) => {
-      return this.selectedItems.indexOf(selectedData) < 0;
-    });
-    this.selectedToAdd = [];
+    this.i = this.i + 1;
+    
+    if (this.i > 5) {
+      swal({
+        title: 'ADVERTENCIA',
+        text: "Puede seleccionar hasta 5 opciones solamente",
+        allowOutsideClick: false,
+        showConfirmButton: true,
+        type: 'warning'
+      });
+    }
+    else {
+      this.selectedItems = this.selectedItems.concat(this.selectedToAdd);
+      this.items = this.items.filter((selectedData: any) => {
+        return this.selectedItems.indexOf(selectedData) < 0;
+      });
+      this.selectedToAdd = [];
+    }
   }
 
   btnLeft() {
@@ -46,7 +77,7 @@ export class SelectListModalComponent implements OnInit {
   }
 
   saveModal() {
-    this.output.emit(this.selectedItems.filter((x: any) => x.indice == this.index));
+    this.output.emit(this.selectedItems);
     this.closeModal();
   }
 }

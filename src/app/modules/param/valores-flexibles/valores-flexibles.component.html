@@ -114,7 +114,7 @@
                     <thead>
                         <tr>
                             <th>Lista Dinámica</th>
-                            <th>Descripción</th>
+                            <th>Definición</th>
                             <th>Padre</th>
                             <th>Activo</th>
                             <th>Acciones</th>
@@ -146,16 +146,12 @@
     </div>
 </app-modal>
 
-<app-modal [title]="model.title" [show]="editValorModal" [size]="'modal-sm'" (close)="closeEditarValorModal($event)">
+<app-modal [title]="model.title" [show]="editValorModal" [size]="'modal-tm-2'" (close)="closeEditarValorModal($event)">
     <div role="body">
         <div class="inner-col">
             <div class="col col33">
                 <div class="label-row">Nombre</div>
                 <input type="text" [(ngModel)]="model.varListaDinamica.lista_dinamica">
-            </div>
-            <div class="col col33">
-                <div class="label-row">Descripción</div>
-                <input type="text" [(ngModel)]="model.varListaDinamica.descripcion">
             </div>
             <div class="col col33">
                 <div class="label-row">Lista Padre</div>
@@ -172,6 +168,10 @@
                         <span class="checkmark"></span>
                     </label>
                 </div>
+            </div>
+            <div class="col col100">
+                <div class="label-row">Definición</div>
+                <textarea rows="4" cols="40" [(ngModel)]="model.varListaDinamica.descripcion"></textarea>
             </div>
         </div>
     </div>

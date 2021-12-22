@@ -13,6 +13,7 @@ export class GradoService {
   private apiGetGrados = this.api.getBaseUrl + "grado/getGrados";
   private apiCreateGrados = this.api.getBaseUrl + "grado/crearGrados";
   private apiUpdateGrados = this.api.getBaseUrl + "grado/actualizarGrados";
+  private apiGetDetalleGrados = this.api.getBaseUrl + "grado/getDetalleGrados";
 
   constructor(private http: HttpClient, private api: ApiService) { }
 
@@ -33,6 +34,11 @@ export class GradoService {
 
   public updateGrados(data: any): Observable<any> {
     return this.http.post<any>(this.apiUpdateGrados, JSON.stringify(data), this.api.getHttpOptions('g'))
+    .pipe(retry(1), catchError(this.api.errorHandle));
+  }
+
+  public getDetalleGrados(data: any): Observable<any> {
+    return this.http.post<any>(this.apiGetDetalleGrados, JSON.stringify(data), this.api.getHttpOptions('g'))
     .pipe(retry(1), catchError(this.api.errorHandle));
   }
 }

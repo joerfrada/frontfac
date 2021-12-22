@@ -120,7 +120,6 @@
                                 </select>
                             </td>
                             <td class="table-buttons-action">
-                                <button *ngIf="model.tipo == 'C' && item.NuevoRegistro == true" type="button" class="button btn-default">Configuración</button>
                                 <button *ngIf="model.tipo == 'U' && item.NuevoRegistro != true" type="button" class="button btn-default" (click)="editConfigModal(item)">Configuración</button>
                             </td>
                             <td>
@@ -260,9 +259,9 @@
                                 <button type="button" class="btn-select btn-select-red pointer" style="margin-bottom: 10px;" (click)="openCuerpoSelect()">
                                     <i class="fa fa-plus"></i>
                                 </button>
-                                <button type="button" class="btn-select btn-select-blue pointer" style="margin-bottom: 10px;">
+                                <!-- <button type="button" class="btn-select btn-select-blue pointer" style="margin-bottom: 10px;">
                                     <i class="fa fa-minus"></i>
-                                </button>
+                                </button> -->
                             </div>
                         </div>
                         <div class="col col100 title-row">Especialidades</div>
@@ -275,9 +274,9 @@
                                 <button type="button" class="btn-select btn-select-red pointer" style="margin-bottom: 10px;" (click)="openEspecialidadSelect()">
                                     <i class="fa fa-plus"></i>
                                 </button>
-                                <button type="button" class="btn-select btn-select-blue pointer" style="margin-bottom: 10px;">
+                                <!-- <button type="button" class="btn-select btn-select-blue pointer" style="margin-bottom: 10px;">
                                     <i class="fa fa-minus"></i>
-                                </button>
+                                </button> -->
                             </div>
                         </div>
                         <div class="col col100 title-row">Áreas de Conocimiento</div>
@@ -290,9 +289,9 @@
                                 <button type="button" class="btn-select btn-select-red pointer" style="margin-bottom: 10px;" (click)="openAreaSelect()">
                                     <i class="fa fa-plus"></i>
                                 </button>
-                                <button type="button" class="btn-select btn-select-blue pointer" style="margin-bottom: 10px;">
+                                <!-- <button type="button" class="btn-select btn-select-blue pointer" style="margin-bottom: 10px;">
                                     <i class="fa fa-minus"></i>
-                                </button>
+                                </button> -->
                             </div>
                         </div>
                     </div>
@@ -307,9 +306,9 @@
                                 <button type="button" class="btn-select btn-select-red pointer" style="margin-bottom: 10px;" (click)="openEducacionSelect()">
                                     <i class="fa fa-plus"></i>
                                 </button>
-                                <button type="button" class="btn-select btn-select-blue pointer" style="margin-bottom: 10px;">
+                                <!-- <button type="button" class="btn-select btn-select-blue pointer" style="margin-bottom: 10px;">
                                     <i class="fa fa-minus"></i>
-                                </button>
+                                </button> -->
                             </div>
                         </div>
                         <div class="col col100 title-row">Conocimientos Adicionales</div>
@@ -322,67 +321,43 @@
                                 <button type="button" class="btn-select btn-select-red pointer" style="margin-bottom: 10px;" (click)="openConocimientoSelect()">
                                     <i class="fa fa-plus"></i>
                                 </button>
-                                <button type="button" class="btn-select btn-select-blue pointer" style="margin-bottom: 10px;">
+                                <!-- <button type="button" class="btn-select btn-select-blue pointer" style="margin-bottom: 10px;">
                                     <i class="fa fa-minus"></i>
-                                </button>
+                                </button> -->
                             </div>
                         </div>
                     </div>
                     <div class="tabs-content" *ngIf="tab === 4">
-                        <div class="col col25">
-                            <div class="label-row">Experiencia de Conocimiento</div>
-                            <select [(ngModel)]="model.varConfiguracion.experiencia1">
-                                <option value="0">Seleccionar</option>
-                                <option *ngFor="let item of varexperiencia" value="{{item.id}}">{{item.detalle}}</option>
-                            </select>
+                        <div class="col col100 title-row">Experiencia de Conocimiento</div>
+                        <div class="line-col"></div>
+                        <div class="col col100">
+                            <div class="col col95">
+                                <textarea rows="4" cols="80" [(ngModel)]="model.varExperiencia.experiencia"></textarea>
+                            </div>
+                            <div class="col col5">
+                                <button type="button" class="btn-select btn-select-red pointer" style="margin-bottom: 10px;" (click)="openExperienciaSelect()">
+                                    <i class="fa fa-plus"></i>
+                                </button>
+                                <!-- <button type="button" class="btn-select btn-select-blue pointer" style="margin-bottom: 10px;">
+                                    <i class="fa fa-minus"></i>
+                                </button> -->
+                            </div>
                         </div>
-                        <!-- <div class="col col20">
-                            <select [(ngModel)]="model.varConfiguracion.experiencia2">
-                                <option value="0">Seleccionar</option>
-                            </select>
+                        <div class="col col100 title-row">Competencias Requeridas</div>
+                        <div class="line-col"></div>
+                        <div class="col col100">
+                            <div class="col col95">
+                                <textarea rows="4" cols="80" [(ngModel)]="model.varCompetencia.competencia"></textarea>
+                            </div>
+                            <div class="col col5">
+                                <button type="button" class="btn-select btn-select-red pointer" style="margin-bottom: 10px;" (click)="openCompetenciaSelect()">
+                                    <i class="fa fa-plus"></i>
+                                </button>
+                                <!-- <button type="button" class="btn-select btn-select-blue pointer" style="margin-bottom: 10px;">
+                                    <i class="fa fa-minus"></i>
+                                </button> -->
+                            </div>
                         </div>
-                        <div class="col col20">
-                            <select [(ngModel)]="model.varConfiguracion.experiencia3">
-                                <option value="0">Seleccionar</option>
-                            </select>
-                        </div>
-                        <div class="col col20">
-                            <select [(ngModel)]="model.varConfiguracion.experiencia4">
-                                <option value="0">Seleccionar</option>
-                            </select>
-                        </div>
-                        <div class="col col20">
-                            <select [(ngModel)]="model.varConfiguracion.experiencia5">
-                                <option value="0">Seleccionar</option>
-                            </select>
-                        </div> -->
-                        <div class="col col25">
-                            <div class="label-row">Competencias Requeridas</div>
-                            <select [(ngModel)]="model.varConfiguracion.competencia1">
-                                <option value="0">Seleccionar</option>
-                                <option *ngFor="let item of varcompetencia" value="{{item.id}}">{{item.detalle}}</option>
-                            </select>
-                        </div>
-                        <!-- <div class="col col20">
-                            <select [(ngModel)]="model.varConfiguracion.competencia2">
-                                <option value="0">Seleccionar</option>
-                            </select>
-                        </div>
-                        <div class="col col20">
-                            <select [(ngModel)]="model.varConfiguracion.competencia3">
-                                <option value="0">Seleccionar</option>
-                            </select>
-                        </div>
-                        <div class="col col20">
-                            <select [(ngModel)]="model.varConfiguracion.competencia4">
-                                <option value="0">Seleccionar</option>
-                            </select>
-                        </div>
-                        <div class="col col20">
-                            <select [(ngModel)]="model.varConfiguracion.competencia5">
-                                <option value="0">Seleccionar</option>
-                            </select>
-                        </div> -->
                         <div class="col col100 title-row">Observaciones Generales</div>
                         <div class="line-col"></div>
                         <div class="col col100">
@@ -395,17 +370,76 @@
     </div>
     <div role="footer">
         <button type="button" class="btn btn-red" (click)="closeConfigModal(false)">Cerrar</button>
-        <button *ngIf="model.tipo == 'C'" type="button" class="btn btn-blue" (click)="saveConfiguracion()">Guardar</button>
-        <button *ngIf="model.tipo == 'U'" type="button" class="btn btn-blue" (click)="updateConfiguracion()">Actualizar</button>
+        <button type="button" class="btn btn-blue" (click)="saveConfiguracion()">Guardar</button>
     </div>
 </app-modal>
 
-<app-select-list-modal [title]="titleSelect"
-    [items]="varitems"
-    [selectedItems]="varselectedItems"
-    [index]="indexform"
-    [show]="selectModal"
+<app-select-list-modal [title]="'Cuerpos'"
+    [items]="varcuerpoitems"
+    [itemsTemp]="varcuerpoitems"
+    [selectedItems]="varcuerposelectedItems"
+    [show]="selectCuerpoModal"
     [size]="'modal-select-list'"
-    (output)="saveSelected($event, indexform)"
-    (close)="closeSelectModal($event)">
+    (output)="saveCuerpoSelected($event)"
+    (close)="closeCuerpoSelectModal($event)">
+</app-select-list-modal>
+
+<app-select-list-modal [title]="'Especialidades'"
+    [items]="varespecialidaditems"
+    [itemsTemp]="varespecialidaditems"
+    [selectedItems]="varespecialidadselectedItems"
+    [show]="selectEspecialidadModal"
+    [size]="'modal-select-list'"
+    (output)="saveEspecialidadSelected($event)"
+    (close)="closeEspecialidadSelectModal($event)">
+</app-select-list-modal>
+
+<app-select-list-modal [title]="'Áreas'"
+    [items]="varareaitems"
+    [itemsTemp]="varareaitems"
+    [selectedItems]="varareaselectedItems"
+    [show]="selectAreaModal"
+    [size]="'modal-select-list'"
+    (output)="saveAreaSelected($event)"
+    (close)="closeAreaSelectModal($event)">
+</app-select-list-modal>
+
+<app-select-list-modal [title]="'Educación'"
+    [items]="vareducacionitems"
+    [itemsTemp]="vareducacionitems"
+    [selectedItems]="vareducacionselectedItems"
+    [show]="selectEducacionModal"
+    [size]="'modal-select-list'"
+    (output)="saveEducacionSelected($event)"
+    (close)="closeEducacionSelectModal($event)">
+</app-select-list-modal>
+
+<app-select-list-modal [title]="'Conocimientos'"
+    [items]="varconocimientoitems"
+    [itemsTemp]="varconocimientoitems"
+    [selectedItems]="varconocimientoselectedItems"
+    [show]="selectConocimientoModal"
+    [size]="'modal-select-list'"
+    (output)="saveConocimientoSelected($event)"
+    (close)="closeConocimientoSelectModal($event)">
+</app-select-list-modal>
+
+<app-select-list-modal [title]="'Experiencia de Conocimiento'"
+    [items]="varexperienciaitems"
+    [itemsTemp]="varexperienciaitems"
+    [selectedItems]="varexperienciaselectedItems"
+    [show]="selectExperienciaModal"
+    [size]="'modal-select-list'"
+    (output)="saveExperienciaSelected($event)"
+    (close)="closeExperienciaSelectModal($event)">
+</app-select-list-modal>
+
+<app-select-list-modal [title]="'Competencias Requeridas'"
+    [items]="varcompetenciaitems"
+    [itemsTemp]="varcompetenciaitems"
+    [selectedItems]="varcompetenciaselectedItems"
+    [show]="selectCompetenciaModal"
+    [size]="'modal-select-list'"
+    (output)="saveCompetenciaSelected($event)"
+    (close)="closeCompetenciaSelectModal($event)">
 </app-select-list-modal>

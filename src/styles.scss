@@ -542,6 +542,34 @@ a {
     }
 }
 
+#modal-md-4 {
+    .modal-box {
+        width: 90vw;
+    }
+
+    .modal-box-centered {
+        min-height: calc(100% - 10.5rem);
+    }
+
+    .modal-box-scrollable {
+        height: calc(100% - 10.5rem);
+    }
+}
+
+#modal-md-5 {
+    .modal-box {
+        width: 40vw;
+    }
+
+    .modal-box-centered {
+        min-height: calc(100% - 8.5rem);
+    }
+
+    .modal-box-scrollable {
+        height: calc(100% - 8.5rem);
+    }
+}
+
 #modal-md-w {
     .modal-box {
         width: 80vw;
@@ -1547,6 +1575,36 @@ textarea {
     margin-right: auto;
 }
 
+.select-filter {
+    height: 40px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+
+    input[type=search] {
+        display: inline-block;      
+        text-align: left;
+        white-space: nowrap;
+        vertical-align: middle;
+        border: 1px solid transparent;
+        padding: 3px;
+        font-size: 1rem;
+        line-height: 1.5;
+        border-radius: .25rem;
+        background: #f0f0f0;
+        text-indent: 10px;
+        width: 43%;
+
+        &:focus {
+            outline: 0;
+            border-color: rgba(0, 0, 0, 0.2);
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+        }
+    }
+}
+
 .select-container {
     display: flex;
     flex-wrap: wrap;
@@ -1650,7 +1708,7 @@ textarea {
         width: 90vw;
     }
 
-    #modal-tm .modal-box {
+    #modal-tm .modal-box, #modal-tm2 .modal-box {
         width: 60vw;
     }
 
@@ -1663,7 +1721,11 @@ textarea {
     }
 
     #modal-tm .modal-box-scrollable, #modal-tm .modal-box-centered {
-        height: calc(100% - 27.5rem);
+        height: calc(100% - 15.5rem);
+    }
+
+    #modal-tm2 .modal-box-scrollable, #modal-tm2 .modal-box-centered {
+        height: calc(100% - 10.5rem);
     }
 
     #modal-tm .btn {

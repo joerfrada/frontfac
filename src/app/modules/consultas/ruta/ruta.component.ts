@@ -7,18 +7,10 @@ import { EspecialidadService } from '../../../services/modules/especialidad.serv
 import { AreaService } from '../../../services/modules/area.service';
 import { CargoService } from '../../../services/modules/cargo.service';
 import { GradoService } from '../../../services/modules/grado.service';
+// import { Utilidades } from '../../../helper/utilidades';
 
 declare var $:any;
 declare var swal:any;
-
-export function replace(input: string) {
-  var newline = String.fromCharCode(13, 10);
-  return replaceAll(input, "<br />", newline.toString());
-}
-
-export function replaceAll(str: any, find: any, replace: any) {
-  return str.replace(new RegExp(find, 'g'), replace);
-}
 
 export class Model {
   title = "";
@@ -42,8 +34,31 @@ export class Model {
 
   varConsulta: any = {
     especialidad_id: 0,
-    tipo_ruta_id: 0
+    tipo_ruta_id: 0,
+    categoria_id: 0
   }
+
+  varDetalleCargo: any = {
+    cargo_id: 0,
+    cargo: "",
+    categoria: "",
+    clase_cargo: "",
+    cargo_ruta: "",
+    descripcion: ""
+  }
+
+  varDetalleGrado: any = {
+    grado_id: 0,
+    grado: "",
+    descripcion: "",
+    duracion: 0,
+    nivel_id: 0,
+    nivel: "",
+    grado_previo_id: 0,
+    grado_previo: "",
+    categoria_id: 0,
+    categoria: ""
+  };
 }
 
 @Component({
@@ -62,6 +77,8 @@ export class RutaComponent implements OnInit {
   viewCargoModal: any;
   piramideModal: any;
   detalleModal: any;
+  detalleCargoModal: any;
+  detalleGradoModal: any;
   loader = false;
 
   varhistorial: any = [];
@@ -90,6 +107,7 @@ export class RutaComponent implements OnInit {
   vargradoSubOficial: any = [];
 
   lstEspecialidad: any = [];
+  lstGrados: any = [];
 
   tipo_categoria_id: any;
   especialidad_id: any;
@@ -201,6 +219,7 @@ export class RutaComponent implements OnInit {
     this.getCargosFull();
     this.getGradosFull();
     this.getCuerposEspecialidadesAreasRutaCarrera();
+    this.getEspecialidadesRutas();
     this.getListas();
   }
 
@@ -240,7 +259,6 @@ export class RutaComponent implements OnInit {
         });
         this.varhistorial = response.result;
         this.varhistorialTemp = response.result;
-        this.lstEspecialidad = response.result;
       }
     });
   }
@@ -297,6 +315,7 @@ export class RutaComponent implements OnInit {
       if (response.tipo == 0) {
         this.vargradoOficial = response.result.filter((x: any) => x.categoria_id == 5);
         this.vargradoSubOficial = response.result.filter((x: any) => x.categoria_id == 6);
+        this.lstGrados = response.result;
       }
     });
   }
@@ -308,6 +327,15 @@ export class RutaComponent implements OnInit {
         console.log(response.result);
       }
     })
+  }
+
+  getEspecialidadesRutas() {
+    this.ruta.getEspecialidadesRutas().subscribe(data => {
+      let response: any = this.api.ProcesarRespuesta(data);
+      if (response.tipo == 0) {
+        this.lstEspecialidad = response.result;
+      }
+    });
   }
 
   getListas() {
@@ -420,20 +448,42 @@ export class RutaComponent implements OnInit {
   }
 
   openWorkflow() {
-    this.workflowModal = true;
-    this.consultaModal = false;
+    // this.workflowModal = true;
+    // this.consultaModal = false;
 
     this.model.varConsulta.especialidad_id = Number(this.model.varConsulta.especialidad_id);
     this.model.varConsulta.tipo_ruta_id = Number(this.model.varConsulta.tipo_ruta_id);
+    this.model.varConsulta.categoria_id = Number(this.model.varConsulta.categoria_id);
 
     this.ruta.getCargosByRutas(this.model.varConsulta).subscribe(data => {
       let response: any = this.api.ProcesarRespuesta(data);
       if (response.tipo == 0) {
-        this.datasource1 = response.result;
+        // console.log(response.result);
+        if (response.result != false) {
+          this.workflowModal = true;
+          this.consultaModal = false;
+
+          this.datasource1 = response.result;
+
+          setTimeout(() => { this.orgchartinit(); }, 1000);
+        }
+        else {
+          swal({
+            title: 'ERROR',
+            text: 'No se encuentra la información.',
+            allowOutsideClick: false,
+            showConfirmButton: true,
+            type: 'error'
+          }).then((result: any) => {
+            this.model.varConsulta.categoria_id = 0;
+            this.model.varConsulta.especialidad_id = 0;
+            this.model.varConsulta.tipo_ruta_id = 0;
+          });
+        }
       }
     });
 
-    setTimeout(() => { this.orgchartinit(); }, 1000);
+    // setTimeout(() => { this.orgchartinit(); }, 1000);
   }
 
   closeWorkflowModal(bol: any) {
@@ -441,12 +491,12 @@ export class RutaComponent implements OnInit {
     this.reload();
   }
 
-  orgchartinit() {
+  orgchartinit() {
     let th = this;
     let nodeTemplate = function(data: any) {
       return `
         <div class="title">
-          ${data.name}
+          ${data.cargo} (${data.grado})
           <i class="icon fas fa-1mx fa-arrow-circle-right pointer noselect"></i>
         </div>
       `;
@@ -458,8 +508,8 @@ export class RutaComponent implements OnInit {
       'createNode': function($node: any, data: any) {
         $node.on('click', function() {
           th.viewCargoModal = true;
-          th.tituloCargo = data.name;
-          th.ruta.getDetalleCargoRutaCarrera({cargo_id: Number(data.id)}).subscribe(data1 => {
+          th.tituloCargo = data.cargo + ' (' + data.grado + ')';
+          th.ruta.getDetalleCargoRutaCarrera({cargo_id: Number(data.cargo_id),grado_id: Number(data.grado_id)}).subscribe(data1 => {
             let response: any = th.api.ProcesarRespuesta(data1);
             if (response.tipo == 0) {
               if (response.result.length != 0) {
@@ -470,6 +520,16 @@ export class RutaComponent implements OnInit {
               }
             }
           });
+          th.cargo.getDetalleCargos({cargo_id: Number(data.cargo_id)}).subscribe(data1 => {
+            let response: any = th.api.ProcesarRespuesta(data1);
+            if (response.tipo == 0) {
+              th.model.varDetalleCargo.cargo = response.result[0].cargo;
+              th.model.varDetalleCargo.categoria = response.result[0].categoria;
+              th.model.varDetalleCargo.clase_cargo = response.result[0].clase_cargo;
+              th.model.varDetalleCargo.cargo_ruta = response.result[0].cargo_ruta;
+              th.model.varDetalleCargo.descripcion = response.result[0].descripcion;
+            }
+          })
         });
       }
     });
@@ -517,17 +577,34 @@ export class RutaComponent implements OnInit {
     });
   }
 
-  openDetalleGrado(dato: any) {
+  openDetalleGrado(data: any) {
     this.detalleModal = true;
     this.titleDetalle = "Detalle Grado";
 
-    this.ruta.getGradosDetalleCargo({ ruta_carrera_id: dato.ruta_carrera_id, grado_id: dato.grado_id }).subscribe(data => {
+    this.ruta.getGradosDetalleCargo({ ruta_carrera_id: data.ruta_carrera_id, grado_id: data.grado_id }).subscribe(data => {
       let response: any = this.api.ProcesarRespuesta(data);
       if (response.tipo == 0) {
         this.detalle = response.result.map((x: any) => x.detalle).join('<br />');
         $('#text').html(this.detalle);
       }
     });
+
+    // this.grado.getDetalleGrados({grado_id: data.grado_id}).subscribe(data1 => {
+    //   let response: any = this.api.ProcesarRespuesta(data1);
+    //   if (response.tipo == 0) {
+    //     var dato = response.result[0];
+    //     this.model.varDetalleGrado.grado_id = dato.grado_id;
+    //     this.model.varDetalleGrado.grado = dato.grado;
+    //     this.model.varDetalleGrado.descripcion = dato.descripcion;
+    //     this.model.varDetalleCargo.duracion = dato.duracion;
+    //     this.model.varDetalleGrado.grado_previo_id = dato.grado_previo_id;
+    //     this.model.varDetalleGrado.grado_previo = dato.grado_previo;
+    //     this.model.varDetalleGrado.nivel_id = dato.nivel_id;
+    //     this.model.varDetalleGrado.nivel = dato.nivel;
+    //     this.model.varDetalleGrado.categoria_id = dato.categoria_id;
+    //     this.model.varDetalleGrado.categoria = dato.categoria;
+    //   }
+    // })
   }
   
 
@@ -544,7 +621,7 @@ export class RutaComponent implements OnInit {
   }
 
   addRuta() {
-    this.varruta.push({ruta_id:0,ruta_carrera_id:0,cargo_id:0,cargo_prev_id:0,tipo_cargo_id:0,grado_id:0,activo:true,usuario_creador: this.currentUser.usuario,usuario_modificador: this.currentUser.usuario, NuevoRegistro: true})
+    this.varruta.push({ruta_id:0,ruta_carrera_id:0,cargo_id:0,cargo_prev_id:0,ruta_padre_id:0,activo:true,usuario_creador: this.currentUser.usuario,usuario_modificador: this.currentUser.usuario, NuevoRegistro: true})
   }
 
   deleteRuta(id: any) {
@@ -612,11 +689,11 @@ export class RutaComponent implements OnInit {
           this.varruta.forEach((element: any) => {
             element.ruta_carrera_id = response.id;
             element.cargo_id = Number(element.cargo_id);
-            element.cargo_prev_id = Number(element.cargo_prev_id);
-            element.tipo_cargo_id = Number(element.tipo_cargo_id);
-            element.grado_id = Number(element.grado_id);
+            // element.cargo_prev_id = Number(element.cargo_prev_id);
 
-            if (element.grado_id == 0) element.grado_id = null;
+            if (element.cargo_prev == 0) element.cargo_prev_id = null;
+
+            if (element.ruta_padre_id == 0) element.ruta_padre_id = null;
 
             if (element.NuevoRegistro == true)
               this.ruta.createRutas(element).subscribe(data1 => {});
@@ -666,10 +743,9 @@ export class RutaComponent implements OnInit {
             element.ruta_carrera_id = this.model.varRutaCarrera.ruta_carrera_id;
             element.cargo_id = Number(element.cargo_id);
             element.cargo_prev_id = Number(element.cargo_prev_id);
-            element.tipo_cargo_id = Number(element.tipo_cargo_id);
-            element.grado_id = Number(element.grado_id);
+            element.ruta_padre_id = Number(element.ruta_padre_id);
 
-            if (element.grado_id == 0) element.grado_id = null;
+            if (element.ruta_padre_id == 0) element.ruta_padre_id = null;
 
             if (element.NuevoRegistro == true) {
               this.ruta.createRutas(element).subscribe(data1 => {});
@@ -771,5 +847,17 @@ export class RutaComponent implements OnInit {
       this.model.varRutaCarrera.area = data.descripcion;
       console.log(data);
     }
+  }
+
+  openDetalleCargo() {
+    this.detalleCargoModal = true;
+  }
+
+  closeDetalleCargoModal(bol: any) {
+    this.detalleCargoModal = bol;
+  }
+
+  closeDetalleGradoModal(bol: any) {
+    this.detalleGradoModal = bol;
   }
 }

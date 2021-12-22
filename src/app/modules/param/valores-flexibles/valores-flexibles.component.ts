@@ -175,6 +175,7 @@ export class ValoresFlexiblesComponent implements OnInit {
     this.listaDinamica.getListasDinamicas({ nombre_lista_id: data.nombre_lista_id }).subscribe(data => {
       let response: any = this.api.ProcesarRespuesta(data);
       if (response.tipo == 0) {
+        console.log(response.result);
         this.varvalor = response.result;
         this.varvalorTemp = response.result;
       }

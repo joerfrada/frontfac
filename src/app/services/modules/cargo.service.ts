@@ -14,6 +14,7 @@ export class CargoService {
   private apiGetCargosFull = this.api.getBaseUrl + "cargo/getCargosFull";
   private apiCreateCargos = this.api.getBaseUrl + "cargo/crearCargos";
   private apiUpdateCargos = this.api.getBaseUrl + "cargo/actualizarCargos";
+  private apiGetDetalleCargos = this.api.getBaseUrl + "cargo/getDetalleCargos";
 
   // Cargos Grados
   private apiGetCargosGrados = this.api.getBaseUrl + "cargo/getCargosGradosByCargoId";
@@ -24,6 +25,21 @@ export class CargoService {
   private apiGetCargosConfiguracion = this.api.getBaseUrl + "cargo/getCargosConfiguracionByCargoGradoId";
   private apiCreateCargosConfiguracion = this.api.getBaseUrl + "cargo/crearCargosConfiguracion";
   private apiUpdateCargosConfiguracion = this.api.getBaseUrl + "cargo/actualizarCargosConfiguracion";
+
+  // Historial Cuerpos
+  private apiCreateHistorialCuerpos = this.api.getBaseUrl + "cargo/crearHistorialCuerpos";
+  private apiUpdateHistorialCuerpos = this.api.getBaseUrl + "cargo/actualizarHistorialCuerpos";
+  private apiGetHistorialCuerpos = this.api.getBaseUrl + "cargo/getHistorialCuerposByCargoGrado";
+
+  // Historial Especialidades
+  private apiCreateHistorialEspecialidades = this.api.getBaseUrl + "cargo/crearHistorialEspecialidades";
+  private apiUpdateHistorialEspecialidades = this.api.getBaseUrl + "cargo/actualizarHistorialEspecialidades";
+  private apiGetHistorialEspecialidades = this.api.getBaseUrl + "cargo/getHistorialEspecialidadesByCargoGrado";
+
+  // Historial Areas
+  private apiCreateHistorialAreas = this.api.getBaseUrl + "cargo/crearHistorialAreas";
+  private apiUpdateHistorialAreas = this.api.getBaseUrl + "cargo/actualizarHistorialAreas";
+  private apiGetHistorialAreas = this.api.getBaseUrl + "cargo/getHistorialAreasByCargoGrado";
 
   constructor(private http: HttpClient, private api: ApiService) { }
 
@@ -45,6 +61,11 @@ export class CargoService {
 
   public updateCargos(data: any): Observable<any> {
     return this.http.post<any>(this.apiUpdateCargos, JSON.stringify(data), this.api.getHttpOptions('g'))
+    .pipe(retry(1), catchError(this.api.errorHandle));
+  }
+
+  public getDetalleCargos(data: any): Observable<any> {
+    return this.http.post<any>(this.apiGetDetalleCargos, JSON.stringify(data), this.api.getHttpOptions('g'))
     .pipe(retry(1), catchError(this.api.errorHandle));
   }
 
@@ -77,6 +98,54 @@ export class CargoService {
 
   public updateCargosConfiguracion(data: any): Observable<any> {
     return this.http.post<any>(this.apiUpdateCargosConfiguracion, JSON.stringify(data), this.api.getHttpOptions('g'))
+    .pipe(retry(1), catchError(this.api.errorHandle));
+  }
+
+  // Historial Cuerpos
+  public createHistorialCuerpos(data: any): Observable<any> {
+    return this.http.post<any>(this.apiCreateHistorialCuerpos, JSON.stringify(data), this.api.getHttpOptions('g'))
+    .pipe(retry(1), catchError(this.api.errorHandle));
+  }
+
+  public updateHistorialCuerpos(data: any): Observable<any> {
+    return this.http.post<any>(this.apiUpdateHistorialCuerpos, JSON.stringify(data), this.api.getHttpOptions('g'))
+    .pipe(retry(1), catchError(this.api.errorHandle));
+  }
+
+  public getHistorialCuerpos(data: any): Observable<any> {
+    return this.http.post<any>(this.apiGetHistorialCuerpos, JSON.stringify(data), this.api.getHttpOptions('g'))
+    .pipe(retry(1), catchError(this.api.errorHandle));
+  }
+
+  // Historial Especialidades
+  public createHistorialEspecialidades(data: any): Observable<any> {
+    return this.http.post<any>(this.apiCreateHistorialEspecialidades, JSON.stringify(data), this.api.getHttpOptions('g'))
+    .pipe(retry(1), catchError(this.api.errorHandle));
+  }
+
+  public updateHistorialEspecialidades(data: any): Observable<any> {
+    return this.http.post<any>(this.apiUpdateHistorialEspecialidades, JSON.stringify(data), this.api.getHttpOptions('g'))
+    .pipe(retry(1), catchError(this.api.errorHandle));
+  }
+
+  public getHistorialEspecialidades(data: any): Observable<any> {
+    return this.http.post<any>(this.apiGetHistorialEspecialidades, JSON.stringify(data), this.api.getHttpOptions('g'))
+    .pipe(retry(1), catchError(this.api.errorHandle));
+  }
+
+  // Historial Areas
+  public createHistorialAreas(data: any): Observable<any> {
+    return this.http.post<any>(this.apiCreateHistorialAreas, JSON.stringify(data), this.api.getHttpOptions('g'))
+    .pipe(retry(1), catchError(this.api.errorHandle));
+  }
+
+  public updateHistorialAreas(data: any): Observable<any> {
+    return this.http.post<any>(this.apiUpdateHistorialAreas, JSON.stringify(data), this.api.getHttpOptions('g'))
+    .pipe(retry(1), catchError(this.api.errorHandle));
+  }
+
+  public getHistorialAreas(data: any): Observable<any> {
+    return this.http.post<any>(this.apiGetHistorialAreas, JSON.stringify(data), this.api.getHttpOptions('g'))
     .pipe(retry(1), catchError(this.api.errorHandle));
   }
 }
