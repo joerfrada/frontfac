@@ -1,9 +1,9 @@
-#chart-container {
-    width: 100%;
-    height: 100%;
-    text-align: center;
-    z-index: 1001;
-}
+// #chart-container {
+//     width: 100%;
+//     height: 100%;
+//     text-align: center;
+//     z-index: 1001;
+// }
 
 .datawf {
     width: 100%;
@@ -12,56 +12,61 @@
     border: 1px solid #BBB;
 }
 
-::ng-deep {
-    .orgchart.orgchart-demo {
-        padding: 20px 0 0 0 !important;
-        background: none;
+// ::ng-deep {
+//     .orgchart.orgchart-demo {
+//         padding: 20px 0 0 0 !important;
+//         background: none;
 
-        .title { 
-            //background-color: #006699;
-            padding: 5px;
-            width: 350px;
-            height: 28px !important;
+//         .title { 
+//             //background-color: #006699;
+//             padding: 5px;
+//             width: 350px;
+//             height: 28px !important;
 
-            .fa-1mx {
-                font-size: 1.5em;
-            }
+//             .fa-1mx {
+//                 font-size: 1.5em;
+//             }
 
-            .icon {
-                float: right;
-                margin-right: 5px;
-            }
-        }
+//             .icon {
+//                 float: right;
+//                 margin-right: 5px;
+//             }
+//         }
 
-        .confianza .title {
-            background-color: #006699;
-        }
+//         .confianza .title {
+//             background-color: #006699;
+//         }
 
-        .clave .title {
-            background-color:gold;
-            color: black;
-        }
+//         .clave .title {
+//             background-color:gold;
+//             color: black;
+//         }
 
-        .critico .title {
-            background-color: orange;
-            color: black;
-        }
+//         .critico .title {
+//             background-color: orange;
+//             color: black;
+//         }
 
-        .node .content { border: 1px solid #006699; height: 25px !important; }
+//         .none .title {
+//             background-color: white;
+//             color: black;
+//         }
 
-        .node:not(:only-child)::after {
-            background-color: #006699;
-        }
+//         .node .content { border: 1px solid #006699; height: 25px !important; }
 
-        .hierarchy::before {
-            border-top: 2px solid #006699;
-        }
-    }
+//         .node:not(:only-child)::after {
+//             background-color: #006699;
+//         }
 
-    .orgchart.orgchart-demo > ul > li > ul li > .node::before {
-        background-color: #006699;
-    }
-}
+//         .hierarchy::before {
+//             border-top: 2px solid #006699;
+//         }
+//     }
+
+//     .orgchart.orgchart-demo > ul > li > ul li > .node::before {
+//         background-color: #006699;
+//     }
+// }
 
 .view-detail {
     width: 100%;
@@ -142,8 +147,59 @@
     overflow: hidden;
 }
 
-.loader {
-    z-index: 1000;
+.ruta_level {
+    display: flex;
+    flex-direction: column;
     width: 100%;
-    height: 100%;
+
+    .fa-1mx {
+        font-size: 1.5em;
+    }
+
+    .confianza {
+        background-color: #006699;
+        color: black;
+    }
+    
+    .clave {
+        background-color:gold;
+        color: black;
+    }
+    
+    .critico {
+        background-color: orange;
+        color: black;
+    }
+    
+    .ninguno {
+        background-color: white;
+        color: black;
+    }
+
+    .ruta_cargo { 
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        padding: 20px 10px;
+    
+        .cargo_box {
+            display: flex;
+            width: 180px;
+            height: 65px;
+            font-size: 10px;
+            font-weight: bold;
+            align-items: center;
+            text-align: center;
+            padding: 0px 10px;
+            margin: 0px 20px;
+
+            .title_cargo, .title_grado {
+                margin-right: 10px;
+            }
+
+            .title_grado {
+                font-size: 1.5em;
+            }
+        }
+    }
 }

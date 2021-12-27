@@ -173,10 +173,7 @@
                     <thead>
                         <tr>
                             <th>Cargo</th>
-                            <!-- <th></th> -->
-                            <!-- <th>Cargo Previo</th> -->
-                            <!-- <th>Grado</th> -->
-                            <th>Activo</th>
+                            <!-- <th>Activo</th> -->
                             <th>Acciones</th>
                         </tr>
                     </thead>
@@ -189,37 +186,12 @@
                                 </select>
                             </td>
                             <!-- <td>
-                                <select [(ngModel)]="varruta[i].cargo_prev_id">
-                                    <option value="0">Seleccionar</option>
-                                    <option *ngFor="let item of varcargo" value="{{item.cargo_id}}">{{item.cargo}}</option>
-                                </select>
-                            </td> -->
-                            <!-- <td>
-                                <select [(ngModel)]="varruta[i].ruta_padre_id">
-                                    <option value="0">Seleccionar</option>
-                                    <option *ngFor="let item of varcargo" value="{{item.cargo_id}}">{{item.cargo}}</option>
-                                </select>
-                            </td> -->
-                            <!-- <td>
-                                <select [(ngModel)]="varruta[i].tipo_cargo_id">
-                                    <option value="0">Seleccionar</option>
-                                    <option *ngFor="let item of varcargoruta" value="{{item.id}}">{{item.detalle}}</option>
-                                </select>
-                            </td> -->
-                            <!-- <td>
-                                <select [(ngModel)]="varruta[i].grado_id">
-                                    <option value="0">Seleccionar</option>
-                                    <option *ngFor="let item of vargrado" value="{{item.grado_id}}">{{item.grado}} - {{item.descripcion}}</option>
-                                </select>
-                            </td> -->
-                            <td>
                                 <div class="table-checkbox-component">
                                     <label>
                                         <input type="checkbox" checked="checked" [(ngModel)]="varruta[i].activo">
-                                        <!-- <span class="checkmark"></span> -->
                                     </label>
                                 </div>
-                            </td>
+                            </td> -->
                             <td>
                                 <i class="fa fa-1m5x fa-times-circle pointer noselect" style="color: black !important;" *ngIf="varruta[i].NuevoRegistro" (click)="deleteRuta(i)"></i>
                             </td>
@@ -274,37 +246,19 @@
     </div>
 </app-modal>
 
-<app-modal [title]="'Especialidades'" [show]="especialidadModal" [size]="'modal-tm-1'" (close)="closeEspecialidadModal($event)">
+<workflow-modal [title]="'Ruta de Carrera'" [show]="workflowModal" [size]="'modal-md-4'" (close)="closeWorkflowModal($event)">
+    <!-- <div id="chart-container"></div> -->
     <div role="body">
-        <div class="inner-col">
-            <div class="table-content">
-                <table class="table flex-table">
-                    <thead>
-                        <tr>
-                            <th>Cuerpo</th>
-                            <th>Especialidad</th>
-                        </tr>
-                    </thead>
-                    <tbody class="scroll">
-                        <tr *ngFor="let item of varitem; let i = index">
-                            <td>{{item.cuerpo}}</td>
-                            <td>{{item.especialidad}}</td>
-                        </tr>
-                        <tr *ngIf="varitem?.length == 0">
-                            <div class="dbempty">No hay datos.</div>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+        <div class="ruta_level">
+            <ul *ngFor="let item of lstRutas" class="ruta_cargo">
+                <li *ngFor="let cargo of item.cargos" [ngClass]="cargo.clase_cargo" class="cargo_box title">
+                    <div class="title_cargo">{{cargo.cargo}}</div>
+                    <div class="title_grado">({{cargo.grado}})</div>
+                    <i class="icon fas fa-1mx fa-arrow-circle-right pointer noselect" (click)="openDetalleCargoRutaCarrera(cargo)"></i>
+                </li>
+            </ul>
         </div>
     </div>
-    <div role="footer">
-        <button type="button" class="btn btn-red" (click)="closeEspecialidadModal(false)">Cerrar</button>
-    </div>
-</app-modal>
-
-<workflow-modal [title]="'Ruta de Carrera'" [show]="workflowModal" [size]="'modal-md-4'" (close)="closeWorkflowModal($event)">
-    <div id="chart-container"></div>
 </workflow-modal>
 
 <viewcargo-modal [title]="tituloCargo" [show]="viewCargoModal" [size]="'modal-view-sm'" (close)="closeViewCargoModal($event)">

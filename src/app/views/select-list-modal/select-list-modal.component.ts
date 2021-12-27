@@ -13,14 +13,14 @@ export class SelectListModalComponent implements OnInit {
   @Input() show?: Boolean;
   @Input() title?: String;
   @Input() size?: String;
-  @Input() items?: any;
-  @Input() itemsTemp?: any;
-  @Input() selectedItems?: any;
+  @Input() items?: any = [];
+  @Input() itemsTemp?: any = [];
+  @Input() selectedItems?: any = [];
   @Output() close = new EventEmitter<Boolean>();
   @Output() output = new EventEmitter<any>();
 
-  selectedToAdd: any;
-  selectedToRemove: any;
+  selectedToAdd: any = [];
+  selectedToRemove: any = [];
   i = 0;
 
   constructor() { }
@@ -48,6 +48,14 @@ export class SelectListModalComponent implements OnInit {
   }
 
   btnRight() {
+    // console.log('Before:', this.selectedItems.length);
+    // if (this.selectedItems.length == 0) {
+    //   this.i = this.i + 1;
+    // }
+    // else {
+    //   this.i = this.selectedItems.length + 1;
+    // }
+    // console.log('After:', this.selectedItems.length);
     this.i = this.i + 1;
     
     if (this.i > 5) {

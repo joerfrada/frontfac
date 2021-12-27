@@ -132,7 +132,8 @@
                             </td>
                         </tr>
                         <tr class="add_row_full">
-                            <button type="button" class="button btn-blue" (click)="addGrado()">Agregar</button>
+                            <button *ngIf="IsLectura==true" type="button" class="button btn-gray">Agregar</button>
+                            <button *ngIf="IsLectura==false" type="button" class="button btn-blue" (click)="addGrado()">Agregar</button>
                         </tr>
                         <!-- <tr *ngIf="vargrados?.length == 0">
                             <div class="dbempty">No hay datos.</div>

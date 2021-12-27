@@ -119,6 +119,8 @@ export class CargosComponent implements OnInit {
   modal: any;
   configModal: any;
   tab: any;
+  IsLectura = false;
+  i = 0;
 
   varhistorial: any = [];
   varhistorialTemp: any = [];
@@ -208,6 +210,8 @@ export class CargosComponent implements OnInit {
     this.tab = 1;
     this.getCargos();
     this.getListas();
+    if (this.model.varGrados.length == 0) this.IsLectura = false;
+    else if (this.model.varGrados.length != 0) this.IsLectura = true;
   }
 
   reload() {
@@ -497,7 +501,17 @@ export class CargosComponent implements OnInit {
   }
 
   addGrado() {
-    this.model.varGrados.push({cargo_grado_id: 0, cargo_id: 0, grado: "", grado_id:0, usuario_creador: "", usuario_modificador: "", activo: true, NuevoRegistro: true});
+    if (this.model.varGrados.length == 0) {
+      this.model.varGrados.push({cargo_grado_id: 0, cargo_id: 0, grado: "", grado_id:0, usuario_creador: "", usuario_modificador: "", activo: true, NuevoRegistro: true});
+      if (this.model.varGrados.length > 1) {
+        this.IsLectura = true;
+      }
+    }
+    else {
+      if (this.model.varGrados.length > 1) {
+        this.IsLectura = true;
+      }
+    }
   }
 
   deleteGrado(index: any) {
