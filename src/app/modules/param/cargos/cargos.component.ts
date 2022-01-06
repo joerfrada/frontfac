@@ -624,6 +624,7 @@ export class CargosComponent implements OnInit {
           this.model.varGrados.forEach((x: any) => {
             x.cargo_id = this.model.varCargo.cargo_id;
             x.grado_id = Number(x.grado_id);
+            x.activo = (x.activo == 'S') ? true : false;
             x.usuario_creador = this.currentUser.usuario;
             x.usuario_modificador = this.currentUser.usuario;
       
@@ -634,6 +635,7 @@ export class CargosComponent implements OnInit {
               this.cargo.updateteCargosGrados(x).subscribe(data1 => {});
             }
           });
+          console.log(this.model.varGrados);
         }
         swal({
           title: 'Cargos',

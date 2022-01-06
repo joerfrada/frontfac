@@ -126,9 +126,13 @@
 .trapeze-grado-inner {
     position: absolute;
     width: 100%;
-    top: 35px;
+    top: 15px;
     left: 0;
 
+    .title-nivel-inner {
+        text-align: center;
+        font-weight: bold;
+    }
     .title-grado-inner {
         text-align: center;
     }

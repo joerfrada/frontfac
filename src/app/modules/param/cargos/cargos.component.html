@@ -107,7 +107,7 @@
                         <tr>
                             <th>Grado</th>
                             <th></th>
-                            <th>Activo</th>
+                            <!-- <th>Activo</th> -->
                             <th>Acciones</th>
                         </tr>
                     </thead>
@@ -122,11 +122,11 @@
                             <td class="table-buttons-action">
                                 <button *ngIf="model.tipo == 'U' && item.NuevoRegistro != true" type="button" class="button btn-default" (click)="editConfigModal(item)">Configuración</button>
                             </td>
-                            <td>
+                            <!-- <td>
                                 <div class="table-checkbox-component">
                                     <input type="checkbox" checked="checked" [(ngModel)]="model.varGrados[i].activo">
                                 </div>
-                            </td>
+                            </td> -->
                             <td>
                                 <i class="fa fa-1m5x fa-times-circle pointer noselect" style="color: black !important;" *ngIf="model.varGrados[i].NuevoRegistro" (click)="deleteGrado(i)"></i>
                             </td>

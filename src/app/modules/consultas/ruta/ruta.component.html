@@ -26,12 +26,12 @@
                         <tr>
                             <th>Descripción</th>
                             <th>Tipo Ruta</th>
-                            <th>C. Descripción</th>
-                            <th>Tipo Categoría</th>
+                            <th>Categoría</th>
+                            <th>Sigla Cuerpo</th>
                             <th>Cuerpo</th>
-                            <th>E. Descripción</th>
+                            <th>Sigla Especialidad</th>
                             <th>Especialidad</th>
-                            <th>A. Descripción</th>
+                            <th>Sigla Área</th>
                             <th>Área de Conocimiento</th>
                             <th>Estado</th>
                             <th>Acciones</th>
@@ -288,7 +288,6 @@
 </viewcargo-modal>
 
 <piramide-modal [title]="'Pirámide (Especialidad)'" [show]="piramideModal" [size]="'modal-piramide-md'" (close)="closePiramideModal($event)">
-    <div class="col col100" *ngIf="varPiramide1?.length != 0 && varPiramide2.length != 0">
         <div class="col col50">
             <div class="table-content">
                 <table class="table table-piramide">
@@ -314,9 +313,10 @@
                             <td>
                                 <div class="trapeze-grado">
                                     <div class="trapeze-grado-inner">
+                                        <div class="title-nivel-inner">{{item.nivel}}</div>
                                         <div class="title-grado-inner">{{item.grado}}</div>
                                         <div class="detalle-grado">
-                                            <button type="button" class="button btn-edit" (click)="openDetalleGrado(item)">Detalle</button>
+                                            <button type="button" class="button btn-edit" (click)="openDetalleGrado(item)">Cargos Directos e Indirectos</button>
                                         </div>
                                     </div>
                                 </div>
@@ -326,10 +326,6 @@
                 </table>
             </div>
         </div>
-    </div>
-    <div class="col col100" *ngIf="varPiramide1?.length == 0 && varPiramide2.length == 0">
-        <div class="dbEmptyPiramide">Sin Resultados</div>
-    </div>
 </piramide-modal>
 
 <detalle-modal [title]="titleDetalle" [show]="detalleModal" [size]="'modal-detalle-sm'" (close)="closeDetalleModal($event)">
