@@ -29,6 +29,7 @@ import { SiglasComponent } from '../modules/param/siglas/siglas.component';
 import { SelectListModalComponent } from '../views/select-list-modal/select-list-modal.component';
 import { SelectModalComponent } from '../views/select-modal/select-modal.component';
 import { SelectBigModalComponent } from '../views/select-big-modal/select-big-modal.component';
+import { SelectRouteModalComponent } from '../views/select-route-modal/select-route-modal.component';
 
 @NgModule({
   declarations: [
@@ -55,7 +56,8 @@ import { SelectBigModalComponent } from '../views/select-big-modal/select-big-mo
     SiglasComponent,
     SelectListModalComponent,
     SelectModalComponent,
-    SelectBigModalComponent
+    SelectBigModalComponent,
+    SelectRouteModalComponent
   ],
   imports: [
     CommonModule,

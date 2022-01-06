@@ -23,6 +23,7 @@ export class RutaCarreraService {
   private apiGetDetalleCargoRutaCarrera = this.api.getBaseUrl + "rutacarrera/getDetalleCargoRutaCarrera";
   private apiGetCuerposEspecialidadesAreasRutaCarrera = this.api.getBaseUrl + "rutacarrera/getCuerposEspecialidadesAreasRutaCarrera";
   private apiGetEspecialidadesRutas = this.api.getBaseUrl + "rutacarrera/getEspecialidadesRutas";
+  private apiGetRutaCarreraActivos = this.api.getBaseUrl + "rutacarrera/getRutaCarreraActivos";
 
   // Lineas de Cargo
   private apiGetLineasCargos = this.api.getBaseUrl + "rutacarrera/getLineasCargos";
@@ -35,6 +36,7 @@ export class RutaCarreraService {
   private apiUpdateRutas = this.api.getBaseUrl + "rutacarrera/actualizarRutas";
   private apiGetRutasByRutaCarrera = this.api.getBaseUrl + "rutacarrera/getRutasByRutaCarrera";
   private apiGetCargosByRutas = this.api.getBaseUrl + "rutacarrera/getCargosByRutas";
+  private apiGetRutasFull = this.api.getBaseUrl + "rutacarrera/getRutasFull";
 
   constructor(private http: HttpClient, private api: ApiService) { }
 
@@ -104,6 +106,11 @@ export class RutaCarreraService {
     .pipe(retry(1), catchError(this.api.errorHandle));
   }
 
+  public getRutaCarreraActivos() : Observable<any> {
+    return this.http.get<any>(this.apiGetRutaCarreraActivos, this.api.getHttpOptions('g'))
+    .pipe(retry(1), catchError(this.api.errorHandle));
+  }
+
   // Lineas de Cargo
   public getLineasCargos(data: any): Observable<any> {
     return this.http.post<any>(this.apiGetLineasCargos, JSON.stringify(data), this.api.getHttpOptions('g'))
@@ -143,6 +150,11 @@ export class RutaCarreraService {
 
   public getCargosByRutas(data: any) : Observable<any> {
     return this.http.post<any>(this.apiGetCargosByRutas, JSON.stringify(data), this.api.getHttpOptions('g'))
+    .pipe(retry(1), catchError(this.api.errorHandle));
+  }
+
+  public getRutasFull(): Observable<any> {
+    return this.http.get<any>(this.apiGetRutasFull, this.api.getHttpOptions('g'))
     .pipe(retry(1), catchError(this.api.errorHandle));
   }
 }

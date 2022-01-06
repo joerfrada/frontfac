@@ -33,9 +33,12 @@ export class Model {
   }
 
   varConsulta: any = {
-    especialidad_id: 0,
     tipo_ruta_id: 0,
-    categoria_id: 0
+    tipo_ruta: "",
+    tipo_categoria_id: 0,
+    tipo_categoria: "",
+    especialidad_id: 0,
+    especialidad: ""
   }
 
   varDetalleCargo: any = {
@@ -79,10 +82,12 @@ export class RutaComponent implements OnInit {
   detalleModal: any;
   detalleCargoModal: any;
   detalleGradoModal: any;
+  rutaCarreraModal: any;
   loader = false;
 
   varhistorial: any = [];
   varhistorialTemp: any = [];
+  varRutaCarrera: any = [];
 
   varlinea: any = [];
 
@@ -153,6 +158,7 @@ export class RutaComponent implements OnInit {
     this.getGradosFull();
     // this.getCuerposEspecialidadesAreasRutaCarrera();
     this.getEspecialidadesRutas();
+    this.getRutaCarreraActivos();
     this.getListas();
   }
 
@@ -271,6 +277,15 @@ export class RutaComponent implements OnInit {
     });
   }
 
+  getRutaCarreraActivos() {
+    this.ruta.getRutaCarreraActivos().subscribe(data => {
+      let response: any = this.api.ProcesarRespuesta(data);
+      if (response.tipo == 0) {
+        this.varRutaCarrera = response.result;
+      }
+    });
+  }
+
   getListas() {
     let varlistas = JSON.parse(localStorage.getItem("listasDinamicasFull") as any);
     this.varcategoria = varlistas.filter((x: any) => x.nombre_lista == 'BAS_TIPO_CATEGORIA');
@@ -283,11 +298,21 @@ export class RutaComponent implements OnInit {
       x.id = x.lista_dinamica_id;
       x.detalle = x.lista_dinamica;
     });
-    this.vartiporuta = varlistas.filter((x: any) => x.nombre_lista == 'BAS_TIPO_RUTA');
-    this.vartiporuta.forEach((x: any) => {
+    let vartiporuta = varlistas.filter((x: any) => x.nombre_lista == 'BAS_TIPO_RUTA');
+    vartiporuta.forEach((x: any) => {
       x.id = x.lista_dinamica_id;
       x.detalle = x.lista_dinamica;
     });
+    this.vartiporuta = vartiporuta.sort((x1: any, x2: any) => {
+      if (x1.detalle > x2.detalle) {
+        return 1;
+      }
+      if (x1.detalle < x2.detalle) {
+        return -1;
+      }
+      return 0;
+    });
+
     this.vartipocargo = varlistas.filter((x: any) => x.nombre_lista == 'BAS_TIPO_CARGO');
     this.vartipocargo.forEach((x: any) => {
       x.id = x.lista_dinamica_id;
@@ -381,14 +406,12 @@ export class RutaComponent implements OnInit {
   }
 
   openWorkflow() {
-    // this.workflowModal = true;
-    // this.consultaModal = false;
+    this.workflowModal = true;
+    this.consultaModal = false;
 
-    this.model.varConsulta.especialidad_id = Number(this.model.varConsulta.especialidad_id);
-    this.model.varConsulta.tipo_ruta_id = Number(this.model.varConsulta.tipo_ruta_id);
-    this.model.varConsulta.categoria_id = Number(this.model.varConsulta.categoria_id);
-
-    console.log(this.model.varConsulta);
+    // this.model.varConsulta.especialidad_id = Number(this.model.varConsulta.especialidad_id);
+    // this.model.varConsulta.tipo_ruta_id = Number(this.model.varConsulta.tipo_ruta_id);
+    // this.model.varConsulta.categoria_id = Number(this.model.varConsulta.categoria_id);
 
     this.ruta.getCargosByRutas(this.model.varConsulta).subscribe(data => {
       let response: any = this.api.ProcesarRespuesta(data);
@@ -407,7 +430,7 @@ export class RutaComponent implements OnInit {
             showConfirmButton: true,
             type: 'error'
           }).then((result: any) => {
-            this.model.varConsulta.categoria_id = 0;
+            this.model.varConsulta.tipo_categoria_id = 0;
             this.model.varConsulta.especialidad_id = 0;
             this.model.varConsulta.tipo_ruta_id = 0;
           });
@@ -611,11 +634,11 @@ export class RutaComponent implements OnInit {
     if (this.model.varRutaCarrera.tipo_ruta_id == 0)
       this.model.varRutaCarrera.tipo_ruta_id = null;
 
-    let esEscontrado = this.varhistorial.filter((x: any) => x.especialidad_id == this.model.varRutaCarrera.especialidad_id);
+    let esEscontrado = this.varhistorial.filter((x: any) => (x.especialidad_id == this.model.varRutaCarrera.especialidad_id) && (x.tipo_ruta_id == this.model.varRutaCarrera.tipo_ruta_id) && (x.area_id == this.model.varRutaCarrera.area_id));
     if (esEscontrado.length == 1) {
       swal({
         title: 'ADVERTENCIA',
-        text: 'La especialidad ya existe.',
+        text: 'La ruta de carrera ya existen.',
         allowOutsideClick: false,
         showConfirmButton: true,
         type: 'warning'
@@ -629,7 +652,6 @@ export class RutaComponent implements OnInit {
             this.varruta.forEach((element: any) => {
               element.ruta_carrera_id = response.id;
               element.cargo_id = Number(element.cargo_id);
-              element.activo = true;
 
               if (element.NuevoRegistro == true)
                 this.ruta.createRutas(element).subscribe(data1 => {});
@@ -679,7 +701,6 @@ export class RutaComponent implements OnInit {
           this.varruta.forEach((element: any) => {
             element.ruta_carrera_id = this.model.varRutaCarrera.ruta_carrera_id;
             element.cargo_id = Number(element.cargo_id);
-            element.activo = true;
 
             if (element.NuevoRegistro == true) {
               this.ruta.createRutas(element).subscribe(data1 => {});
@@ -728,8 +749,15 @@ export class RutaComponent implements OnInit {
     this.selectModal = true;
   }
 
-  dataform(indexform: any, data: any) {
-    this.selectModal = false;
+  saveTipoRuta() {
+    this.array = this.varRutaCarrera;
+    this.indexform = 'rutacarrera';
+    this.rutaCarreraModal = true;
+  }
+
+  dataform(indexform: any, data: any, tipo: any = 1) {
+    if (tipo == 1) this.selectModal = false;
+    else if (tipo == 2) this.rutaCarreraModal = false;
 
     if (indexform == 'cuerpo') {
       this.model.varRutaCarrera.cuerpo_id = data.cuerpo_id;
@@ -779,7 +807,14 @@ export class RutaComponent implements OnInit {
     if (indexform == 'area') {
       this.model.varRutaCarrera.area_id = data.area_id;
       this.model.varRutaCarrera.area = data.descripcion;
-      console.log(data);
+    }
+    if (indexform == 'rutacarrera') {
+      this.model.varConsulta.tipo_ruta_id = data.tipo_ruta_id;
+      this.model.varConsulta.tipo_ruta = data.tipo_ruta;
+      this.model.varConsulta.tipo_categoria_id = data.tipo_categoria_id;
+      this.model.varConsulta.tipo_categoria = data.tipo_categoria;
+      this.model.varConsulta.especialidad_id = data.especialidad_id;
+      this.model.varConsulta.especialidad = data.especialidad;
     }
   }
 
@@ -793,6 +828,10 @@ export class RutaComponent implements OnInit {
 
   closeDetalleGradoModal(bol: any) {
     this.detalleGradoModal = bol;
+  }
+
+  closeRutaCarreraModal(bol: any) {
+    this.rutaCarreraModal = bol;
   }
 
   openDetalleCargoRutaCarrera(dato: any) {

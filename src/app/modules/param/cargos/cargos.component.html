@@ -80,7 +80,7 @@
                 </select>
             </div>
             <div class="col col25">
-                <div class="label-row">Cargo Ruta</div>
+                <div class="label-row">Tipo de Cargo</div>
                 <select [(ngModel)]="model.varCargo.cargo_ruta_id">
                     <option value="0">Seleccionar</option>
                     <option *ngFor="let item of varcargoruta" value="{{item.id}}">{{item.detalle}}</option>
@@ -178,7 +178,7 @@
                     <div class="tabs-content" *ngIf="tab === 1">
                         <div class="col col15">
                             <div class="label-row">Puestos Cant.</div>
-                            <input type="number" [(ngModel)]="model.varConfiguracion.puesto_cantidad">
+                            <input type="number" [(ngModel)]="model.varConfiguracion.puesto_cantidad" class="notspin" notnegative>
                         </div>
                         <div class="col col50">
                             <div class="label-row">Cargo Jefe Inmediato</div>
@@ -227,11 +227,15 @@
                                     <option *ngFor="let item of varnivel5" value="{{item.id}}">{{item.detalle}}</option>
                                 </select>
                             </div>
-                            <div class="col col100 title-row">Requisitos del Cargo</div>
+                            <div class="col col100 title-row">Tiempo mínimo en el cargo y Requisitos del Cargo</div>
                             <div class="line-col"></div>
-                            <div class="col col20">
-                                <div class="label-row">Tiempo en el cargo</div>
-                                <input type="number" [(ngModel)]="model.varConfiguracion.duracion">
+                            <div class="col col25">
+                                <div class="label-row">Número de años</div>
+                                <input type="number" [(ngModel)]="model.varConfiguracion.anio" class="notspin" notnegative>
+                            </div>
+                            <div class="col col25">
+                                <div class="label-row">Número de meses</div>
+                                <input type="number" [(ngModel)]="model.varConfiguracion.mes" class="notspin" notnegative>
                             </div>
                             <div class="col col100">
                                 <!-- <div class="col col95">

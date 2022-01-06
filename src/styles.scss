@@ -548,11 +548,11 @@ a {
     }
 
     .modal-box-centered {
-        min-height: calc(100% - 10.5rem);
+        min-height: calc(100% - 3.5rem);
     }
 
     .modal-box-scrollable {
-        height: calc(100% - 10.5rem);
+        height: calc(100% - 3.5rem);
     }
 }
 
@@ -1768,4 +1768,13 @@ textarea {
 
 .hidden-row {
     display: none;
+}
+
+.notspin::-webkit-inner-spin-button,
+.notspin::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+}
+
+.notspin input[type=number] {
+    -moz-appearance: textfield;
 }

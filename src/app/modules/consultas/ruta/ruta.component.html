@@ -25,8 +25,9 @@
                     <thead>
                         <tr>
                             <th>Descripción</th>
-                            <th>Tipo de Ruta</th>
+                            <th>Tipo Ruta</th>
                             <th>C. Descripción</th>
+                            <th>Tipo Categoría</th>
                             <th>Cuerpo</th>
                             <th>E. Descripción</th>
                             <th>Especialidad</th>
@@ -40,6 +41,7 @@
                         <tr *ngFor="let item of varhistorial; let i = index">
                             <td>{{item.descripcion}}</td>
                             <td>{{item.tipo_ruta}}</td>
+                            <td>{{item.tipo_categoria}}</td>
                             <td>{{item.siglaCuerpo}}</td>
                             <td>{{item.cuerpo}}</td>
                             <td>{{item.siglaEspecialidad}}</td>
@@ -173,7 +175,7 @@
                     <thead>
                         <tr>
                             <th>Cargo</th>
-                            <!-- <th>Activo</th> -->
+                            <th>Estado</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
@@ -185,13 +187,13 @@
                                     <option *ngFor="let item of varcargo" value="{{item.cargo_id}}">{{item.cargo}}</option>
                                 </select>
                             </td>
-                            <!-- <td>
+                            <td>
                                 <div class="table-checkbox-component">
                                     <label>
                                         <input type="checkbox" checked="checked" [(ngModel)]="varruta[i].activo">
                                     </label>
                                 </div>
-                            </td> -->
+                            </td>
                             <td>
                                 <i class="fa fa-1m5x fa-times-circle pointer noselect" style="color: black !important;" *ngIf="varruta[i].NuevoRegistro" (click)="deleteRuta(i)"></i>
                             </td>
@@ -217,7 +219,7 @@
 <app-modal [title]="'Consultas'" [show]="consultaModal" [size]="'modal-tm2'" (close)="closeConsultaModal($event)">
     <div role="body">
         <div class="inner-col">
-            <div class="col col100">
+            <!-- <div class="col col100">
                 <div class="label-row">Tipo Ruta</div>
                 <select [(ngModel)]="model.varConsulta.tipo_ruta_id">
                     <option value="0">Seleccionar</option>
@@ -237,6 +239,18 @@
                     <option value="0">Seleccionar</option>
                     <option *ngFor="let item of lstEspecialidad" value="{{item.especialidad_id}}">{{item.especialidad}}</option>
                 </select>
+            </div> -->
+            <div class="col col33">
+                <div class="label-row">Tipo Ruta</div>
+                <input type="text" placeholder="Selecciona..." [(ngModel)]="model.varConsulta.tipo_ruta" (click)="saveTipoRuta()">
+            </div>
+            <div class="col col33">
+                <div class="label-row">Categoría</div>
+                <input type="text" disabled [(ngModel)]="model.varConsulta.tipo_categoria">
+            </div>
+            <div class="col col33">
+                <div class="label-row">Especialidad</div>
+                <input type="text" disabled [(ngModel)]="model.varConsulta.especialidad">
             </div>
         </div>
     </div>
@@ -248,7 +262,7 @@
 
 <workflow-modal [title]="'Ruta de Carrera'" [show]="workflowModal" [size]="'modal-md-4'" (close)="closeWorkflowModal($event)">
     <!-- <div id="chart-container"></div> -->
-    <div role="body">
+    <div id="chart-ruta">
         <div class="ruta_level">
             <ul *ngFor="let item of lstRutas" class="ruta_cargo">
                 <li *ngFor="let cargo of item.cargos" [ngClass]="cargo.clase_cargo" class="cargo_box title">
@@ -342,7 +356,7 @@
                 <input type="text" disabled [(ngModel)]="model.varDetalleCargo.clase_cargo">
             </div>
             <div class="col col100">
-                <div class="label-row">Cargo de Ruta</div>
+                <div class="label-row">Tipo de Cargo</div>
                 <input type="text" disabled [(ngModel)]="model.varDetalleCargo.cargo_ruta">
             </div>
             <div class="col col100">
@@ -385,3 +399,5 @@
         <button type="button" class="btn btn-red" (click)="closeDetalleGradoModal(false)">Cerrar</button>
     </div>
 </app-modal>
+
+<app-select-route-modal [title]="'Ruta de Carrera'" [show]="rutaCarreraModal" [array]="array" [arrayTemp]="array" (output)="dataform(indexform, $event, 2)" (close)="closeRutaCarreraModal($event)"></app-select-route-modal>

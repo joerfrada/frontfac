@@ -6,10 +6,12 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { PlatformModule } from './platform/platform.module';
+import { NotnegativeDirective } from './directives/notnegative.directive';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    NotnegativeDirective
   ],
   imports: [
     BrowserModule,

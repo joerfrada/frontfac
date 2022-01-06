@@ -44,7 +44,9 @@ export class Model {
     nivel3: 0,
     nivel4: 0,
     nivel5: 0,
-    duracion: 0,
+    anio: 0,
+    mes: 0,
+    duracion: "",
     requisito_cargo: "",
     cuerpo: "",
     cuerpo_id: "",
@@ -365,7 +367,9 @@ export class CargosComponent implements OnInit {
             this.model.varConfiguracion.nivel3 = cargo.nivel3;
             this.model.varConfiguracion.nivel4 = cargo.nivel4;
             this.model.varConfiguracion.nivel5 = cargo.nivel5;
-            this.model.varConfiguracion.duracion = cargo.duracion;
+            this.model.varConfiguracion.anio = cargo.anio;
+            this.model.varConfiguracion.mes = cargo.mes;
+            this.model.varConfiguracion.periodo = cargo.periodo;
             this.model.varConfiguracion.requisito_cargo = cargo.requisito_cargo;
             this.model.varCuerpo.cuerpo = cargo.cuerpo;
             this.model.varConfiguracion.cuerpo_id = cargo.cuerpo_id;
@@ -393,7 +397,9 @@ export class CargosComponent implements OnInit {
             this.model.varConfiguracion.nivel3 = 0;
             this.model.varConfiguracion.nivel4 = 0;
             this.model.varConfiguracion.nivel5 = 0;
-            this.model.varConfiguracion.duracion = 0;
+            this.model.varConfiguracion.anio = 0;
+            this.model.varConfiguracion.mes = 0;
+            this.model.varConfiguracion.periodo = "";
             this.model.varConfiguracion.requisito_cargo = "";
             this.model.varCuerpo.cuerpo = "";
             this.model.varConfiguracion.cuerpo_id = "";
