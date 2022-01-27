@@ -24,12 +24,14 @@ import { ViewCargoModalComponent } from '../views/view-cargo-modal/view-cargo-mo
 import { VerModalComponent } from '../views/ver-modal/ver-modal.component';
 import { DetalleModalComponent } from '../views/detalle-modal/detalle-modal.component';
 import { PiramideModalComponent } from '../views/piramide-modal/piramide-modal.component';
-import { AplicacionesComponent } from '../modules/admin/aplicaciones/aplicaciones.component';
 import { SiglasComponent } from '../modules/param/siglas/siglas.component';
 import { SelectListModalComponent } from '../views/select-list-modal/select-list-modal.component';
 import { SelectModalComponent } from '../views/select-modal/select-modal.component';
 import { SelectBigModalComponent } from '../views/select-big-modal/select-big-modal.component';
 import { SelectRouteModalComponent } from '../views/select-route-modal/select-route-modal.component';
+import { RolesComponent } from '../modules/admin/roles/roles.component';
+import { RolesPrivilegiosComponent } from '../modules/admin/roles-privilegios/roles-privilegios.component';
+import { UsersComponent } from '../modules/admin/users/users.component';
 
 @NgModule({
   declarations: [
@@ -52,12 +54,14 @@ import { SelectRouteModalComponent } from '../views/select-route-modal/select-ro
     VerModalComponent,
     DetalleModalComponent,
     PiramideModalComponent,
-    AplicacionesComponent,
     SiglasComponent,
     SelectListModalComponent,
     SelectModalComponent,
     SelectBigModalComponent,
-    SelectRouteModalComponent
+    SelectRouteModalComponent,
+    RolesComponent,
+    RolesPrivilegiosComponent,
+    UsersComponent
   ],
   imports: [
     CommonModule,

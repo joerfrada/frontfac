@@ -12,8 +12,10 @@ import { ValoresFlexiblesComponent } from '../modules/param/valores-flexibles/va
 import { RequerimientosComponent } from '../modules/param/requerimientos/requerimientos.component';
 import { PiramidesComponent } from '../modules/consultas/piramides/piramides.component';
 import { RutaComponent } from '../modules/consultas/ruta/ruta.component';
-import { AplicacionesComponent } from '../modules/admin/aplicaciones/aplicaciones.component';
 import { SiglasComponent } from '../modules/param/siglas/siglas.component';
+import { RolesComponent } from '../modules/admin/roles/roles.component';
+import { RolesPrivilegiosComponent } from '../modules/admin/roles-privilegios/roles-privilegios.component';
+import { UsersComponent } from '../modules/admin/users/users.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -28,8 +30,10 @@ const routes: Routes = [
     { path: 'modulo/param/requerimientos', component: RequerimientosComponent },
     { path: 'modulo/consultas/piramide', component: PiramidesComponent },
     { path: 'modulo/consultas/ruta', component: RutaComponent },
-    { path: 'modulo/admin/aplicacion', component: AplicacionesComponent },
-    { path: 'modulo/param/siglas', component: SiglasComponent }
+    { path: 'modulo/param/siglas', component: SiglasComponent },
+    { path: 'modulo/param/roles', component: RolesComponent },
+    { path: 'modulo/param/roles-privilegios', component: RolesPrivilegiosComponent },
+    { path: 'modulo/param/usuarios', component: UsersComponent }
   ]},
 ];
 
