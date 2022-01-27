@@ -819,13 +819,13 @@ export class CargosComponent implements OnInit {
     this.model.varConfiguracion.experiencia = this.model.varExperiencia.experiencia;
     this.model.varConfiguracion.competencia = this.model.varCompetencia.competencia;
 
-    this.model.varConfiguracion.cuerpo_id = this.model.varConfiguracion.cuerpo_id.toString();
-    this.model.varConfiguracion.especialidad_id = this.model.varConfiguracion.especialidad_id.toString();
-    this.model.varConfiguracion.area_id = this.model.varConfiguracion.area_id.toString();
-    this.model.varConfiguracion.educacion_id = this.model.varConfiguracion.educacion_id.toString();
-    this.model.varConfiguracion.conocimiento_id = this.model.varConfiguracion.conocimiento_id.toString();
-    this.model.varConfiguracion.experiencia_id = this.model.varConfiguracion.experiencia_id.toString();
-    this.model.varConfiguracion.competencia_id = this.model.varConfiguracion.competencia_id.toString();
+    this.model.varConfiguracion.cuerpo_id = (this.model.varConfiguracion.cuerpo_id == null || this.model.varConfiguracion.cuerpo_id == "") ? null : this.model.varConfiguracion.cuerpo_id.toString();
+    this.model.varConfiguracion.especialidad_id = (this.model.varConfiguracion.especialidad_id == null || this.model.varConfiguracion.especialidad_id == "") ? null : this.model.varConfiguracion.especialidad_id.toString();
+    this.model.varConfiguracion.area_id = (this.model.varConfiguracion.area_id == null || this.model.varConfiguracion.area_id == "") ? null: this.model.varConfiguracion.area_id.toString();
+    this.model.varConfiguracion.educacion_id = (this.model.varConfiguracion.educacion_id == null || this.model.varConfiguracion.educacion_id == "") ? null : this.model.varConfiguracion.educacion_id.toString();
+    this.model.varConfiguracion.conocimiento_id = (this.model.varConfiguracion.conocimiento_id == null || this.model.varConfiguracion.conocimiento_id == "") ? null : this.model.varConfiguracion.conocimiento_id.toString();
+    this.model.varConfiguracion.experiencia_id = (this.model.varConfiguracion.experiencia_id == null || this.model.varConfiguracion.experiencia_id == "") ? null : this.model.varConfiguracion.experiencia_id.toString();
+    this.model.varConfiguracion.competencia_id = (this.model.varConfiguracion.experiencia_id == null || this.model.varConfiguracion.experiencia_id == "") ? null : this.model.varConfiguracion.competencia_id.toString();
 
     if (this.model.varConfiguracion.cargo_configuracion_id == 0) {
       console.log('C', this.model.varConfiguracion);
