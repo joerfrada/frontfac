@@ -105,8 +105,6 @@ export class ProfilesComponent implements OnInit {
   }
 
   savePerfil() {
-    console.log(this.model.varPerfil);
-
     this.perfil.createPerfiles(this.model.varPerfil).subscribe(data => {
       let response: any = this.api.ProcesarRespuesta(data);
       if (response.tipo == 0) {
@@ -125,8 +123,6 @@ export class ProfilesComponent implements OnInit {
   }
 
   updatePerfil() {
-    console.log(this.model.varPerfil);
-
     this.perfil.updatePerfiles(this.model.varPerfil).subscribe(data => {
       let response: any = this.api.ProcesarRespuesta(data);
       if (response.tipo == 0) {

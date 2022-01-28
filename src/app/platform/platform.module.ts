@@ -8,60 +8,52 @@ import { LoginComponent } from '../login/login.component';
 import { PlatformComponent } from './platform.component';
 import { LayoutModule } from '../layout/layout.module';
 import { HomeComponent } from '../modules/home/home.component';
-import { ProfilesComponent } from '../modules/admin/profiles/profiles.component';
-import { ProfilesUsersComponent } from '../modules/admin/profiles-users/profiles-users.component';
+import { UsersComponent } from '../modules/admin/users/users.component';
+import { RolesComponent } from '../modules/admin/roles/roles.component';
 import { CargosComponent } from '../modules/param/cargos/cargos.component';
 import { GradosComponent } from '../modules/param/grados/grados.component';
 import { ValoresFlexiblesComponent } from '../modules/param/valores-flexibles/valores-flexibles.component';
 import { RequerimientosComponent } from '../modules/param/requerimientos/requerimientos.component';
-import { PiramidesComponent } from '../modules/consultas/piramides/piramides.component';
+import { SiglasComponent } from '../modules/param/siglas/siglas.component';
+import { ConsultaComponent } from '../modules/consultas/consulta/consulta.component';
 import { RutaComponent } from '../modules/consultas/ruta/ruta.component';
 import { BreadcrumbComponent } from '../views/breadcrumb/breadcrumb.component';
 import { ModalComponent } from '../views/modal/modal.component';
 import { WorkflowModalComponent } from '../views/workflow-modal/workflow-modal.component';
-import { ConsultaComponent } from '../modules/consultas/consulta/consulta.component';
 import { ViewCargoModalComponent } from '../views/view-cargo-modal/view-cargo-modal.component';
 import { VerModalComponent } from '../views/ver-modal/ver-modal.component';
 import { DetalleModalComponent } from '../views/detalle-modal/detalle-modal.component';
 import { PiramideModalComponent } from '../views/piramide-modal/piramide-modal.component';
-import { SiglasComponent } from '../modules/param/siglas/siglas.component';
 import { SelectListModalComponent } from '../views/select-list-modal/select-list-modal.component';
 import { SelectModalComponent } from '../views/select-modal/select-modal.component';
 import { SelectBigModalComponent } from '../views/select-big-modal/select-big-modal.component';
 import { SelectRouteModalComponent } from '../views/select-route-modal/select-route-modal.component';
-import { RolesComponent } from '../modules/admin/roles/roles.component';
-import { RolesPrivilegiosComponent } from '../modules/admin/roles-privilegios/roles-privilegios.component';
-import { UsersComponent } from '../modules/admin/users/users.component';
 
 @NgModule({
   declarations: [
     LoginComponent,
     PlatformComponent,
     HomeComponent,
-    ProfilesComponent,
-    ProfilesUsersComponent,
+    UsersComponent,
+    RolesComponent,
     CargosComponent,
     GradosComponent,
     ValoresFlexiblesComponent,
     RequerimientosComponent,
-    PiramidesComponent,
+    SiglasComponent,
+    ConsultaComponent,
     RutaComponent,
     BreadcrumbComponent,
     ModalComponent,
     WorkflowModalComponent,
-    ConsultaComponent,
     ViewCargoModalComponent,
     VerModalComponent,
     DetalleModalComponent,
     PiramideModalComponent,
-    SiglasComponent,
     SelectListModalComponent,
     SelectModalComponent,
     SelectBigModalComponent,
-    SelectRouteModalComponent,
-    RolesComponent,
-    RolesPrivilegiosComponent,
-    UsersComponent
+    SelectRouteModalComponent
   ],
   imports: [
     CommonModule,

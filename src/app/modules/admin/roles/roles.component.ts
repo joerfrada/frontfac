@@ -44,6 +44,7 @@ export class RolesComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.getRoles();
   }
 
   reload() {

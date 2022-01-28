@@ -52,7 +52,7 @@
 <app-modal [title]="model.title" [show]="modal" [size]="'modal-sm'" (close)="closeModal($event)">
     <div role="body">
         <div class="inner-col">
-            <div class="col col50">
+            <div class="col col40">
                 <div class="label-row">Rol</div>
                 <input type="text" [(ngModel)]="model.varRol.rol">
             </div>
@@ -60,7 +60,7 @@
                 <div class="label-row">Descripción</div>
                 <input type="text" [(ngModel)]="model.varRol.descripcion">
             </div>
-            <div class="col col25">
+            <div class="col col10">
                 <div class="label-row">Activo</div>
                 <div class="checkbox-component">
                     <label>

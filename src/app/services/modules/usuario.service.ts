@@ -13,6 +13,9 @@ export class UsuarioService {
   private apiGetUsuariosFull = this.api.getBaseUrl + "usuario/getUsuariosFull";
   private apiCreateUsuarios = this.api.getBaseUrl + "usuario/crearUsuarios";
   private apiUpdateUsuarios = this.api.getBaseUrl + "usuario/actualizarUsuarios";
+  private apiGetgetUsuariosRolesById = this.api.getBaseUrl + "usuario/getUsuariosRolesById";
+  private apiCreateUsuarioRol = this.api.getBaseUrl + "usuario/crearUsuarioRol";
+  private apiUpdateUsuarioRol = this.api.getBaseUrl + "usuario/actualizarUsuarioRol";
 
   constructor(private http: HttpClient, private api: ApiService) { }
 
@@ -33,6 +36,21 @@ export class UsuarioService {
 
   public updateUsuarios(data: any): Observable<any> {
     return this.http.post<any>(this.apiUpdateUsuarios, JSON.stringify(data), this.api.getHttpOptions('g'))
+    .pipe(retry(1), catchError(this.api.errorHandle));
+  }
+
+  public getUsuariosRolesById(data: any): Observable<any> {
+    return this.http.post<any>(this.apiGetgetUsuariosRolesById, JSON.stringify(data), this.api.getHttpOptions('g'))
+    .pipe(retry(1), catchError(this.api.errorHandle));
+  }
+
+  public createUsuariosRoles(data: any): Observable<any> {
+    return this.http.post<any>(this.apiCreateUsuarioRol, JSON.stringify(data), this.api.getHttpOptions('g'))
+    .pipe(retry(1), catchError(this.api.errorHandle));
+  }
+
+  public updateUsuariosRoles(data: any): Observable<any> {
+    return this.http.post<any>(this.apiUpdateUsuarioRol, JSON.stringify(data), this.api.getHttpOptions('g'))
     .pipe(retry(1), catchError(this.api.errorHandle));
   }
 }
