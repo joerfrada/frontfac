@@ -40,8 +40,14 @@ export class UsersComponent implements OnInit {
 
   modal: any;
   rolModal: any;
+  selectModal: any;
 
   usuario_id: any;
+  index: any;
+  indexform: any;
+
+  array: any = [];
+  varprivilegio: any = [];
 
   currentUser: any;
 
@@ -53,7 +59,7 @@ export class UsersComponent implements OnInit {
 
   ngOnInit(): void {
     this.getUsuarios();
-    this.getRoles();
+    this.getRolPrivilegios();
   }
 
   reload() {
@@ -126,6 +132,20 @@ export class UsersComponent implements OnInit {
     });
   }
 
+  getRolPrivilegios() {
+    this.usuario.getRolPrivilegiosPantalla().subscribe(data => {
+      let response: any = this.api.ProcesarRespuesta(data);
+      if (response.tipo == 0) {
+        response.result.forEach((x: any) => {
+          x.sigla1 = x.rol;
+          x.sigla2 = x.modulo;
+          x.sigla3 = x.nombre_pantalla;
+        });
+        this.varprivilegio = response.result;
+      }
+    });
+  }
+
   editUsuario(dato: any) {
     this.modal = true;
     this.model.title = "Actualizar Usuario";
@@ -137,6 +157,10 @@ export class UsersComponent implements OnInit {
     this.model.varUsuario.apellidos = dato.apellidos;
     this.model.varUsuario.num_identificacion = dato.num_identificacion;
     this.model.varUsuario.activo = (dato.activo == 'S') ? true : false;
+  }
+
+  closeSelectModal(bol: any) {
+    this.selectModal = bol;
   }
 
   saveUsuario() {
@@ -198,7 +222,7 @@ export class UsersComponent implements OnInit {
   }
 
   addRol() {
-    this.model.varRol.push({usuario_rol_id: 0, usuario_id: 0, rol_id: 0, activo: true, usuario_creador: this.currentUser.usuario, usuario_modificador: this.currentUser.usuario, NuevoRegistro: true});
+    this.model.varRol.push({usuario_rol_id: 0, usuario_id: 0, rol_id: 0, rol_privilegio_id: 0, rol: "", modulo: "", nombre_pantalla: "", activo: true, usuario_creador: this.currentUser.usuario, usuario_modificador: this.currentUser.usuario, NuevoRegistro: true});
   }
 
   deleteRol(index: any) {
@@ -209,16 +233,13 @@ export class UsersComponent implements OnInit {
     if (this.model.varRol.length > 0) {
       this.model.varRol.forEach((element: any) => {
         element.usuario_id = this.usuario_id;
-        element.rol_id = Number(element.rol_id);
-        element.usuario_creador = this.currentUser.usuario;
-        element.usuario_modificador = this.currentUser.usuario;
 
         if (element.NuevoRegistro == true) {
-          this.usuario.createUsuariosRoles(element).subscribe(data1 => {});
+          //this.usuario.createUsuariosRoles(element).subscribe(data1 => {});
           console.log('Create Rol:', element);
         }
         else {
-          this.usuario.createUsuariosRoles(element).subscribe(data1 => {});
+          //this.usuario.updateUsuariosRoles(element).subscribe(data1 => {});
           console.log('Update Rol:', element);
         }
       });
@@ -234,5 +255,23 @@ export class UsersComponent implements OnInit {
     //   this.rolModal = false;
     //   this.reload();
     // })
+  }
+
+  saveRolPrivilegio(index: number) {
+    this.array = this.varprivilegio;
+    this.indexform = 'rol-privilegio';
+    this.index = index;
+    this.selectModal = true;
+  }
+
+  dataform(indexform: any, data: any) {
+    this.selectModal = false;
+    if (indexform == 'rol-privilegio') {
+      this.model.varRol[this.index].rol_id = data.rol_id;
+      this.model.varRol[this.index].rol_privilegio_id = data.rol_privilegio_id;
+      this.model.varRol[this.index].rol = data.sigla1;
+      this.model.varRol[this.index].modulo = data.sigla2;
+      this.model.varRol[this.index].nombre_pantalla = data.sigla3;
+    }
   }
 }

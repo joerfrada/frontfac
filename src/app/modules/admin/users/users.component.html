@@ -72,7 +72,7 @@
             </div>
             <div class="col col33">
                 <div class="label-row">Num. Identificación</div>
-                <input type="number" [(ngModel)]="model.varUsuario.num_identificacion" class="notspin" notnegative>
+                <input type="number" [(ngModel)]="model.varUsuario.num_identificacion" min="0" notnegative>
             </div>
             <div class="col col33">
                 <div class="label-row">Activo</div>
@@ -100,7 +100,8 @@
                     <thead>
                         <tr>
                             <th>Rol</th>
-                            <th>Descripción</th>
+                            <th>Módulo</th>
+                            <th>Nombre Pantalla</th>
                             <th>Activo</th>
                             <th>Acciones</th>
                         </tr>
@@ -108,13 +109,17 @@
                     <tbody class="scroll">
                         <tr *ngFor="let rol of model.varRol; let i = index">
                             <td>
-                                <select [(ngModel)]="model.varRol[i].rol_id">
+                                <!-- <select [(ngModel)]="model.varRol[i].rol_id">
                                     <option value="0">Seleccionar</option>
                                     <option *ngFor="let item of lstRoles" value="{{item.rol_id}}">{{item.rol}}</option>
-                                </select>
+                                </select> -->
+                                <input type="text" placeholder="Selecciona..." [(ngModel)]="model.varRol[i].rol" (click)="saveRolPrivilegio(i)">
                             </td>
                             <td>
-                                <input disabled type="text" [(ngModel)]="model.varRol[i].descripcion">
+                                <input disabled type="text" [(ngModel)]="model.varRol[i].modulo">
+                            </td>
+                            <td>
+                                <input disabled type="text" [(ngModel)]="model.varRol[i].nombre_pantalla">
                             </td>
                             <td>
                                 <div class="table-checkbox-component">
@@ -140,3 +145,5 @@
         <button type="button" class="btn btn-blue" (click)="saveRol()">Guardar</button>
     </div>
 </app-modal>
+
+<app-select-big-modal [title]="'Roles'" [show]="selectModal" [array]="array" [arrayTemp]="array" (output)="dataform(indexform, $event)" (close)="closeSelectModal($event)"></app-select-big-modal>

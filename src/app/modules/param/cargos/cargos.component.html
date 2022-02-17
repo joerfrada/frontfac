@@ -178,7 +178,7 @@
                     <div class="tabs-content" *ngIf="tab === 1">
                         <div class="col col15">
                             <div class="label-row">Puestos Cant.</div>
-                            <input type="number" [(ngModel)]="model.varConfiguracion.puesto_cantidad" class="notspin" notnegative>
+                            <input type="number" [(ngModel)]="model.varConfiguracion.puesto_cantidad" min="0" notnegative>
                         </div>
                         <div class="col col50">
                             <div class="label-row">Cargo Jefe Inmediato</div>
@@ -231,11 +231,11 @@
                             <div class="line-col"></div>
                             <div class="col col25">
                                 <div class="label-row">Número de años</div>
-                                <input type="number" [(ngModel)]="model.varConfiguracion.anio" class="notspin" notnegative>
+                                <input type="number" [(ngModel)]="model.varConfiguracion.anio" min="0" notnegative>
                             </div>
                             <div class="col col25">
                                 <div class="label-row">Número de meses</div>
-                                <input type="number" [(ngModel)]="model.varConfiguracion.mes" class="notspin" notnegative>
+                                <input type="number" [(ngModel)]="model.varConfiguracion.mes" min="0" notnegative>
                             </div>
                             <div class="col col100">
                                 <!-- <div class="col col95">
