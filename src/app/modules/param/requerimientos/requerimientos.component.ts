@@ -197,17 +197,6 @@ export class RequerimientosComponent implements OnInit {
     this.model.varRequerimiento.especialidad_id = Number(this.model.varRequerimiento.especialidad_id);
     this.model.varRequerimiento.grado_id = Number(this.model.varRequerimiento.grado_id);
 
-    if (this.model.varRequerimiento.categoria_id == 0)
-      this.model.varRequerimiento.categoria_id = null;
-
-    if (this.model.varRequerimiento.especialidad_id == 0)
-      this.model.varRequerimiento.especialidad_id = null;
-    
-    if (this.model.varRequerimiento.grado_id == 0)
-      this.model.varRequerimiento.grado_id = null;
-    
-    console.log(this.model.varRequerimiento);
-
     this.requerimiento.createRequerimientos(this.model.varRequerimiento).subscribe(data => {
       let response: any = this.api.ProcesarRespuesta(data);
       if (response.tipo == 0) {
@@ -229,17 +218,6 @@ export class RequerimientosComponent implements OnInit {
     this.model.varRequerimiento.categoria_id = Number(this.model.varRequerimiento.categoria_id);
     this.model.varRequerimiento.especialidad_id = Number(this.model.varRequerimiento.especialidad_id);
     this.model.varRequerimiento.grado_id = Number(this.model.varRequerimiento.grado_id);
-
-    if (this.model.varRequerimiento.categoria_id == 0)
-      this.model.varRequerimiento.categoria_id = null;
-
-    if (this.model.varRequerimiento.especialidad_id == 0)
-      this.model.varRequerimiento.especialidad_id = null;
-    
-    if (this.model.varRequerimiento.grado_id == 0)
-      this.model.varRequerimiento.grado_id = null;
-    
-    console.log(this.model.varRequerimiento);
 
     this.requerimiento.updateRequerimientos(this.model.varRequerimiento).subscribe(data => {
       let response: any = this.api.ProcesarRespuesta(data);

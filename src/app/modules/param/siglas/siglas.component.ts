@@ -270,8 +270,6 @@ export class SiglasComponent implements OnInit {
       this.model.varCuerpo.usuario_creador = this.currentUser.usuario;
       this.model.varCuerpo.usuario_modificador = this.currentUser.usuario;
 
-      console.log('Cuerpo:', this.model.varCuerpo);
-
       this.cuerpo.createCuerpos(this.model.varCuerpo).subscribe(data => {
         let response: any = this.api.ProcesarRespuesta(data);
         if (response.tipo == 0) {
@@ -294,8 +292,6 @@ export class SiglasComponent implements OnInit {
       this.model.varEspecialidad.usuario_creador = this.currentUser.usuario;
       this.model.varEspecialidad.usuario_modificador = this.currentUser.usuario;
 
-      console.log('Especialidad:', this.model.varEspecialidad);
-
       this.especialidad.createEspecialidades(this.model.varEspecialidad).subscribe(data => {
         let response: any = this.api.ProcesarRespuesta(data);
         if (response.tipo == 0) {
@@ -317,8 +313,6 @@ export class SiglasComponent implements OnInit {
       this.model.varArea.especialidad_id = Number(this.model.varArea.especialidad_id);
       this.model.varArea.usuario_creador = this.currentUser.usuario;
       this.model.varArea.usuario_modificador = this.currentUser.usuario;
-
-      console.log('Area:', this.model.varArea);
 
       this.area.createAreas(this.model.varArea).subscribe(data => {
         let response: any = this.api.ProcesarRespuesta(data);
@@ -344,8 +338,6 @@ export class SiglasComponent implements OnInit {
       this.model.varCuerpo.usuario_creador = this.currentUser.usuario;
       this.model.varCuerpo.usuario_modificador = this.currentUser.usuario;
 
-      console.log('Cuerpo:', this.model.varCuerpo);
-
       this.cuerpo.updateCuerpos(this.model.varCuerpo).subscribe(data => {
         let response: any = this.api.ProcesarRespuesta(data);
         if (response.tipo == 0) {
@@ -369,8 +361,6 @@ export class SiglasComponent implements OnInit {
       this.model.varEspecialidad.usuario_creador = this.currentUser.usuario;
       this.model.varEspecialidad.usuario_modificador = this.currentUser.usuario;
 
-      console.log('Especialidad:', this.model.varEspecialidad);
-
       this.especialidad.updateEspecialidades(this.model.varEspecialidad).subscribe(data => {
         let response: any = this.api.ProcesarRespuesta(data);
         if (response.tipo == 0) {
@@ -393,8 +383,6 @@ export class SiglasComponent implements OnInit {
       this.model.varArea.especialidad_id = Number(this.model.varArea.especialidad_id);
       this.model.varArea.usuario_creador = this.currentUser.usuario;
       this.model.varArea.usuario_modificador = this.currentUser.usuario;
-
-      console.log('Area:', this.model.varArea);
 
       this.area.updateAreas(this.model.varArea).subscribe(data => {
         let response: any = this.api.ProcesarRespuesta(data);

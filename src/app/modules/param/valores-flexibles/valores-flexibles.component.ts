@@ -170,12 +170,9 @@ export class ValoresFlexiblesComponent implements OnInit {
     this.model.varListaDinamica.usuario_creador = this.currentUser.usuario;
     this.model.varListaDinamica.usuario_modificador = this.currentUser.usuario;
 
-    console.log(this.model.varListaDinamica);
-
     this.listaDinamica.getListasDinamicas({ nombre_lista_id: data.nombre_lista_id }).subscribe(data => {
       let response: any = this.api.ProcesarRespuesta(data);
       if (response.tipo == 0) {
-        console.log(response.result);
         this.varvalor = response.result;
         this.varvalorTemp = response.result;
       }
@@ -215,11 +212,6 @@ export class ValoresFlexiblesComponent implements OnInit {
   saveNombreLista() {
     this.model.varNombreLista.nombre_lista_padre_id = Number(this.model.varNombreLista.nombre_lista_padre_id);
     
-    if (this.model.varNombreLista.nombre_lista_padre_id == 0)
-      this.model.varNombreLista.nombre_lista_padre_id = null;
-
-    console.log(this.model.varNombreLista);
-
     this.listaDinamica.createNombresListas(this.model.varNombreLista).subscribe((data => {
       let response: any = this.api.ProcesarRespuesta(data);
       if (response.tipo == 0) {
@@ -239,12 +231,7 @@ export class ValoresFlexiblesComponent implements OnInit {
 
   updateNombreLista() {
     this.model.varNombreLista.nombre_lista_padre_id = Number(this.model.varNombreLista.nombre_lista_padre_id);
-    
-    if (this.model.varNombreLista.nombre_lista_padre_id == 0)
-      this.model.varNombreLista.nombre_lista_padre_id = null;
-
-    console.log(this.model.varNombreLista);
-
+   
     this.listaDinamica.updateNombresListas(this.model.varNombreLista).subscribe((data => {
       let response: any = this.api.ProcesarRespuesta(data);
       if (response.tipo == 0) {
@@ -298,11 +285,6 @@ export class ValoresFlexiblesComponent implements OnInit {
   createValor() {
     this.model.varListaDinamica.lista_dinamica_padre_id = Number(this.model.varListaDinamica.lista_dinamica_padre_id);
 
-    if (this.model.varListaDinamica.lista_dinamica_padre_id == 0)
-    this.model.varListaDinamica.lista_dinamica_padre_id = null;
-
-    console.log(this.model.varListaDinamica);
-    
     this.listaDinamica.createListasDinamicas(this.model.varListaDinamica).subscribe((data => {
       let response: any = this.api.ProcesarRespuesta(data);
       if (response.tipo == 0) {
@@ -324,11 +306,6 @@ export class ValoresFlexiblesComponent implements OnInit {
   updateValor() {
     this.model.varListaDinamica.lista_dinamica_padre_id = Number(this.model.varListaDinamica.lista_dinamica_padre_id);
 
-    if (this.model.varListaDinamica.lista_dinamica_padre_id == 0)
-    this.model.varListaDinamica.lista_dinamica_padre_id = null;
-
-    console.log(this.model.varListaDinamica);
-    
     this.listaDinamica.updateListasDinamicas(this.model.varListaDinamica).subscribe((data => {
       let response: any = this.api.ProcesarRespuesta(data);
       if (response.tipo == 0) {

@@ -598,6 +598,20 @@ a {
     }
 }
 
+#modal-lg-2 {
+    .modal-box {
+        width: 95vw;
+    }
+
+    .modal-box-centered {
+        min-height: calc(100vh - 8.5rem);
+    }
+
+    .modal-box-scrollable {
+        height: calc(100vh - 8.5rem);
+    }
+}
+
 #modal-xl-lg {
     .modal-box {
         width: 90vw;
@@ -1196,9 +1210,9 @@ a {
     overflow-x: hidden;
 }
 
-.table-content table select, 
-.table-content table input[type=text],
-.table-content table input[type=number],
+.table-content table select,
+.table-content table input[type=text]
+.table-content table input[type=number]
 .table-content table textarea {
     background-color: white; 
     background: white;
@@ -1342,9 +1356,9 @@ a {
     color: var(--color-bluedark);
 }
 
-.inner-col input[type=text],
-.inner-col input[type=number],
-.inner-col select {
+.inner-col input[type=text], .table-content table input[type=text],
+.inner-col input[type=number], .table-content table input[type=number],
+.inner-col select, .table-content table select {
     padding: 8px;
     width: 100%;
     -webkit-appearance: none;
@@ -1484,7 +1498,7 @@ textarea {
     height: 0;
     width: 0;
     opacity: 0;
-    position: absolute;
+    // position: absolute;
     cursor: pointer;
 }
 

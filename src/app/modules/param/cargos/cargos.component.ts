@@ -561,15 +561,6 @@ export class CargosComponent implements OnInit {
     this.model.varCargo.categoria_id = Number(this.model.varCargo.categoria_id);
     this.model.varCargo.cargo_ruta_id = Number(this.model.varCargo.cargo_ruta_id);
 
-    if (this.model.varCargo.clase_cargo_id == 0)
-      this.model.varCargo.clase_cargo_id = null;
-
-    if (this.model.varCargo.categoria_id == 0)
-      this.model.varCargo.categoria_id = null;
-    
-    if (this.model.varCargo.cargo_ruta_id == 0)
-      this.model.varCargo.cargo_ruta_id = null;
-
     this.cargo.createCargos(this.model.varCargo).subscribe(data => {
       let response: any = this.api.ProcesarRespuesta(data);
       if (response.tipo == 0) {
@@ -607,15 +598,6 @@ export class CargosComponent implements OnInit {
     this.model.varCargo.clase_cargo_id = Number(this.model.varCargo.clase_cargo_id);
     this.model.varCargo.categoria_id = Number(this.model.varCargo.categoria_id);
     this.model.varCargo.cargo_ruta_id = Number(this.model.varCargo.cargo_ruta_id);
-
-    if (this.model.varCargo.clase_cargo_id == 0)
-      this.model.varCargo.clase_cargo_id = null;
-
-    if (this.model.varCargo.categoria_id == 0)
-      this.model.varCargo.categoria_id = null;
-
-    if (this.model.varCargo.cargo_ruta_id == 0)
-      this.model.varCargo.cargo_ruta_id = null;
 
     this.cargo.updateCargos(this.model.varCargo).subscribe(data => {
       let response: any = this.api.ProcesarRespuesta(data);
@@ -803,12 +785,6 @@ export class CargosComponent implements OnInit {
     this.model.varConfiguracion.nivel4 = Number(this.model.varConfiguracion.nivel4);
     this.model.varConfiguracion.nivel5 = Number(this.model.varConfiguracion.nivel5);
 
-    if (this.model.varConfiguracion.nivel1 == 0) this.model.varConfiguracion.nivel1 = null;
-    if (this.model.varConfiguracion.nivel2 == 0) this.model.varConfiguracion.nivel2 = null;
-    if (this.model.varConfiguracion.nivel3 == 0) this.model.varConfiguracion.nivel3 = null;
-    if (this.model.varConfiguracion.nivel4 == 0) this.model.varConfiguracion.nivel4 = null;
-    if (this.model.varConfiguracion.nivel5 == 0) this.model.varConfiguracion.nivel5 = null;
-
     this.model.varConfiguracion.cuerpo = this.model.varCuerpo.cuerpo;
     this.model.varConfiguracion.especialidad = this.model.varEspecialidad.especialidad;
     this.model.varConfiguracion.area = this.model.varArea.area;
@@ -828,7 +804,6 @@ export class CargosComponent implements OnInit {
     this.model.varConfiguracion.competencia_id = (this.model.varConfiguracion.experiencia_id == null || this.model.varConfiguracion.experiencia_id == "") ? null : this.model.varConfiguracion.competencia_id.toString();
 
     if (this.model.varConfiguracion.cargo_configuracion_id == 0) {
-      console.log('C', this.model.varConfiguracion);
       this.cargo.createCargosConfiguracion(this.model.varConfiguracion).subscribe(data => {
         let response: any = this.api.ProcesarRespuesta(data);
         if (response.tipo == 0) {
@@ -846,7 +821,6 @@ export class CargosComponent implements OnInit {
       });
     }
     else {
-      console.log('U', this.model.varConfiguracion);
       this.cargo.updateCargosConfiguracion(this.model.varConfiguracion).subscribe(data => {
         let response: any = this.api.ProcesarRespuesta(data);
         if (response.tipo == 0) {

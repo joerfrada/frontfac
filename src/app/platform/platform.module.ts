@@ -15,7 +15,6 @@ import { GradosComponent } from '../modules/param/grados/grados.component';
 import { ValoresFlexiblesComponent } from '../modules/param/valores-flexibles/valores-flexibles.component';
 import { RequerimientosComponent } from '../modules/param/requerimientos/requerimientos.component';
 import { SiglasComponent } from '../modules/param/siglas/siglas.component';
-import { ConsultaComponent } from '../modules/consultas/consulta/consulta.component';
 import { RutaComponent } from '../modules/consultas/ruta/ruta.component';
 import { BreadcrumbComponent } from '../views/breadcrumb/breadcrumb.component';
 import { ModalComponent } from '../views/modal/modal.component';
@@ -41,7 +40,6 @@ import { SelectRouteModalComponent } from '../views/select-route-modal/select-ro
     ValoresFlexiblesComponent,
     RequerimientosComponent,
     SiglasComponent,
-    ConsultaComponent,
     RutaComponent,
     BreadcrumbComponent,
     ModalComponent,

@@ -30,9 +30,9 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
-    // this.titleLogin = "Iniciando sesión... Espere";
+    //this.titleLogin = "Iniciando sesión... Espere";
     this.usuario = "admin";
-    this.loginService.login({ "usuario": this.usuario}).subscribe(data => {
+    this.loginService.login({ usuario: this.usuario }).subscribe(data => {
       let response: any = this.api.ProcesarRespuesta(data);
       if (response.tipo === 0) {
         localStorage.setItem("currentUser", JSON.stringify(response.user.result));
@@ -42,20 +42,20 @@ export class LoginComponent implements OnInit {
           location.href = "/fac/home";
         }, 3000);
       }
-      // else {
-      //   swal({
-      //     title: 'ERROR',
-      //     text: response.mensaje,
-      //     allowOutsideClick: false,
-      //     showConfirmButton: true,
-      //     type: 'error'
-      //   }).then((result: any) => {
-      //     if (result) {
-      //       this.titleLogin = "Iniciar sesión";
-      //       this.password = "";
-      //     }
-      //   });
-      // }
+      else {
+        swal({
+          title: 'ERROR',
+          text: response.mensaje,
+          allowOutsideClick: false,
+          showConfirmButton: true,
+          type: 'error'
+        }).then((result: any) => {
+          if (result) {
+            this.titleLogin = "Iniciar sesión";
+            this.password = "";
+          }
+        });
+      }
     });
   }
 

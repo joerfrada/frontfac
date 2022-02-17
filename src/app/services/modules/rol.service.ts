@@ -10,16 +10,23 @@ import { ApiService } from '../api.service';
 export class RolService {
 
   private apiGetRoles = this.api.getBaseUrl + "rol/getRoles";
+  private apiGetRolesActivos = this.api.getBaseUrl + "rol/getRolesActivos";
   private apiCreateRoles = this.api.getBaseUrl + "rol/crearRoles";
   private apiUpdateRoles = this.api.getBaseUrl + "rol/actualizarRoles";
   private apiGetRolPrivilegiosById = this.api.getBaseUrl + "rol/getRolPrivilegiosById";
   private apiCreateRolPrivilegios = this.api.getBaseUrl + "rol/crearRolPrivilegios";
-  private apiUpdateRolPrivilegios = this.api.getBaseUrl + "rol/actualizarPrivilegios";
+  private apiUpdateRolPrivilegios = this.api.getBaseUrl + "rol/actualizarRolPrivilegios";
+  private apiGetModulos = this.api.getBaseUrl + "rol/getModulos";
 
   constructor(private http: HttpClient, private api: ApiService) { }
 
   public getRoles(data: any): Observable<any> {
     return this.http.post<any>(this.apiGetRoles, JSON.stringify(data), this.api.getHttpOptions('g'))
+    .pipe(retry(1), catchError(this.api.errorHandle));
+  }
+
+  public getRolesActivos() : Observable<any> {
+    return this.http.get<any>(this.apiGetRolesActivos, this.api.getHttpOptions('g'))
     .pipe(retry(1), catchError(this.api.errorHandle));
   }
 
@@ -45,6 +52,11 @@ export class RolService {
 
   public updateRolPrivilegios(data: any): Observable<any> {
     return this.http.post<any>(this.apiUpdateRolPrivilegios, JSON.stringify(data), this.api.getHttpOptions('g'))
+    .pipe(retry(1), catchError(this.api.errorHandle));
+  }
+
+  public getModulos(): Observable<any> {
+    return this.http.get<any>(this.apiGetModulos, this.api.getHttpOptions('g'))
     .pipe(retry(1), catchError(this.api.errorHandle));
   }
 }

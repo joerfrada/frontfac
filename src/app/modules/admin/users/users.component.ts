@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from '../../../services/api.service';
 import { UsuarioService } from '../../../services/modules/usuario.service';
+import { RolService } from '../../../services/modules/rol.service';
 
 declare var swal:any;
 
@@ -19,6 +20,8 @@ export class Model {
     usuario_creador: "",
     usuario_modificador: ""
   };
+
+  varRol: any = [];
 }
 
 @Component({
@@ -33,11 +36,16 @@ export class UsersComponent implements OnInit {
   varhistorial: any = [];
   varhistorialTemp: any = [];
 
+  lstRoles: any = [];
+
   modal: any;
+  rolModal: any;
+
+  usuario_id: any;
 
   currentUser: any;
 
-  constructor(private router: Router, private api: ApiService, private usuario: UsuarioService) {
+  constructor(private router: Router, private api: ApiService, private usuario: UsuarioService, private rol: RolService) {
     this.currentUser = JSON.parse(localStorage.getItem("currentUser") as any)[0];
     this.model.varUsuario.usuario_creador = this.currentUser.usuario;
     this.model.varUsuario.usuario_modificador = this.currentUser.usuario;
@@ -45,6 +53,7 @@ export class UsersComponent implements OnInit {
 
   ngOnInit(): void {
     this.getUsuarios();
+    this.getRoles();
   }
 
   reload() {
@@ -108,6 +117,15 @@ export class UsersComponent implements OnInit {
     });
   }
 
+  getRoles() {
+    this.rol.getRolesActivos().subscribe(data => {
+      let response: any = this.api.ProcesarRespuesta(data);
+      if (response.tipo == 0) {
+        this.lstRoles = response.result;
+      }
+    });
+  }
+
   editUsuario(dato: any) {
     this.modal = true;
     this.model.title = "Actualizar Usuario";
@@ -155,5 +173,66 @@ export class UsersComponent implements OnInit {
         })
       }
     });
+  }
+
+  openRol(dato: any) {
+    this.rolModal = true;
+    this.model.title = "Asignar Rol - " + dato.usuario;
+
+    this.usuario_id = dato.usuario_id;
+
+    this.usuario.getUsuariosRolesById({usuario_id: dato.usuario_id}).subscribe(data => {
+      let response: any = this.api.ProcesarRespuesta(data);
+      if (response.tipo == 0) {
+        this.model.varRol = response.result;
+      }
+    });
+  }
+
+  closeRolModal(bol: any) {
+    this.rolModal = bol;
+  }
+
+  changeRol(rol_id: any, index: any) {
+    this.model.varRol[index].descripcion = this.lstRoles.filter((x: any) => x.rol_id == rol_id )[0].descripcion;
+  }
+
+  addRol() {
+    this.model.varRol.push({usuario_rol_id: 0, usuario_id: 0, rol_id: 0, activo: true, usuario_creador: this.currentUser.usuario, usuario_modificador: this.currentUser.usuario, NuevoRegistro: true});
+  }
+
+  deleteRol(index: any) {
+    this.model.varRol.splice(index, 1);
+  }
+
+  saveRol() {
+    if (this.model.varRol.length > 0) {
+      this.model.varRol.forEach((element: any) => {
+        element.usuario_id = this.usuario_id;
+        element.rol_id = Number(element.rol_id);
+        element.usuario_creador = this.currentUser.usuario;
+        element.usuario_modificador = this.currentUser.usuario;
+
+        if (element.NuevoRegistro == true) {
+          this.usuario.createUsuariosRoles(element).subscribe(data1 => {});
+          console.log('Create Rol:', element);
+        }
+        else {
+          this.usuario.createUsuariosRoles(element).subscribe(data1 => {});
+          console.log('Update Rol:', element);
+        }
+      });
+    }
+
+    // swal({
+    //   title: 'Roles Privilegios',
+    //   text: 'Los roles privilegios ha guardado exitoso.',
+    //   allowOutsideClick: false,
+    //   showConfirmButton: true,
+    //   type: 'success'
+    // }).then((result: any) => {
+    //   this.rolModal = false;
+    //   this.reload();
+    // })
   }
 }

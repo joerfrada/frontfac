@@ -619,26 +619,11 @@ export class RutaComponent implements OnInit {
     this.model.varRutaCarrera.tipo_categoria_id = Number(this.model.varRutaCarrera.tipo_categoria_id);
     this.model.varRutaCarrera.tipo_ruta_id = Number(this.model.varRutaCarrera.tipo_ruta_id);
 
-    if (this.model.varRutaCarrera.cuerpo_id == 0)
-      this.model.varRutaCarrera.cuerpo_id = null;
-
-    if (this.model.varRutaCarrera.especialidad_id == 0)
-      this.model.varRutaCarrera.especialidad_id = null;
-
-    if (this.model.varRutaCarrera.area_id == 0)
-      this.model.varRutaCarrera.area_id = null;
-
-    if (this.model.varRutaCarrera.tipo_categoria_id == 0)
-      this.model.varRutaCarrera.tipo_categoria_id = null;
-
-    if (this.model.varRutaCarrera.tipo_ruta_id == 0)
-      this.model.varRutaCarrera.tipo_ruta_id = null;
-
     let esEscontrado = this.varhistorial.filter((x: any) => (x.especialidad_id == this.model.varRutaCarrera.especialidad_id) && (x.tipo_ruta_id == this.model.varRutaCarrera.tipo_ruta_id) && (x.area_id == this.model.varRutaCarrera.area_id));
     if (esEscontrado.length == 1) {
       swal({
         title: 'ADVERTENCIA',
-        text: 'La ruta de carrera ya existen.',
+        text: 'La ruta de carrera ya existe.',
         allowOutsideClick: false,
         showConfirmButton: true,
         type: 'warning'
@@ -692,8 +677,6 @@ export class RutaComponent implements OnInit {
     this.model.varRutaCarrera.tipo_categoria_id = Number(this.model.varRutaCarrera.tipo_categoria_id);
     this.model.varRutaCarrera.tipo_ruta_id = Number(this.model.varRutaCarrera.tipo_ruta_id);
 
-    console.log(this.model.varRutaCarrera);
-
     this.ruta.updateRutaCarrera(this.model.varRutaCarrera).subscribe(data => {
       let response: any = this.api.ProcesarRespuesta(data);
       if (response.tipo == 0) {
@@ -703,10 +686,14 @@ export class RutaComponent implements OnInit {
             element.cargo_id = Number(element.cargo_id);
 
             if (element.NuevoRegistro == true) {
-              this.ruta.createRutas(element).subscribe(data1 => {});
+              this.ruta.createRutas(element).subscribe(data1 => {
+                this.api.ProcesarRespuesta(data1);
+              });
             }
             else {
-              this.ruta.updateRutas(element).subscribe(data1 => {});
+              this.ruta.updateRutas(element).subscribe(data1 => {
+                this.api.ProcesarRespuesta(data1);
+              });
             }
           });
         }

@@ -41,6 +41,7 @@
                             </td>
                             <td class="table-buttons-action">
                                 <button type="button" class="button btn-edit" (click)="editUsuario(item)">Editar</button>
+                                <button type="button" class="button btn-edit" (click)="openRol(item)">Asignar Rol</button>
                             </td>
                         </tr>
                         <tr *ngIf="varhistorial?.length == 0">
@@ -88,5 +89,54 @@
         <button type="button" class="btn btn-red" (click)="closeModal(false)">Cerrar</button>
         <button *ngIf="model.tipo == 'C'" type="button" class="btn btn-blue" (click)="saveUsuario()">Guardar</button>
         <button *ngIf="model.tipo == 'U'" type="button" class="btn btn-blue" (click)="updateUsuario()">Guardar</button>
+    </div>
+</app-modal>
+
+<app-modal [title]="model.title" [show]="rolModal" [size]="'modal-md-w'" (close)="closeRolModal($event)">
+    <div role="body">
+        <div class="inner-col">
+            <div class="table-content">
+                <table class="table flex-table">
+                    <thead>
+                        <tr>
+                            <th>Rol</th>
+                            <th>Descripción</th>
+                            <th>Activo</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody class="scroll">
+                        <tr *ngFor="let rol of model.varRol; let i = index">
+                            <td>
+                                <select [(ngModel)]="model.varRol[i].rol_id">
+                                    <option value="0">Seleccionar</option>
+                                    <option *ngFor="let item of lstRoles" value="{{item.rol_id}}">{{item.rol}}</option>
+                                </select>
+                            </td>
+                            <td>
+                                <input disabled type="text" [(ngModel)]="model.varRol[i].descripcion">
+                            </td>
+                            <td>
+                                <div class="table-checkbox-component">
+                                    <label>
+                                        <input type="checkbox" checked="checked" [(ngModel)]="model.varRol[i].activo">
+                                    </label>
+                                </div>
+                            </td>
+                            <td>
+                                <i class="fa fa-1m5x fa-times-circle pointer noselect" style="color: black !important;" *ngIf="model.varRol[i].NuevoRegistro" (click)="deleteRol(i)"></i>
+                            </td>
+                        </tr>
+                        <tr class="add_row_full">
+                            <button type="button" class="button btn-blue" (click)="addRol()">Agregar</button>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div role="footer">
+        <button type="button" class="btn btn-red" (click)="closeRolModal(false)">Cerrar</button>
+        <button type="button" class="btn btn-blue" (click)="saveRol()">Guardar</button>
     </div>
 </app-modal>
