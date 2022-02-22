@@ -38,7 +38,6 @@ export class Model {
     cargo_grado_id: 0,
     puesto_cantidad: 0,
     cargo_jefe_inmediato_id: 0,
-    cargo_jefe_inmediato: "",
     nivel1: 0,
     nivel2: 0,
     nivel3: 0,
@@ -230,7 +229,8 @@ export class CargosComponent implements OnInit {
     }
     else {
       this.varhistorial = this.varhistorialTemp.filter((item: any) => {
-        if (item.cargo.toString().toLowerCase().indexOf(filtro) !== -1 ||
+        if (item.cargo_id.toString().toLowerCase().indexOf(filtro) !== -1 ||
+            item.cargo.toString().toLowerCase().indexOf(filtro) !== -1 ||
             item.clase_cargo.toString().toLowerCase().indexOf(filtro) !== -1 ||
             item.categoria.toString().toLowerCase().indexOf(filtro) !== -1) {
             return true;
@@ -332,10 +332,18 @@ export class CargosComponent implements OnInit {
     this.model.grado = listaGrado[0].descripcion;
   }
 
+  selectTab(tab: any) {
+    this.tab = tab;
+  }
+
   openConfigModal(data: any) {
     this.configModal = true;
     this.model.varConfiguracion.cargo_grado_id = data.cargo_grado_id;
     this.model.grado = data.descripcion;
+  }
+
+  closeConfigModal(bol: any) {
+    this.configModal = bol;
   }
 
   editConfigModal(data: any) {
@@ -361,7 +369,6 @@ export class CargosComponent implements OnInit {
             this.model.varConfiguracion.cargo_configuracion_id = cargo.cargo_configuracion_id;
             this.model.varConfiguracion.puesto_cantidad = cargo.puesto_cantidad;
             this.model.varConfiguracion.cargo_jefe_inmediato_id = cargo.cargo_jefe_inmediato_id;
-            this.model.varConfiguracion.cargo_jefe_inmediato = cargo.cargo_jefe_inmediato;
             this.model.varConfiguracion.nivel1 = cargo.nivel1;
             this.model.varConfiguracion.nivel2 = cargo.nivel2;
             this.model.varConfiguracion.nivel3 = cargo.nivel3;
@@ -369,7 +376,6 @@ export class CargosComponent implements OnInit {
             this.model.varConfiguracion.nivel5 = cargo.nivel5;
             this.model.varConfiguracion.anio = cargo.anio;
             this.model.varConfiguracion.mes = cargo.mes;
-            this.model.varConfiguracion.periodo = cargo.periodo;
             this.model.varConfiguracion.requisito_cargo = cargo.requisito_cargo;
             this.model.varCuerpo.cuerpo = cargo.cuerpo;
             this.model.varConfiguracion.cuerpo_id = cargo.cuerpo_id;
@@ -391,7 +397,6 @@ export class CargosComponent implements OnInit {
             this.model.varConfiguracion.cargo_configuracion_id = 0;
             this.model.varConfiguracion.puesto_cantidad = 0;
             this.model.varConfiguracion.cargo_jefe_inmediato_id = 0;
-            this.model.varConfiguracion.cargo_jefe_inmediato = "";
             this.model.varConfiguracion.nivel1 = 0;
             this.model.varConfiguracion.nivel2 = 0;
             this.model.varConfiguracion.nivel3 = 0;
@@ -419,14 +424,6 @@ export class CargosComponent implements OnInit {
         }
       });
     }
-  }
-
-  closeConfigModal(bol: any) {
-    this.configModal = bol;
-  }
-
-  selectTab(tab: any) {
-    this.tab = tab;
   }
 
   getListas() {

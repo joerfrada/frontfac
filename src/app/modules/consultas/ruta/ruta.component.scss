@@ -80,9 +80,14 @@
     width: 100%;
     height: 100%;
     background: white;
+    overflow-y: auto;
 
     .detalle-grado {
         text-align: justify;
+    }
+
+    ul {
+        margin-left: 20px;
     }
 }
 
@@ -90,6 +95,11 @@
     width: 100%;
     height: 400px;
     background: white;
+    overflow-y: auto;
+
+    ul {
+        margin-left: 20px;
+    }
 }
 
 .title-grado, .duration-grado, .requisito-grado {
@@ -196,7 +206,7 @@
     
         .cargo_box {
             display: flex;
-            width: 280px;
+            // width: 280px;
             height: 65px;
             font-size: 10px;
             font-weight: bold;
@@ -207,122 +217,8 @@
 
             .title_cargo, .title_grado {
                 margin-right: 10px;
-            }
-
-            .title_grado {
                 font-size: 1.5em;
             }
         }
     }
-}
-
-[F] {
-    display: flex;
-}
-[R] {
-    flex-direction: row;
-}
-[C] {
-    flex-direction: column;
-}
-[W] {
-    flex-wrap: wrap;
-}
-[band] {
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: center;
-    align-content: center;
-    padding: calc(5vh + 48px) calc(19.5vw - 54.4px);
-}
-[data-chart] {
-    display: flex;
-    align-items: center;
-}
-[data-knot] {
-    display: flex;
-    flex-grow: 1;
-}
-[data-knot] {
-    justify-content: center;
-}
-[data-knot*="node"] {
-    align-items: stretch;
-}
-[data-knot*="step"] {
-    align-items: flex-start;
-}
-[data-knot] {
-    position: relative;
-    z-index: 1;
-}
-[data-knot]:before, [data-knot]:after {
-    content: '';
-    position: absolute;
-    z-index: -1;
-}
-[data-knot]:before {
-    top: 1px;
-}
-[data-knot]:after {
-    bottom: -1px;
-}
-[data-knot*="node"]:before, [data-knot*="node"]:after {
-    height: 0px;
-    width: 50%;
-}
-[data-knot*="step"]:before,[data-knot*="step"]:after {
-    width: 0px;
-    left: 50%;
-    right: 50%;
-}
-[data-knot*="ctr"]:before, [data-knot*="ctr"]:after {
-    width: 100%;
-    left: 0;
-}
-[data-knot*="lft"]:before, [data-knot*="lft"]:after { 
-    left : 50%;
-}
-[data-knot*="rgt"]:before, [data-knot*="rgt"]:after { 
-    right: 50%;
-}
-[data-knot*="node"]:before, [data-knot*="node.step"]:after,
-[data-knot*="step"]:before, [data-knot*="step"]:after {
-    outline: 1px solid #666
-}
-[data-knot="step"]:after, [data-knot*="start"]:before ,[data-knot*="stop"]:after { 
-    outline: none;
-}
-[data-knot*="step"] {
-    padding: 1.875vmin 1.25vmin;
-}
-[data-knot*="step"]:before {
-    height: 1.875vmin;
-}
-[data-knot*="step"]:after {
-    height: calc(100% - 1.875vmin);
-}
-[data-symbol], [data-symbol] > * {
-    display: flex;
-}
-[data-symbol] > * > *  {
-    flex-grow: 1;
-}
-[data-symbol] {
-    flex-direction: column;
-}
-[data-symbol] > .header {
-    align-items: center;
-}
-[data-symbol] {
-    text-decoration: none;
-    color: currentColor;
-    background-color: transparent;
-}
-[data-symbol] > .header {
-    padding: .25rem .5rem;
-    text-align: center;
-    width : calc(8.125vmin + 110px);
-    height: calc(8.125vmin + 10px);
-    font-size: calc(.875vmin + 3.2px)
 }

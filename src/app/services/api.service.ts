@@ -8,8 +8,8 @@ declare var swal:any;
   providedIn: 'root'
 })
 export class ApiService {
-  private baseurl = "http://localhost:8000/api/";
-  //private baseurl = "http://localhost:82/api/";
+  //private baseurl = "http://localhost:8000/api/";
+  private baseurl = "http://localhost:82/api/";
 
   constructor() { }
 

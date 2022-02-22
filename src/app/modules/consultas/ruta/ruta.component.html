@@ -260,13 +260,12 @@
     </div>
 </app-modal>
 
-<workflow-modal [title]="'Ruta de Carrera'" [show]="workflowModal" [size]="'modal-md-4'" (close)="closeWorkflowModal($event)">
-    <!-- <div id="chart-container"></div> -->
+<workflow-modal [title]="'Ruta de Carrera'" [show]="workflowModal" [size]="'modal-wmd-4'" (close)="closeWorkflowModal($event)">
     <div id="chart-ruta">
         <div class="ruta_level">
             <ul *ngFor="let item of lstRutas" class="ruta_cargo">
                 <li *ngFor="let cargo of item.cargos" [ngClass]="cargo.clase_cargo" class="cargo_box title">
-                    <div class="title_cargo">{{cargo.cargo}}</div>
+                    <div class="title_cargo">Cargo #{{cargo.cargo_id}}</div>
                     <div class="title_grado">({{cargo.grado}})</div>
                     <i class="icon fas fa-1mx fa-arrow-circle-right pointer noselect" (click)="openDetalleCargoRutaCarrera(cargo)"></i>
                 </li>
@@ -278,11 +277,33 @@
 <viewcargo-modal [title]="tituloCargo" [show]="viewCargoModal" [size]="'modal-view-sm'" (close)="closeViewCargoModal($event)">
     <div role="body">
         <div class="view-cargo">
-            <div id="textcargo" style="padding: 10px;"></div>
+            <div id="textcargo" style="padding: 10px;">
+                <div *ngIf="lstCuerpo?.length != 0" style="margin-bottom: 5px;">
+                    <b>Cuerpos</b>
+                    <ul>
+                        <li *ngFor="let cuerpo of lstCuerpo">{{cuerpo}}</li>
+                    </ul>
+                </div>
+                <div *ngIf="lstEspec?.length != 0" style="margin-bottom: 5px;">
+                    <b>Especialidades</b>
+                    <ul>
+                        <li *ngFor="let especialidad of lstEspec">{{especialidad}}</li>
+                    </ul>
+                </div>
+                <div *ngIf="lstArea?.length != 0" style="margin-bottom: 5px;">
+                    <b>Áreas</b>
+                    <ul>
+                        <li *ngFor="let area of lstArea">{{area}}</li>
+                    </ul>
+                </div>
+                <div *ngIf="lstCuerpo?.length == 0 && lstEspec?.length == 0 && lstArea?.length == 0">
+                    <p>No hay información</p>
+                </div>
+            </div>
         </div>
     </div>
     <div role="footer1">
-        <button type="button" class="btn btn-blue" (click)="openDetalleCargo()">Detalle del Cargo</button>
+        <button type="button" class="btn btn-blue" (click)="openConfigModal()">Detalle del Cargo</button>
         <button type="button" class="btn btn-blue">Imprimir PDF</button>
     </div>
 </viewcargo-modal>
@@ -328,9 +349,24 @@
         </div>
 </piramide-modal>
 
-<detalle-modal [title]="titleDetalle" [show]="detalleModal" [size]="'modal-detalle-sm'" (close)="closeDetalleModal($event)">
+<detalle-modal [title]="'Requisitos del Ley'" [show]="detalleReqModal" [size]="'modal-detalle-tm'" (close)="closeDetalleReqModal($event)">
     <div class="view-detail">
-        <div id="text" style="padding: 10px;"></div>
+        <div id="text" style="padding: 10px;">
+            <div id="text"></div>
+        </div>
+    </div>
+</detalle-modal>
+
+<detalle-modal [title]="'Detalle Grado'" [show]="detalleModal" [size]="sizeModal" (close)="closeDetalleModal($event)">
+    <div class="view-detail">
+        <div id="text" style="padding: 10px;">
+            <div *ngFor="let item of lstCargo" style="margin-bottom: 5px;">
+                <b>{{item.cargo_ruta}}</b>
+                <ul>
+                    <li *ngFor="let cargo of item.cargo">{{cargo}}</li>
+                </ul>
+            </div>
+        </div>
     </div>
 </detalle-modal>
 
@@ -397,3 +433,149 @@
 </app-modal>
 
 <app-select-route-modal [title]="'Ruta de Carrera'" [show]="rutaCarreraModal" [array]="array" [arrayTemp]="array" (output)="dataform(indexform, $event, 2)" (close)="closeRutaCarreraModal($event)"></app-select-route-modal>
+
+<app-modal [title]="'Cargos / Grados Configuración'" [show]="configModal" [size]="'modal-md'" (close)="closeConfigModal($event)">
+    <div role="body">
+        <div class="inner-col">
+            <div class="col col33">
+                <div class="label-row">Grado</div>
+                <input type="text" disabled [(ngModel)]="model.varConfiguracion.grado">
+            </div>
+            <div class="col col33">
+                <div class="label-row">Cargo</div>
+                <input type="text" disabled [(ngModel)]="model.varConfiguracion.cargo">
+            </div>
+            <div class="col col33">
+                <div class="label-row">Categoría</div>
+                <input type="text" disabled [(ngModel)]="model.varConfiguracion.categoria">
+            </div>
+            <div class="col col100">
+                <div class="flex-tabs">
+                    <ul>
+                        <li (click)="selectTab(1)" [ngClass]="{'active': tab === 1}">Rutas y Requisitos</li>
+                        <li (click)="selectTab(2)" [ngClass]="{'active': tab === 2}">Cuerpos, Especialidades y Áreas</li>
+                        <li (click)="selectTab(3)" [ngClass]="{'active': tab === 3}">Educación y Conocimientos</li>
+                        <li (click)="selectTab(4)" [ngClass]="{'active': tab === 4}">Experiencia y Competencias</li>
+                    </ul>
+                </div>
+                <div class="tabs-inner">
+                    <div class="tabs-content" *ngIf="tab === 1">
+                        <div class="col col15">
+                            <div class="label-row">Puestos Cant.</div>
+                            <input type="number" [(ngModel)]="model.varConfiguracion.puesto_cantidad" min="0" notnegative disabled>
+                        </div>
+                        <div class="col col50">
+                            <div class="label-row">Cargo Jefe Inmediato</div>
+                            <select [(ngModel)]="model.varConfiguracion.cargo_jefe_inmediato_id" disabled>
+                                <option value="0">Seleccionar</option>
+                                <option *ngFor="let item of lstCargos" value="{{item.cargo_id}}">{{item.cargo}}</option>
+                            </select>
+                        </div>
+
+                        <div class="col col100 title-row">Ubicaciones de Cargo</div>
+                        <div class="line-col"></div>
+                        <div class="col col100">
+                            <div class="col col20">
+                                <div class="label-row">Nivel 1</div>
+                                <select [(ngModel)]="model.varConfiguracion.nivel1" disabled>
+                                    <option value="0">Seleccionar</option>
+                                    <option *ngFor="let item of varnivel1" value="{{item.id}}">{{item.detalle}}</option>
+                                </select>
+                            </div>
+                            <div class="col col20">
+                                <div class="label-row">Nivel 2</div>
+                                <select [(ngModel)]="model.varConfiguracion.nivel2" disabled>
+                                    <option value="0">Seleccionar</option>
+                                    <option *ngFor="let item of varnivel2" value="{{item.id}}">{{item.detalle}}</option>
+                                </select>
+                            </div>
+                            <div class="col col20">
+                                <div class="label-row">Nivel 3</div>
+                                <select [(ngModel)]="model.varConfiguracion.nivel3" disabled>
+                                    <option value="0">Seleccionar</option>
+                                    <option *ngFor="let item of varnivel3" value="{{item.id}}">{{item.detalle}}</option>
+                                </select>
+                            </div>
+                            <div class="col col20">
+                                <div class="label-row">Nivel 4</div>
+                                <select [(ngModel)]="model.varConfiguracion.nivel4" disabled>
+                                    <option value="0">Seleccionar</option>
+                                    <option *ngFor="let item of varnivel4" value="{{item.id}}">{{item.detalle}}</option>
+                                </select>
+                            </div>
+                            <div class="col col20">
+                                <div class="label-row">Nivel 5</div>
+                                <select [(ngModel)]="model.varConfiguracion.nivel5" disabled>
+                                    <option value="0">Seleccionar</option>
+                                    <option *ngFor="let item of varnivel5" value="{{item.id}}">{{item.detalle}}</option>
+                                </select>
+                            </div>
+                            <div class="col col100 title-row">Tiempo mínimo en el cargo y Requisitos del Cargo</div>
+                            <div class="line-col"></div>
+                            <div class="col col25">
+                                <div class="label-row">Número de años</div>
+                                <input type="number" [(ngModel)]="model.varConfiguracion.anio" min="0" notnegative disabled>
+                            </div>
+                            <div class="col col25">
+                                <div class="label-row">Número de meses</div>
+                                <input type="number" [(ngModel)]="model.varConfiguracion.mes" min="0" notnegative disabled>
+                            </div>
+                            <div class="col col100">
+                                <textarea rows="4" cols="80" [(ngModel)]="model.varConfiguracion.requisito_cargo" disabled></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tabs-content" *ngIf="tab === 2">
+                        <div class="col col100 title-row">Cuerpos</div>
+                        <div class="line-col"></div>
+                        <div class="col col100">
+                            <textarea rows="4" cols="80" [(ngModel)]="model.varConfiguracion.cuerpo" disabled></textarea>
+                        </div>
+                        <div class="col col100 title-row">Especialidades</div>
+                        <div class="line-col"></div>
+                        <div class="col col100">
+                            <textarea rows="4" cols="80" [(ngModel)]="model.varConfiguracion.especialidad" disabled></textarea>
+                        </div>
+                        <div class="col col100 title-row">Áreas de Conocimiento</div>
+                        <div class="line-col"></div>
+                        <div class="col col100">
+                            <textarea rows="4" cols="80" [(ngModel)]="model.varConfiguracion.area" disabled></textarea>
+                        </div>
+                    </div>
+                    <div class="tabs-content" *ngIf="tab === 3">
+                        <div class="col col100 title-row">Educación formal requerida</div>
+                        <div class="line-col"></div>
+                        <div class="col col100">
+                            <textarea rows="4" cols="80" [(ngModel)]="model.varConfiguracion.educacion" disabled></textarea>
+                        </div>
+                        <div class="col col100 title-row">Conocimientos Adicionales</div>
+                        <div class="line-col"></div>
+                        <div class="col col100">
+                            <textarea rows="4" cols="80" [(ngModel)]="model.varConfiguracion.conocimiento" disabled></textarea>
+                        </div>
+                    </div>
+                    <div class="tabs-content" *ngIf="tab === 4">
+                        <div class="col col100 title-row">Experiencia de Conocimiento</div>
+                        <div class="line-col"></div>
+                        <div class="col col100">
+                            <textarea rows="4" cols="80" [(ngModel)]="model.varConfiguracion.experiencia" disabled></textarea>
+                        </div>
+                        <div class="col col100 title-row">Competencias Requeridas</div>
+                        <div class="line-col"></div>
+                        <div class="col col100">
+                            <textarea rows="4" cols="80" [(ngModel)]="model.varConfiguracion.competencia" disabled></textarea>
+                        </div>
+                        <div class="col col100 title-row">Observaciones Generales</div>
+                        <div class="line-col"></div>
+                        <div class="col col100">
+                            <textarea rows="4" cols="80" [(ngModel)]="model.varConfiguracion.observaciones" disabled></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div role="footer">
+        <button type="button" class="btn btn-red" (click)="closeConfigModal(false)">Cerrar</button>
+    </div>
+</app-modal>

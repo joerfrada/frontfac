@@ -62,6 +62,26 @@ export class Model {
     categoria_id: 0,
     categoria: ""
   };
+
+  varConfiguracion: any = {
+    puesto_cantidad: 0,
+    cargo_jefe_inmediato_id: 0,
+    nivel1: 0,
+    nivel2: 0,
+    nivel3: 0,
+    nivel4: 0,
+    nivel5: 0,
+    anio: 0,
+    mes: 0,
+    requisito_cargo: "",
+    cuerpo: "",
+    especialidad: "",
+    area: "",
+    educacion: "",
+    conocimiento: "",
+    experiencia: "",
+    competencia: ""
+  }
 }
 
 @Component({
@@ -79,10 +99,12 @@ export class RutaComponent implements OnInit {
   workflowModal: any;
   viewCargoModal: any;
   piramideModal: any;
+  detalleReqModal: any;
   detalleModal: any;
   detalleCargoModal: any;
   detalleGradoModal: any;
   rutaCarreraModal: any;
+  configModal: any;
   loader = false;
 
   varhistorial: any = [];
@@ -116,6 +138,7 @@ export class RutaComponent implements OnInit {
 
   tipo_categoria_id: any;
   especialidad_id: any;
+  cargo_grado_id:any;
 
   datasource1: any = [];
 
@@ -136,6 +159,26 @@ export class RutaComponent implements OnInit {
 
   lstRutas: any = [];
 
+  sizeModal = "";
+  lstCargo: any = [];
+  lstCuerpo: any = [];
+  lstEspec: any = [];
+  lstArea: any = [];
+
+  tab: any;
+
+  cargo_desc = "";
+  grado_desc = "";
+  categoria = "";
+
+  lstCargos: any = [];
+
+  varnivel1: any = [];
+  varnivel2: any = [];
+  varnivel3: any = [];
+  varnivel4: any = [];
+  varnivel5: any = [];
+
   constructor(private router: Router,
               private api: ApiService,
               private ruta: RutaCarreraService,
@@ -147,6 +190,7 @@ export class RutaComponent implements OnInit {
     this.currentUser = JSON.parse(localStorage.getItem("currentUser") as any)[0];
     this.model.varRutaCarrera.usuario_creador = this.currentUser.usuario;
     this.model.varRutaCarrera.usuario_modificador = this.currentUser.usuario;
+    this.tab = 1;
   }
 
   ngOnInit(): void {
@@ -244,6 +288,7 @@ export class RutaComponent implements OnInit {
       if (response.tipo == 0) {
         this.varcargoOficial = response.result.filter((x: any) => x.categoria_id == 5);
         this.varcargoSubOficial = response.result.filter((x: any) => x.categoria_id == 6);
+        this.lstCargos = response.result;
       }
     })
   }
@@ -315,6 +360,36 @@ export class RutaComponent implements OnInit {
 
     this.vartipocargo = varlistas.filter((x: any) => x.nombre_lista == 'BAS_TIPO_CARGO');
     this.vartipocargo.forEach((x: any) => {
+      x.id = x.lista_dinamica_id;
+      x.detalle = x.lista_dinamica;
+    });
+
+    let ubicacion: any = varlistas.filter((x: any) => x.nombre_lista == 'BAS_UBICACION_CARGO');
+    ubicacion.forEach((x: any) => {
+      x.padre_id = x.lista_dinamica_padre_id;
+    });
+    this.varnivel1 = ubicacion.filter((x: any) => x.padre_id == 7);
+    this.varnivel1.forEach((x: any) => {
+      x.id = x.lista_dinamica_id;
+      x.detalle = x.lista_dinamica;
+    });
+    this.varnivel2 = ubicacion.filter((x: any) => x.padre_id == 8);
+    this.varnivel2.forEach((x: any) => {
+      x.id = x.lista_dinamica_id;
+      x.detalle = x.lista_dinamica;
+    });
+    this.varnivel3 = ubicacion.filter((x: any) => x.padre_id == 9);
+    this.varnivel3.forEach((x: any) => {
+      x.id = x.lista_dinamica_id;
+      x.detalle = x.lista_dinamica;
+    });
+    this.varnivel4 = ubicacion.filter((x: any) => x.padre_id == 23);
+    this.varnivel4.forEach((x: any) => {
+      x.id = x.lista_dinamica_id;
+      x.detalle = x.lista_dinamica;
+    });
+    this.varnivel5 = ubicacion.filter((x: any) => x.padre_id == 24);
+    this.varnivel5.forEach((x: any) => {
       x.id = x.lista_dinamica_id;
       x.detalle = x.lista_dinamica;
     });
@@ -391,6 +466,9 @@ export class RutaComponent implements OnInit {
 
   openConsulta() {
     this.consultaModal = true;
+    this.model.varConsulta.tipo_ruta = "";
+    this.model.varConsulta.tipo_categoria = "";
+    this.model.varConsulta.especialidad = "";
   }
 
   closeConsultaModal(bol: any) {
@@ -408,10 +486,6 @@ export class RutaComponent implements OnInit {
   openWorkflow() {
     this.workflowModal = true;
     this.consultaModal = false;
-
-    // this.model.varConsulta.especialidad_id = Number(this.model.varConsulta.especialidad_id);
-    // this.model.varConsulta.tipo_ruta_id = Number(this.model.varConsulta.tipo_ruta_id);
-    // this.model.varConsulta.categoria_id = Number(this.model.varConsulta.categoria_id);
 
     this.ruta.getCargosByRutas(this.model.varConsulta).subscribe(data => {
       let response: any = this.api.ProcesarRespuesta(data);
@@ -462,29 +536,29 @@ export class RutaComponent implements OnInit {
       'nodeTemplate': nodeTemplate,
       'createNode': function($node: any, data: any) {
         $node.on('click', function() {
-          // th.viewCargoModal = true;
-          // th.tituloCargo = data.cargo + ' (' + data.grado + ')';
-          // th.ruta.getDetalleCargoRutaCarrera({cargo_id: Number(data.cargo_id),grado_id: Number(data.grado_id)}).subscribe(data1 => {
-          //   let response: any = th.api.ProcesarRespuesta(data1);
-          //   if (response.tipo == 0) {
-          //     if (response.result.length != 0) {
-          //       $('#textcargo').html(response.result[0].detalle);
-          //     }
-          //     else {
-          //       $('#textcargo').html('No hay información.');
-          //     }
-          //   }
-          // });
-          // th.cargo.getDetalleCargos({cargo_id: Number(data.cargo_id)}).subscribe(data1 => {
-          //   let response: any = th.api.ProcesarRespuesta(data1);
-          //   if (response.tipo == 0) {
-          //     th.model.varDetalleCargo.cargo = response.result[0].cargo;
-          //     th.model.varDetalleCargo.categoria = response.result[0].categoria;
-          //     th.model.varDetalleCargo.clase_cargo = response.result[0].clase_cargo;
-          //     th.model.varDetalleCargo.cargo_ruta = response.result[0].cargo_ruta;
-          //     th.model.varDetalleCargo.descripcion = response.result[0].descripcion;
-          //   }
-          // })
+          th.viewCargoModal = true;
+          th.tituloCargo = data.cargo + ' (' + data.grado + ')';
+          th.ruta.getDetalleCargoRutaCarrera({cargo_id: Number(data.cargo_id),grado_id: Number(data.grado_id)}).subscribe(data1 => {
+            let response: any = th.api.ProcesarRespuesta(data1);
+            if (response.tipo == 0) {
+              if (response.result.length != 0) {
+                $('#textcargo').html(response.result[0].detalle);
+              }
+              else {
+                $('#textcargo').html('No hay información.');
+              }
+            }
+          });
+          th.cargo.getDetalleCargos({cargo_id: Number(data.cargo_id)}).subscribe(data1 => {
+            let response: any = th.api.ProcesarRespuesta(data1);
+            if (response.tipo == 0) {
+              th.model.varDetalleCargo.cargo = response.result[0].cargo;
+              th.model.varDetalleCargo.categoria = response.result[0].categoria;
+              th.model.varDetalleCargo.clase_cargo = response.result[0].clase_cargo;
+              th.model.varDetalleCargo.cargo_ruta = response.result[0].cargo_ruta;
+              th.model.varDetalleCargo.descripcion = response.result[0].descripcion;
+            }
+          })
         });
       }
     });
@@ -520,8 +594,7 @@ export class RutaComponent implements OnInit {
   }
 
   openDetalle(dato: any) {
-    this.detalleModal = true;
-    this.titleDetalle = "Requisitos del Ley";
+    this.detalleReqModal = true;
 
     this.ruta.getGradosDetalleRequerimiento({ especialidad_id: dato.especialidad_id, grado_id: dato.grado_id }).subscribe(data => {
       let response: any = this.api.ProcesarRespuesta(data);
@@ -534,13 +607,15 @@ export class RutaComponent implements OnInit {
 
   openDetalleGrado(data: any) {
     this.detalleModal = true;
-    this.titleDetalle = "Detalle Grado";
+    this.sizeModal = "modal-detalle-sm";
 
     this.ruta.getGradosDetalleCargo({ ruta_carrera_id: data.ruta_carrera_id, grado_id: data.grado_id }).subscribe(data => {
       let response: any = this.api.ProcesarRespuesta(data);
       if (response.tipo == 0) {
-        this.detalle = response.result.map((x: any) => x.detalle).join('<br />');
-        $('#text').html(this.detalle);
+        response.result.forEach((x: any) => {
+          x.cargo = x.cargo.split(',');
+        });
+        this.lstCargo = response.result;
       }
     });
 
@@ -562,9 +637,12 @@ export class RutaComponent implements OnInit {
     // })
   }
   
-
   closeDetalleModal(bol: any) {
     this.detalleModal = bol;
+  }
+
+  closeDetalleReqModal(bol: any) {
+    this.detalleReqModal = bol;
   }
 
   addLinea() {
@@ -822,17 +900,26 @@ export class RutaComponent implements OnInit {
   }
 
   openDetalleCargoRutaCarrera(dato: any) {
+    this.lstCuerpo = [];
+    this.lstEspec = [];
+    this.lstArea = [];
     this.viewCargoModal = true;
     this.tituloCargo = dato.cargo + ' (' + dato.grado + ')';
+    this.cargo_desc = dato.cargo;
+    this.grado_desc = dato.grado_desc;
+    this.categoria = dato.categoria;
+    
     this.ruta.getDetalleCargoRutaCarrera({cargo_id: dato.cargo_id,grado_id: dato.grado_id}).subscribe(data => {
       let response: any = this.api.ProcesarRespuesta(data);
       if (response.tipo == 0) {
-        if (response.result.length != 0) {
-          $('#textcargo').html(response.result[0].detalle);
-        }
-        else {
-          $('#textcargo').html('No hay información.');
-        }
+        if (response.result.length == 0) this.cargo_grado_id = 0;
+        else this.cargo_grado_id = response.result[0].cargo_grado_id;
+
+        response.result.forEach((x: any) => {
+          this.lstCuerpo = x.cuerpo.split(',');
+          this.lstEspec = x.especialidad.split(',');
+          this.lstArea = x.area.split(',');
+        });
       }
     });
 
@@ -846,5 +933,53 @@ export class RutaComponent implements OnInit {
         this.model.varDetalleCargo.descripcion = response.result[0].descripcion;
       }
     });
+  }
+
+  openConfigModal() {
+    if (this.cargo_grado_id != 0) {
+      this.configModal = true;
+      this.cargo.getCargosConfiguracion({cargo_grado_id: this.cargo_grado_id}).subscribe(data => {
+        let response: any = this.api.ProcesarRespuesta(data);
+        if (response.tipo == 0)  {
+          let dato = response.result[0];
+          this.model.varConfiguracion.cargo = this.cargo_desc;
+          this.model.varConfiguracion.grado = this.grado_desc;
+          this.model.varConfiguracion.categoria = this.categoria;
+          this.model.varConfiguracion.puesto_cantidad = dato.puesto_cantidad;
+          this.model.varConfiguracion.cargo_jefe_inmediato_id = dato.cargo_jefe_inmediato_id;
+          this.model.varConfiguracion.nivel1 = dato.nivel1;
+          this.model.varConfiguracion.nivel2 = dato.nivel2;
+          this.model.varConfiguracion.nivel3 = dato.nivel3;
+          this.model.varConfiguracion.nivel4 = dato.nivel4;
+          this.model.varConfiguracion.nivel5 = dato.nivel5;
+          this.model.varConfiguracion.anio = dato.anio;
+          this.model.varConfiguracion.mes = dato.mes;
+          this.model.varConfiguracion.requisito_cargo = dato.requisito_cargo;
+          this.model.varConfiguracion.cuerpo = dato.cuerpo;
+          this.model.varConfiguracion.especialidad = dato.especialidad;
+          this.model.varConfiguracion.area = dato.area;
+          this.model.varConfiguracion.educacion = dato.educacion;
+          this.model.varConfiguracion.conocimiento = dato.conocimiento;
+          this.model.varConfiguracion.experiencia = dato.experiencia;
+          this.model.varConfiguracion.competencia = dato.competencia;
+          this.model.varConfiguracion.observaciones = dato.observaciones;
+        }
+      });
+    }
+    else {
+      swal({
+        text: 'No hay información del cargo',
+        allowOutsideClick: false,
+        showConfirmButton: true,
+      })
+    }
+  }
+
+  closeConfigModal(bol: any) {
+    this.configModal = bol;
+  }
+
+  selectTab(tab: any) {
+    this.tab = tab;
   }
 }
