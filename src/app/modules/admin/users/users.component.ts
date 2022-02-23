@@ -164,6 +164,7 @@ export class UsersComponent implements OnInit {
   }
 
   saveUsuario() {
+    //console.log(this.model.varUsuario);
     this.usuario.createUsuarios(this.model.varUsuario).subscribe(data => {
       let response: any = this.api.ProcesarRespuesta(data);
       if (response.tipo == 0) {

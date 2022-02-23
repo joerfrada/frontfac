@@ -274,8 +274,6 @@ export class ValoresFlexiblesComponent implements OnInit {
     this.model.varListaDinamica.descripcion = data.descripcion;
     this.model.varListaDinamica.lista_dinamica_padre_id = data.lista_dinamica_padre_id;
     this.model.varListaDinamica.activo = (data.activo == 'S') ? true : false;
-
-    console.log(data);
   }
 
   closeEditarValorModal(bol: any) {

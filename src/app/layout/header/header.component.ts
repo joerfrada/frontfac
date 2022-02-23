@@ -11,7 +11,11 @@ export class HeaderComponent implements OnInit {
 
   @Output() toggleSideBar: EventEmitter<any> = new EventEmitter();
 
-  constructor() { }
+  currentUser: any;
+
+  constructor() {
+    this.currentUser = JSON.parse(localStorage.getItem("currentUser") as any)[0];
+  }
 
   ngOnInit(): void {
   }

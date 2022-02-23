@@ -4,7 +4,7 @@
     </div>
     <div class="app-header-toggle pointer noselect" (click)="toggle()"></div>
     <ul class="app-nav">
-        <li>
+        <!-- <li>
             <div class="app-nav-item pointer noselect">
                 <i class="fa fa-bell fa-lg"></i>
             </div>
@@ -13,12 +13,15 @@
             <div class="app-nav-item pointer noselect">
                 <i class="fa fa-cog fa-lg"></i>
             </div>
-        </li>
+        </li> -->
         <!-- <li>
             <div class="app-nav-item">
                 <img src="../../../assets/images/avatar.jpg">
             </div>
         </li> -->
+        <li>
+            <span class="app-nav-user">{{currentUser.usuario}}</span>
+        </li>
         <li>
             <div class="app-nav-item pointer noselect" (click)="logout()">
                 <i class="fa fa-sign-out-alt fa-lg"></i>
