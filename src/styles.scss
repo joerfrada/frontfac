@@ -1119,13 +1119,6 @@ a {
     padding-left: 0.5em;
 }
 
-.tab-content {
-    width: 100%;
-    padding-bottom: 10px;
-    flex: 1;
-    overflow: auto;
-}
-
 .table-content {
     width: 100%;
     padding-bottom: 10px;
@@ -1574,6 +1567,19 @@ textarea {
     margin: 0;
 }
 
+.tab-content {
+    width: 100%;
+    height: 50px;
+    margin-bottom: 5px;
+    display: flex;
+}
+
+.tabs-inner {
+    width: 100%;
+    flex: 1;
+    overflow: auto;
+}
+
 .flex-tabs {
     width: 100%;
     height: 50px;
@@ -1602,10 +1608,6 @@ textarea {
 
 .flex-tabs ul li.active {
     background-color: var(--color-blueblack);
-}
-
-.tabs-inner {
-    width: 100%;
 }
 
 .img-center {

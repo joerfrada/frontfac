@@ -511,57 +511,11 @@ export class RutaComponent implements OnInit {
         }
       }
     });
-
-    // setTimeout(() => { this.orgchartinit(); }, 1000);
   }
 
   closeWorkflowModal(bol: any) {
     this.workflowModal = bol;
     this.reload();
-  }
-
-  orgchartinit() {
-    let th = this;
-    let nodeTemplate = function(data: any) {
-      return `
-        <div class="title">
-          ${data.name}
-          <i class="icon fas fa-1mx fa-arrow-circle-right pointer noselect"></i>
-        </div>
-      `;
-    };
-    $('#chart-container').orgchart({
-      'data' : this.datasource1,
-      'chartClass': 'orgchart-demo',
-      'nodeTemplate': nodeTemplate,
-      'createNode': function($node: any, data: any) {
-        $node.on('click', function() {
-          th.viewCargoModal = true;
-          th.tituloCargo = data.cargo + ' (' + data.grado + ')';
-          th.ruta.getDetalleCargoRutaCarrera({cargo_id: Number(data.cargo_id),grado_id: Number(data.grado_id)}).subscribe(data1 => {
-            let response: any = th.api.ProcesarRespuesta(data1);
-            if (response.tipo == 0) {
-              if (response.result.length != 0) {
-                $('#textcargo').html(response.result[0].detalle);
-              }
-              else {
-                $('#textcargo').html('No hay información.');
-              }
-            }
-          });
-          th.cargo.getDetalleCargos({cargo_id: Number(data.cargo_id)}).subscribe(data1 => {
-            let response: any = th.api.ProcesarRespuesta(data1);
-            if (response.tipo == 0) {
-              th.model.varDetalleCargo.cargo = response.result[0].cargo;
-              th.model.varDetalleCargo.categoria = response.result[0].categoria;
-              th.model.varDetalleCargo.clase_cargo = response.result[0].clase_cargo;
-              th.model.varDetalleCargo.cargo_ruta = response.result[0].cargo_ruta;
-              th.model.varDetalleCargo.descripcion = response.result[0].descripcion;
-            }
-          })
-        });
-      }
-    });
   }
 
   closeViewCargoModal(bol: any) {
@@ -605,7 +559,7 @@ export class RutaComponent implements OnInit {
     });
   }
 
-  openDetalleGrado(data: any) {
+  openDirectos(data: any) {
     this.detalleModal = true;
     this.sizeModal = "modal-detalle-sm";
 

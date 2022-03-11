@@ -265,7 +265,7 @@
         <div class="ruta_level">
             <ul *ngFor="let item of lstRutas" class="ruta_cargo">
                 <li *ngFor="let cargo of item.cargos" [ngClass]="cargo.clase_cargo" class="cargo_box title">
-                    <div class="title_cargo">Cargo #{{cargo.cargo_id}}</div>
+                    <div class="title_cargo">{{cargo.cargo}}</div>
                     <div class="title_grado">({{cargo.grado}})</div>
                     <i class="icon fas fa-1mx fa-arrow-circle-right pointer noselect" (click)="openDetalleCargoRutaCarrera(cargo)"></i>
                 </li>
@@ -309,44 +309,44 @@
 </viewcargo-modal>
 
 <piramide-modal [title]="'Pirámide (Especialidad)'" [show]="piramideModal" [size]="'modal-piramide-md'" (close)="closePiramideModal($event)">
-        <div class="col col50">
-            <div class="table-content">
-                <table class="table table-piramide">
-                    <tbody class="scroll">
-                        <tr *ngFor="let item of varPiramide1; let i = index">
-                            <td>
-                                <div class="title-grado">{{item.grado}}</div>
-                                <div class="duration-grado">{{item.duracion}}</div>
-                                <div class="requisito-grado">
-                                    <button type="button" class="button btn-edit" (click)="openDetalle(item)">Requisitos de Ley</button>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+    <div class="col col50">
+        <div class="table-content">
+            <table class="table table-piramide">
+                <tbody class="scroll">
+                    <tr *ngFor="let item of varPiramide1; let i = index">
+                        <td>
+                            <div class="title-grado">{{item.grado}}</div>
+                            <div class="duration-grado">{{item.duracion}}</div>
+                            <div class="requisito-grado">
+                                <button type="button" class="button btn-edit" (click)="openDetalle(item)">Requisitos de Ley</button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-        <div class="col col50">
-            <div class="table-content">
-                <table class="table table-piramide">
-                    <tbody class="scroll">
-                        <tr *ngFor="let item of varPiramide2; let i = index">
-                            <td>
-                                <div class="trapeze-grado">
-                                    <div class="trapeze-grado-inner">
-                                        <div class="title-nivel-inner">{{item.nivel}}</div>
-                                        <div class="title-grado-inner">{{item.grado}}</div>
-                                        <div class="detalle-grado">
-                                            <button type="button" class="button btn-edit" (click)="openDetalleGrado(item)">Cargos Directos e Indirectos</button>
-                                        </div>
+    </div>
+    <div class="col col50">
+        <div class="table-content">
+            <table class="table table-piramide">
+                <tbody class="scroll">
+                    <tr *ngFor="let item of varPiramide2; let i = index">
+                        <td>
+                            <div class="trapeze-grado">
+                                <div class="trapeze-grado-inner">
+                                    <div class="title-nivel-inner">{{item.nivel}}</div>
+                                    <div class="title-grado-inner">{{item.grado}}</div>
+                                    <div class="detalle-grado">
+                                        <button type="button" class="button btn-edit" (click)="openDirectos(item)">Cargos Directos e Indirectos</button>
                                     </div>
                                 </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
+    </div>
 </piramide-modal>
 
 <detalle-modal [title]="'Requisitos del Ley'" [show]="detalleReqModal" [size]="'modal-detalle-tm'" (close)="closeDetalleReqModal($event)">
@@ -357,7 +357,7 @@
     </div>
 </detalle-modal>
 
-<detalle-modal [title]="'Detalle Grado'" [show]="detalleModal" [size]="sizeModal" (close)="closeDetalleModal($event)">
+<detalle-modal [title]="'Cargos Directos e Indirectos'" [show]="detalleModal" [size]="sizeModal" (close)="closeDetalleModal($event)">
     <div class="view-detail">
         <div id="text" style="padding: 10px;">
             <div *ngFor="let item of lstCargo" style="margin-bottom: 5px;">
