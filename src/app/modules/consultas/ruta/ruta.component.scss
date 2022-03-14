@@ -98,6 +98,25 @@
     overflow: hidden;
 }
 
+.semaforo {
+    width: 100%;
+    height: 30px;
+    //background: gainsboro;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    padding: 5px;
+
+    .directo { background-color: rgb(8, 8, 95); height: 20px; width: 80px; margin-right: 10px; color: white; text-align: center;}
+    .indirecto { background-color: darkgray; height: 20px; width: 80px; margin-right: 10px; text-align: center;}
+    .externo { background-color: white; height: 20px; width: 80px; margin-right: 10px; text-align: center; border: 1px solid black;}
+    .confianza { background-color: blue; height: 20px; width: 80px; margin-right: 10px; text-align: center; color: white;}
+    .clave { background-color: yellow; height: 20px; width: 80px; margin-right: 10px; text-align: center; color: black;}
+    .critico { background-color: red; height: 20px; width: 80px; margin-right: 10px; text-align: center; color: white;}
+    .ninguno { background-color: white; height: 20px; width: 80px; margin-right: 10px; text-align: center; border: 1px solid black;}
+}
+
+
 #chart-ruta {
     height: 100%;
     z-index: 1001;
@@ -116,23 +135,47 @@
     }
 
     .confianza {
-        background-color: #006699;
-        color: white;
+        // border-left-color: blue;
+        // border-left-style: solid;
+        // border-left-width: 4px;
+        border: 4px solid blue;
     }
     
     .clave {
-        background-color:gold;
-        color: black;
+        // border-left-color: yellow;
+        // border-left-style: solid;
+        // border-left-width: 4px;
+        border: 4px solid yellow;
     }
     
     .critico {
-        background-color: orange;
-        color: black;
+        // border-left-color: red;
+        // border-left-style: solid;
+        // border-left-width: 4px;
+        border: 4px solid red;
     }
     
     .ninguno {
+        //background-color: white;
+        color: black;
+    }
+
+    .directo {
+        background-color: rgb(8, 8, 95);
+        color: white;
+        box-shadow: 0 10px 6px -6px #777;
+    }
+
+    .indirecto {
+        background-color: darkgray;
+        color: black;
+        box-shadow: 0 10px 6px -6px #777;
+    }
+
+    .externo {
         background-color: white;
         color: black;
+        box-shadow: 0 10px 6px -6px #777;
     }
 
     .ruta_cargo { 

@@ -261,10 +261,19 @@
 </app-modal>
 
 <workflow-modal [title]="'Ruta de Carrera'" [show]="workflowModal" [size]="'modal-wmd-4'" (close)="closeWorkflowModal($event)">
+    <div class="semaforo">
+        <div class="directo">Directo</div>
+        <div class="indirecto">Indirecto</div>
+        <div class="externo">Externo</div>
+        <div class="confianza">Confianza</div>
+        <div class="clave">Clave</div>
+        <div class="critico">Critíco</div>
+        <div class="ninguno">N/A</div>
+    </div>
     <div id="chart-ruta">
         <div class="ruta_level">
             <ul *ngFor="let item of lstRutas" class="ruta_cargo">
-                <li *ngFor="let cargo of item.cargos" [ngClass]="cargo.clase_cargo" class="cargo_box title">
+                <li *ngFor="let cargo of item.cargos" class="{{cargo.clase_cargo}} {{cargo.tipo_ruta}} cargo_box title">
                     <div class="title_cargo">{{cargo.cargo}}</div>
                     <div class="title_grado">({{cargo.grado}})</div>
                     <i class="icon fas fa-1mx fa-arrow-circle-right pointer noselect" (click)="openDetalleCargoRutaCarrera(cargo)"></i>
