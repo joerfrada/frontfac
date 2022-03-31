@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { ApiService } from '../../../services/api.service';
 import { UsuarioService } from '../../../services/modules/usuario.service';
 import { RolService } from '../../../services/modules/rol.service';
+import { UsuarioMenuService } from '../../../services/modules/usuario-menu.service';
 
 declare var swal:any;
 
@@ -40,9 +41,11 @@ export class UsersComponent implements OnInit {
 
   modal: any;
   rolModal: any;
+  menuModal: any;
   selectModal: any;
 
   usuario_id: any;
+  usuario_menu_id: any;
   index: any;
   indexform: any;
 
@@ -51,7 +54,7 @@ export class UsersComponent implements OnInit {
 
   currentUser: any;
 
-  constructor(private router: Router, private api: ApiService, private usuario: UsuarioService, private rol: RolService) {
+  constructor(private router: Router, private api: ApiService, private usuario: UsuarioService, private rol: RolService, private usuarioMenu: UsuarioMenuService) {
     this.currentUser = JSON.parse(localStorage.getItem("currentUser") as any)[0];
     this.model.varUsuario.usuario_creador = this.currentUser.usuario;
     this.model.varUsuario.usuario_modificador = this.currentUser.usuario;
@@ -209,7 +212,11 @@ export class UsersComponent implements OnInit {
     this.usuario.getUsuariosRolesById({usuario_id: dato.usuario_id}).subscribe(data => {
       let response: any = this.api.ProcesarRespuesta(data);
       if (response.tipo == 0) {
+        response.result.forEach((x: any) => {
+          x.NuevoRegistro = false;
+        });
         this.model.varRol = response.result;
+        console.log(response.result);
       }
     });
   }
@@ -236,26 +243,82 @@ export class UsersComponent implements OnInit {
         element.usuario_id = this.usuario_id;
 
         if (element.NuevoRegistro == true) {
-          //this.usuario.createUsuariosRoles(element).subscribe(data1 => {});
+          this.usuario.createUsuariosRoles(element).subscribe(data1 => {});
           console.log('Create Rol:', element);
         }
         else {
-          //this.usuario.updateUsuariosRoles(element).subscribe(data1 => {});
+          this.usuario.updateUsuariosRoles(element).subscribe(data1 => {});
           console.log('Update Rol:', element);
         }
       });
+
+      //this.usuarioMenu.createAsignarMenus({usuario_id: this.usuario_id, usuario_creador: this.currentUser.usuario, usuario_modificador: this.currentUser.usuario}).subscribe(data => {});
     }
 
-    // swal({
-    //   title: 'Roles Privilegios',
-    //   text: 'Los roles privilegios ha guardado exitoso.',
-    //   allowOutsideClick: false,
-    //   showConfirmButton: true,
-    //   type: 'success'
-    // }).then((result: any) => {
-    //   this.rolModal = false;
-    //   this.reload();
-    // })
+    swal({
+      title: 'Roles Privilegios',
+      text: 'Los roles privilegios ha guardado exitoso.',
+      allowOutsideClick: false,
+      showConfirmButton: true,
+      type: 'success'
+    }).then((result: any) => {
+      this.rolModal = false;
+      this.reload();
+    })
+  }
+
+  openViewMenu(dato: any) {
+    this.menuModal = true;
+
+    this.usuario_id = dato.usuario_id;
+    this.usuario_menu_id = dato.usuario_menu_id;
+
+    this.usuario.getUsuariosRolesById({usuario_id: dato.usuario_id}).subscribe(data => {
+      let response: any = this.api.ProcesarRespuesta(data);
+      if (response.tipo == 0) {
+        response.result.forEach((x: any) => {
+          x.NuevoRegistro = false;
+        });
+        this.model.varRol = response.result;
+      }
+    });
+  }
+
+  closeViewMenuModal(bol: any) {
+    this.menuModal = bol;
+  }
+
+  saveMenu() {
+    if (this.usuario_menu_id == 0) {
+      let json = {
+        usuario_id: this.usuario_id,
+        usuario_menu_id: 0,
+        usuario_creador: this.currentUser.usuario,
+        usuario_modificador: this.currentUser.usuario
+      }
+      console.log(json);
+      this.usuarioMenu.createAsignarMenus(json).subscribe(data => {
+        let response: any = this.api.ProcesarRespuesta(data);
+        if (response.tipo == 0) {
+          console.log(response.mensaje);
+        }
+      })
+    }
+    else {
+      let json = {
+        usuario_id: this.usuario_id,
+        usuario_menu_id: this.usuario_menu_id,
+        usuario_creador: this.currentUser.usuario,
+        usuario_modificador: this.currentUser.usuario
+      }
+      console.log(json);
+      this.usuarioMenu.updateAsignarMenus(json).subscribe(data => {
+        let response: any = this.api.ProcesarRespuesta(data);
+        if (response.tipo == 0) {
+          console.log(response.mensaje);
+        }
+      })
+    }
   }
 
   saveRolPrivilegio(index: number) {

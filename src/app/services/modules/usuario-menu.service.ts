@@ -12,6 +12,8 @@ export class UsuarioMenuService {
   private apiGetUsuarioMenu = this.api.getBaseUrl + "usuariomenu/getUsuarioMenu";
   private apiCreateUsuarioMenu = this.api.getBaseUrl + "usuariomenu/crearUsuarioMenu";
   private apiUpdateUsuarioMenu = this.api.getBaseUrl + "usuariomenu/actualizarUsuarioMenu";
+  private apiCreateAsignarMenus = this.api.getBaseUrl + "usuariomenu/crearAsignarMenus";
+  private apiUpdateAsignarMenus = this.api.getBaseUrl + "usuariomenu/actualizarAsignarMenus";
 
   constructor(private http: HttpClient, private api: ApiService) { }
 
@@ -27,6 +29,16 @@ export class UsuarioMenuService {
 
   public updateUsuarioMenu(data: any): Observable<any> {
     return this.http.post<any>(this.apiUpdateUsuarioMenu, JSON.stringify(data), this.api.getHttpOptions('g'))
+    .pipe(retry(1), catchError(this.api.errorHandle));
+  }
+
+  public createAsignarMenus(data: any): Observable<any> {
+    return this.http.post<any>(this.apiCreateAsignarMenus, JSON.stringify(data), this.api.getHttpOptions('g'))
+    .pipe(retry(1), catchError(this.api.errorHandle));
+  }
+
+  public updateAsignarMenus(data: any): Observable<any> {
+    return this.http.post<any>(this.apiUpdateAsignarMenus, JSON.stringify(data), this.api.getHttpOptions('g'))
     .pipe(retry(1), catchError(this.api.errorHandle));
   }
 }

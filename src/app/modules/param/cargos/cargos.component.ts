@@ -501,6 +501,7 @@ export class CargosComponent implements OnInit {
       x.id = x.lista_dinamica_id;
       x.detalle = x.lista_dinamica;
     });
+    this.varcargoruta = this.varcargoruta.filter((x: any) => x.id != 1094);
   }
 
   addGrado() {

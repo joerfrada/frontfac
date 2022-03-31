@@ -31,7 +31,7 @@ export class LoginComponent implements OnInit {
 
   login() {
     this.titleLogin = "Iniciando sesión... Espere";
-    this.usuario = "admin";
+    //this.usuario = "admin";
     //this.password = "demo";
     this.loginService.login({ usuario: this.usuario, password: this.password }).subscribe(data => {
       let response: any = this.api.ProcesarRespuesta(data);

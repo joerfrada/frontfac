@@ -219,38 +219,24 @@
 <app-modal [title]="'Consultas'" [show]="consultaModal" [size]="'modal-tm2'" (close)="closeConsultaModal($event)">
     <div role="body">
         <div class="inner-col">
-            <!-- <div class="col col100">
-                <div class="label-row">Tipo Ruta</div>
-                <select [(ngModel)]="model.varConsulta.tipo_ruta_id">
-                    <option value="0">Seleccionar</option>
-                    <option *ngFor="let item of vartiporuta" value="{{item.id}}">{{item.detalle}}</option>
-                </select>
-            </div>
-            <div class="col col100">
-                <div class="label-row">Categoría</div>
-                <select [(ngModel)]="model.varConsulta.categoria_id">
-                    <option value="0">Seleccionar</option>
-                    <option *ngFor="let item of varcategoria" value="{{item.id}}">{{item.detalle}}</option>
-                </select>
-            </div>
-            <div class="col col100">
-                <div class="label-row">Especialidad</div>
-                <select [(ngModel)]="model.varConsulta.especialidad_id">
-                    <option value="0">Seleccionar</option>
-                    <option *ngFor="let item of lstEspecialidad" value="{{item.especialidad_id}}">{{item.especialidad}}</option>
-                </select>
-            </div> -->
-            <div class="col col33">
+            <div class="col col25">
                 <div class="label-row">Tipo Ruta</div>
                 <input type="text" placeholder="Selecciona..." [(ngModel)]="model.varConsulta.tipo_ruta" (click)="saveTipoRuta()">
             </div>
-            <div class="col col33">
+            <div class="col col25">
                 <div class="label-row">Categoría</div>
                 <input type="text" disabled [(ngModel)]="model.varConsulta.tipo_categoria">
             </div>
-            <div class="col col33">
+            <div class="col col25">
                 <div class="label-row">Especialidad</div>
                 <input type="text" disabled [(ngModel)]="model.varConsulta.especialidad">
+            </div>
+            <div class="col col25">
+                <div class="label-row">Tipo Cargo</div>
+                <select [(ngModel)]="model.varConsulta.cargo_ruta_id">
+                    <option value="0">Seleccionar</option>
+                    <option *ngFor="let item of varcargoruta" value="{{item.id}}">{{item.detalle}}</option>
+                </select>
             </div>
         </div>
     </div>

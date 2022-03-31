@@ -42,6 +42,7 @@
                             <td class="table-buttons-action">
                                 <button type="button" class="button btn-edit" (click)="editUsuario(item)">Editar</button>
                                 <button type="button" class="button btn-edit" (click)="openRol(item)">Asignar Rol</button>
+                                <button *ngIf="item.usuario_rol_id != 0" type="button" class="button btn-edit" (click)="openViewMenu(item)">Ver menu</button>
                             </td>
                         </tr>
                         <tr *ngIf="varhistorial?.length == 0">
@@ -109,10 +110,6 @@
                     <tbody class="scroll">
                         <tr *ngFor="let rol of model.varRol; let i = index">
                             <td>
-                                <!-- <select [(ngModel)]="model.varRol[i].rol_id">
-                                    <option value="0">Seleccionar</option>
-                                    <option *ngFor="let item of lstRoles" value="{{item.rol_id}}">{{item.rol}}</option>
-                                </select> -->
                                 <input type="text" placeholder="Selecciona..." [(ngModel)]="model.varRol[i].rol" (click)="saveRolPrivilegio(i)">
                             </td>
                             <td>
@@ -143,6 +140,45 @@
     <div role="footer">
         <button type="button" class="btn btn-red" (click)="closeRolModal(false)">Cerrar</button>
         <button type="button" class="btn btn-blue" (click)="saveRol()">Guardar</button>
+    </div>
+</app-modal>
+
+<app-modal [title]="'Ver Menu'" [show]="menuModal" [size]="'modal-md-w'" (close)="closeViewMenuModal($event)">
+    <div role="body">
+        <div class="inner-col">
+            <div class="table-content">
+                <table class="table flex-table">
+                    <thead>
+                        <tr>
+                            <th>Módulo</th>
+                            <th>Nombre Pantalla</th>
+                            <th>Activo</th>
+                        </tr>
+                    </thead>
+                    <tbody class="scroll">
+                        <tr *ngFor="let rol of model.varRol; let i = index">
+                            <td>
+                                <input disabled type="text" [(ngModel)]="model.varRol[i].modulo">
+                            </td>
+                            <td>
+                                <input disabled type="text" [(ngModel)]="model.varRol[i].nombre_pantalla">
+                            </td>
+                            <td>
+                                <div class="table-checkbox-component">
+                                    <label>
+                                        <input disabled type="checkbox" checked="checked" [(ngModel)]="model.varRol[i].activo">
+                                    </label>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div role="footer">
+        <button type="button" class="btn btn-red" (click)="closeViewMenuModal(false)">Cerrar</button>
+        <button type="button" class="btn btn-blue" (click)="saveMenu()">Actualizar</button>
     </div>
 </app-modal>
 

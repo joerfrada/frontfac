@@ -38,7 +38,8 @@ export class Model {
     tipo_categoria_id: 0,
     tipo_categoria: "",
     especialidad_id: 0,
-    especialidad: ""
+    especialidad: "",
+    cargo_ruta_id: 0
   }
 
   varDetalleCargo: any = {
@@ -469,6 +470,7 @@ export class RutaComponent implements OnInit {
     this.model.varConsulta.tipo_ruta = "";
     this.model.varConsulta.tipo_categoria = "";
     this.model.varConsulta.especialidad = "";
+    this.model.varConsulta.cargo_ruta_id = 0;
   }
 
   closeConsultaModal(bol: any) {
@@ -486,6 +488,8 @@ export class RutaComponent implements OnInit {
   openWorkflow() {
     this.workflowModal = true;
     this.consultaModal = false;
+
+    this.model.varConsulta.cargo_ruta_id = Number(this.model.varConsulta.cargo_ruta_id);
 
     this.ruta.getCargosByRutas(this.model.varConsulta).subscribe(data => {
       let response: any = this.api.ProcesarRespuesta(data);
