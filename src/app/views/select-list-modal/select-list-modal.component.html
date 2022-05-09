@@ -11,7 +11,7 @@
                 </div>
                 <div class="select-container">
                     <div class="select-left">
-                        <select multiple [(ngModel)]="selectedToAdd">
+                        <select id="mySelect" multiple [(ngModel)]="selectedToAdd">
                             <option *ngFor="let item of items" data-title="{{item.texto}}" [ngValue]="item">{{item.descr}}</option>
                         </select>
                     </div>

@@ -216,7 +216,6 @@ export class UsersComponent implements OnInit {
           x.NuevoRegistro = false;
         });
         this.model.varRol = response.result;
-        console.log(response.result);
       }
     });
   }
@@ -269,6 +268,7 @@ export class UsersComponent implements OnInit {
 
   openViewMenu(dato: any) {
     this.menuModal = true;
+    this.model.title = "Ver Menú - " + dato.usuario;
 
     this.usuario_id = dato.usuario_id;
     this.usuario_menu_id = dato.usuario_menu_id;

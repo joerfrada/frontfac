@@ -42,7 +42,7 @@
                             <td class="table-buttons-action">
                                 <button type="button" class="button btn-edit" (click)="editUsuario(item)">Editar</button>
                                 <button type="button" class="button btn-edit" (click)="openRol(item)">Asignar Rol</button>
-                                <button *ngIf="item.usuario_rol_id != 0" type="button" class="button btn-edit" (click)="openViewMenu(item)">Ver menu</button>
+                                <!--<button *ngIf="item.usuario_rol_id != 0" type="button" class="button btn-edit" (click)="openViewMenu(item)">Ver menu</button>-->
                             </td>
                         </tr>
                         <tr *ngIf="varhistorial?.length == 0">
@@ -73,7 +73,7 @@
             </div>
             <div class="col col33">
                 <div class="label-row">Num. Identificación</div>
-                <input type="number" [(ngModel)]="model.varUsuario.num_identificacion" min="0" notnegative>
+                <input type="number" [(ngModel)]="model.varUsuario.num_identificacion" min="0">
             </div>
             <div class="col col33">
                 <div class="label-row">Activo</div>
@@ -143,7 +143,7 @@
     </div>
 </app-modal>
 
-<app-modal [title]="'Ver Menu'" [show]="menuModal" [size]="'modal-md-w'" (close)="closeViewMenuModal($event)">
+<app-modal [title]="model.title" [show]="menuModal" [size]="'modal-md-w'" (close)="closeViewMenuModal($event)">
     <div role="body">
         <div class="inner-col">
             <div class="table-content">

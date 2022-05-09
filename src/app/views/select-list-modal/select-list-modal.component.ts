@@ -48,17 +48,10 @@ export class SelectListModalComponent implements OnInit {
   }
 
   btnRight() {
-    // console.log('Before:', this.selectedItems.length);
-    // if (this.selectedItems.length == 0) {
-    //   this.i = this.i + 1;
-    // }
-    // else {
-    //   this.i = this.selectedItems.length + 1;
-    // }
-    // console.log('After:', this.selectedItems.length);
     this.i = this.i + 1;
+    var count = $("#mySelect :selected").length;
     
-    if (this.i > 5) {
+    if (this.i > 5 || count > 5) {
       swal({
         title: 'ADVERTENCIA',
         text: "Puede seleccionar hasta 5 opciones solamente",

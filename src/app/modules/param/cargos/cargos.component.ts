@@ -211,8 +211,6 @@ export class CargosComponent implements OnInit {
     this.tab = 1;
     this.getCargos();
     this.getListas();
-    if (this.model.varGrados.length == 0) this.IsLectura = false;
-    else if (this.model.varGrados.length != 0) this.IsLectura = true;
   }
 
   reload() {
@@ -248,6 +246,9 @@ export class CargosComponent implements OnInit {
     this.cargo.getCargos(json).subscribe(data => {
       let response: any = this.api.ProcesarRespuesta(data);
       if (response.tipo == 0) {
+        response.result.forEach((x: any) => {
+          x.desc_data = (x.descripcion == "" || x.descripcion == undefined) ? 'N' : 'S';
+        });
         this.varhistorial = response.result;
         this.varhistorialTemp = response.result;
       }
@@ -312,6 +313,7 @@ export class CargosComponent implements OnInit {
 
   closeModal(bol: any) {
     this.modal = bol;
+    this.reload();
   }
 
   changeCategoria(id: any) {
@@ -505,17 +507,18 @@ export class CargosComponent implements OnInit {
   }
 
   addGrado() {
-    if (this.model.varGrados.length == 0) {
-      this.model.varGrados.push({cargo_grado_id: 0, cargo_id: 0, grado: "", grado_id:0, usuario_creador: "", usuario_modificador: "", activo: true, NuevoRegistro: true});
-      if (this.model.varGrados.length > 1) {
-        this.IsLectura = true;
-      }
-    }
-    else {
-      if (this.model.varGrados.length > 1) {
-        this.IsLectura = true;
-      }
-    }
+    // if (this.model.varGrados.length == 0) {
+    //   this.model.varGrados.push({cargo_grado_id: 0, cargo_id: 0, grado: "", grado_id:0, usuario_creador: "", usuario_modificador: "", activo: true, NuevoRegistro: true});
+    //   if (this.model.varGrados.length > 1) {
+    //     this.IsLectura = true;
+    //   }
+    // }
+    // else {
+    //   if (this.model.varGrados.length > 1) {
+    //     this.IsLectura = true;
+    //   }
+    // }
+    this.model.varGrados.push({cargo_grado_id: 0, cargo_id: 0, grado: "", grado_id:0, usuario_creador: "", usuario_modificador: "", activo: true, NuevoRegistro: true});
   }
 
   deleteGrado(index: any) {
@@ -539,14 +542,18 @@ export class CargosComponent implements OnInit {
 
     this.changeCategoria(data.categoria_id);
 
-    this.cargo.getCargosGrados({cargo_id: data.cargo_id}).subscribe(data => {
+    this.getCargosGrados(data.cargo_id);
+  }
+
+  getCargosGrados(id: any) {
+    this.cargo.getCargosGrados({cargo_id: id}).subscribe(data => {
       let response: any = this.api.ProcesarRespuesta(data);
       if (response.tipo == 0) {
         this.model.varGrados.forEach((x: any) => {
           x.NuevoRegistro = false;
         })
         this.model.varGrados = response.result;
-        console.log(response.result);
+        // console.log(response.result);
       }
     });
   }
@@ -581,8 +588,9 @@ export class CargosComponent implements OnInit {
           showConfirmButton: true,
           type: 'success'
         }).then((result: any) => {
-          this.modal = false;
-          this.reload();
+          // this.modal = false;
+          // this.reload();
+          this.getCargosGrados(response.id);
         })
       }
     })
@@ -615,7 +623,7 @@ export class CargosComponent implements OnInit {
               this.cargo.updateteCargosGrados(x).subscribe(data1 => {});
             }
           });
-          console.log(this.model.varGrados);
+          // console.log(this.model.varGrados);
         }
         swal({
           title: 'Cargos',
@@ -624,8 +632,9 @@ export class CargosComponent implements OnInit {
           showConfirmButton: true,
           type: 'success'
         }).then((result: any) => {
-          this.modal = false;
-          this.reload();
+          // this.modal = false;
+          // this.reload();
+          this.getCargosGrados(this.model.varCargo.cargo_id);
         })
       }
     });
@@ -835,5 +844,20 @@ export class CargosComponent implements OnInit {
         }
       });
     }
+  }
+
+  openDescripcion(texto: any) {
+    swal({
+      title: 'Descripción',
+      html: '<textarea id="swal-input2" class="swal2-input" rows="100" style="height: 20em !important" disabled></textarea>',
+      allowOutsideClick: false,
+      showConfirmButton: true,
+      customClass: 'sweetalert-lg',
+      width: '800px',
+      heightAuto: false,
+      onOpen: () => {
+        $('#swal-input2').val(texto);
+      }
+    });
   }
 }

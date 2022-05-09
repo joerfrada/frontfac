@@ -486,35 +486,48 @@ export class RutaComponent implements OnInit {
   }
 
   openWorkflow() {
-    this.workflowModal = true;
-    this.consultaModal = false;
-
     this.model.varConsulta.cargo_ruta_id = Number(this.model.varConsulta.cargo_ruta_id);
 
-    this.ruta.getCargosByRutas(this.model.varConsulta).subscribe(data => {
-      let response: any = this.api.ProcesarRespuesta(data);
-      if (response.tipo == 0) {
-        if (response.result.length != false) {
-          this.workflowModal = true;
-          this.consultaModal = false;
+    if (this.model.varConsulta.cargo_ruta_id == 0) {
+      swal({
+        title: 'ERROR',
+        text: 'Debe seleccionar el campo Tipo Cargo',
+        allowOutsideClick: false,
+        showConfirmButton: true,
+        type: 'error'
+      })
+    }
+    else {
+      /* this.workflowModal = true;
+      this.consultaModal = false; */
 
-          this.lstRutas = response.result;
+      this.ruta.getCargosByRutas(this.model.varConsulta).subscribe(data => {
+        let response: any = this.api.ProcesarRespuesta(data);
+        if (response.tipo == 0) {
+          if (response.result.length != false) {
+            this.workflowModal = true;
+            this.consultaModal = false;
+
+            this.lstRutas = response.result;
+          }
+          else {
+            swal({
+              title: 'ERROR',
+              text: 'No se encuentra la información.',
+              allowOutsideClick: false,
+              showConfirmButton: true,
+              type: 'error'
+            }).then((result: any) => {
+              this.model.varConsulta.tipo_categoria_id = 0;
+              this.model.varConsulta.especialidad_id = 0;
+              this.model.varConsulta.tipo_ruta_id = 0;
+              this.model.varConsulta.cargo_ruta_id = 0;
+              this.workflowModal = false;
+            });
+          }
         }
-        else {
-          swal({
-            title: 'ERROR',
-            text: 'No se encuentra la información.',
-            allowOutsideClick: false,
-            showConfirmButton: true,
-            type: 'error'
-          }).then((result: any) => {
-            this.model.varConsulta.tipo_categoria_id = 0;
-            this.model.varConsulta.especialidad_id = 0;
-            this.model.varConsulta.tipo_ruta_id = 0;
-          });
-        }
-      }
-    });
+      });
+    }
   }
 
   closeWorkflowModal(bol: any) {

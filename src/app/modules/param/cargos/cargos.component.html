@@ -34,7 +34,9 @@
                         <tr *ngFor="let item of varhistorial; let i = index">
                             <td>{{item.cargo_id}}</td>
                             <td>{{item.cargo}}</td>
-                            <td>{{item.descripcion}}</td>
+                            <td>
+                                <button type="button" class="button btn-default" (click)="openDescripcion(item.descripcion)" *ngIf="item.desc_data == 'S'">Ver</button>
+                            </td>
                             <td>{{item.clase_cargo}}</td>
                             <td>{{item.categoria}}</td>
                             <td>
@@ -99,7 +101,7 @@
             </div>
             <div class="col col100">
                 <div class="label-row">Descripción</div>
-                <textarea rows="4" cols="80" [(ngModel)]="model.varCargo.descripcion"></textarea>
+                <textarea rows="4" cols="80" [(ngModel)]="model.varCargo.descripcion" maxlength="8000"></textarea>
             </div>
             <div class="line-col"></div>
             <div class="col col100 title-row">Grados</div>
@@ -134,8 +136,8 @@
                             </td>
                         </tr>
                         <tr class="add_row_full">
-                            <button *ngIf="IsLectura==true" type="button" class="button btn-gray">Agregar</button>
-                            <button *ngIf="IsLectura==false" type="button" class="button btn-blue" (click)="addGrado()">Agregar</button>
+                            <!-- <button *ngIf="IsLectura==true" type="button" class="button btn-gray">Agregar</button> -->
+                            <button type="button" class="button btn-blue" (click)="addGrado()">Agregar</button>
                         </tr>
                         <!-- <tr *ngIf="vargrados?.length == 0">
                             <div class="dbempty">No hay datos.</div>
@@ -183,7 +185,7 @@
                             <input type="number" [(ngModel)]="model.varConfiguracion.puesto_cantidad" min="0" notnegative>
                         </div>
                         <div class="col col50">
-                            <div class="label-row">Cargo Jefe Inmediato</div>
+                            <div class="label-row">Experiencia: cargos previos a desempeñar</div>
                             <select [(ngModel)]="model.varConfiguracion.cargo_jefe_inmediato_id">
                                 <option value="0">Seleccionar</option>
                                 <option *ngFor="let item of lstCargos" value="{{item.cargo_id}}">{{item.cargo}}</option>
