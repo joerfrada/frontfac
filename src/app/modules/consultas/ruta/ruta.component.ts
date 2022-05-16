@@ -240,6 +240,7 @@ export class RutaComponent implements OnInit {
       if (response.tipo == 0) {
         response.result.forEach((x: any) => {
           x.id = x.ruta_carrera_id;
+          x.desc_data = (x.descripcion == "" || x.descripcion == undefined) ? 'N' : 'S';
         });
         this.varhistorial = response.result;
         this.varhistorialTemp = response.result;
@@ -887,9 +888,9 @@ export class RutaComponent implements OnInit {
         else this.cargo_grado_id = response.result[0].cargo_grado_id;
 
         response.result.forEach((x: any) => {
-          this.lstCuerpo = x.cuerpo.split(',');
-          this.lstEspec = x.especialidad.split(',');
-          this.lstArea = x.area.split(',');
+          this.lstCuerpo = x.cuerpo != "" || x.cuerpo != null ? x.cuerpo.split(',') : [];
+          this.lstEspec = x.especialidad != "" || x.especialidad != null ? x.especialidad.split(',') : [];
+          this.lstArea = x.area != "" || x.area != null ? x.area.split(','): [];
         });
       }
     });
@@ -952,5 +953,20 @@ export class RutaComponent implements OnInit {
 
   selectTab(tab: any) {
     this.tab = tab;
+  }
+
+  openDescripcion(texto: any) {
+    swal({
+      title: 'Descripción',
+      html: '<textarea id="swal-input2" class="swal2-input" rows="100" style="height: 20em !important" disabled></textarea>',
+      allowOutsideClick: false,
+      showConfirmButton: true,
+      customClass: 'sweetalert-lg',
+      width: '800px',
+      heightAuto: false,
+      onOpen: () => {
+        $('#swal-input2').val(texto);
+      }
+    });
   }
 }

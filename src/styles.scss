@@ -69,6 +69,16 @@ body {
     background: var(--color-body);
 }
 
+input[type="text"][disabled] {
+    color: rgb(65, 65, 65) !important;
+}
+
+select:disabled {
+    color: rgb(65, 65, 65) !important;
+    opacity: 1.0 !important;
+    background-color: gainsboro !important;
+}
+
 /* Clearfix */
 .clearfix:after {
     visibility: hidden;
@@ -435,11 +445,15 @@ a {
 
 #modal-piramide-md {
     .modal-box {
-        width: 40vw;
+        width: 50vw;
     }
 
     .modal-box-centered {
-        min-height: calc(100% - 20rem);
+        min-height: calc(100% - 10rem);
+    }
+
+    .modal-box-scrollable {
+        height: calc(100% - 10rem);
     }
 
     .modal-header, .modal-body {

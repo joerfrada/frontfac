@@ -185,7 +185,7 @@
                             <input type="number" [(ngModel)]="model.varConfiguracion.puesto_cantidad" min="0" notnegative>
                         </div>
                         <div class="col col50">
-                            <div class="label-row">Experiencia: cargos previos a desempeñar</div>
+                            <div class="label-row">Cargo Jefe Inmediato:</div>
                             <select [(ngModel)]="model.varConfiguracion.cargo_jefe_inmediato_id">
                                 <option value="0">Seleccionar</option>
                                 <option *ngFor="let item of lstCargos" value="{{item.cargo_id}}">{{item.cargo}}</option>

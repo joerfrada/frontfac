@@ -157,7 +157,7 @@ export class RequerimientosComponent implements OnInit {
 
   openModal() {
     this.modal = true;
-    this.model.title = "Crear Requerimiento";
+    this.model.title = "Crear Requisito del Ley";
     this.model.tipo = 'C';
 
     this.clearRequerimientos();
@@ -169,7 +169,7 @@ export class RequerimientosComponent implements OnInit {
 
   editRequerimiento(data: any) {
     this.modal = true;
-    this.model.title = "Actualizar Requerimiento";
+    this.model.title = "Actualizar Requisito del Ley";
     this.model.tipo = 'U';
 
     this.model.varRequerimiento.requerimiento_id = data.requerimiento_id;

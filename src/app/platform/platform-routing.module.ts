@@ -23,7 +23,7 @@ const routes: Routes = [
     { path: 'modulo/param/cargos', component: CargosComponent },
     { path: 'modulo/param/grados', component: GradosComponent },
     { path: 'modulo/param/valores-flexibles', component: ValoresFlexiblesComponent },
-    { path: 'modulo/param/requerimientos', component: RequerimientosComponent },
+    { path: 'modulo/param/requisitos-ley', component: RequerimientosComponent },
     { path: 'modulo/param/siglas', component: SiglasComponent },
     { path: 'modulo/consultas/ruta', component: RutaComponent }
   ]},

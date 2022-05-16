@@ -39,7 +39,7 @@
                     </thead>
                     <tbody class="scroll">
                         <tr *ngFor="let item of varhistorial; let i = index">
-                            <td>{{item.descripcion}}</td>
+                            <td><button type="button" class="button btn-default" (click)="openDescripcion(item.descripcion)" *ngIf="item.desc_data == 'S'">Ver</button></td>
                             <td>{{item.tipo_ruta}}</td>
                             <td>{{item.tipo_categoria}}</td>
                             <td>{{item.siglaCuerpo}}</td>
@@ -100,10 +100,6 @@
                     <option *ngFor="let item of vartiporuta" value="{{item.id}}">{{item.detalle}}</option>
                 </select>
             </div>
-            <div class="col col50">
-                <div class="label-row">Descripción</div>
-                <input type="text" [(ngModel)]="model.varRutaCarrera.descripcion">
-            </div>
             <div class="col col25">
                 <div class="label-row">Activo</div>
                 <div class="checkbox-component">
@@ -113,6 +109,11 @@
                     </label>
                 </div>
             </div>
+            <div class="col col100">
+                <div class="label-row">Descripción</div>
+                <textarea [(ngModel)]="model.varRutaCarrera.descripcion" maxlength="8000"></textarea>
+            </div>
+            
             <!-- <div class="col col50">
                 <div class="label-row">&nbsp;</div>
                 <button type="button" class="button btn-default">Previsualizar</button>
