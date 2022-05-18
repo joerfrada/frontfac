@@ -66,6 +66,7 @@ export class Model {
   }
 
   varGrados: any = [];
+  varGradosTemp: any = [];
 
   varRutaRequisito: any = {
     ruta_requisito_id: 0,
@@ -332,6 +333,19 @@ export class CargosComponent implements OnInit {
     let grado: any = this.model.varGrados[index];
     let listaGrado: any = this.lstGrados.filter((x: any) => x.grado_id == Number(grado.grado_id));
     this.model.grado = listaGrado[0].descripcion;
+
+    let esEscontrado = this.model.varGradosTemp.filter((x: any) => x.grado_id == Number(grado.grado_id));
+    if (esEscontrado.length != 1) {
+      swal({
+        title: 'Grados',
+        text: "El grado '" + listaGrado[0].grado + " - " + listaGrado[0].descripcion + "' ya se existe.",
+        type: 'warning',
+        allowOutsideClick: false,
+        showConfirmButton: true
+      }).then((result: any) => {
+        this.model.varGrados[index].grado_id = 0;
+      });
+    }
   }
 
   selectTab(tab: any) {
@@ -553,7 +567,7 @@ export class CargosComponent implements OnInit {
           x.NuevoRegistro = false;
         })
         this.model.varGrados = response.result;
-        // console.log(response.result);
+        this.model.varGradosTemp = response.result;
       }
     });
   }
