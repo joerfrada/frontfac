@@ -68,6 +68,8 @@ export class Model {
   varGrados: any = [];
   varGradosTemp: any = [];
 
+  varCargosExperiencias: any = [];
+
   varRutaRequisito: any = {
     ruta_requisito_id: 0,
     ruta_requisito: ""
@@ -338,7 +340,7 @@ export class CargosComponent implements OnInit {
     if (esEscontrado.length != 1) {
       swal({
         title: 'Grados',
-        text: "El grado '" + listaGrado[0].grado + " - " + listaGrado[0].descripcion + "' ya se existe.",
+        text: "El grado '" + listaGrado[0].grado + " - " + listaGrado[0].descripcion + "' ya existe.",
         type: 'warning',
         allowOutsideClick: false,
         showConfirmButton: true
@@ -408,6 +410,8 @@ export class CargosComponent implements OnInit {
             this.model.varCompetencia.competencia = cargo.competencia;
             this.model.varConfiguracion.competencia_id = cargo.competencia_id;
             this.model.varConfiguracion.observaciones = cargo.observaciones;
+            
+            this.getCargosExperiencias(cargo.cargo_configuracion_id);
           }
           else {
             this.model.varConfiguracion.cargo_configuracion_id = 0;
@@ -436,10 +440,24 @@ export class CargosComponent implements OnInit {
             this.model.varCompetencia.competencia = "";
             this.model.varConfiguracion.competencia_id = "";
             this.model.varConfiguracion.observaciones = "";
+
+            this.model.varCargosExperiencias = [];
           }
         }
       });
     }
+  }
+
+  getCargosExperiencias(id: any) {
+    this.cargo.getCargosExperiencias({cargo_configuracion_id: id}).subscribe(data => {
+      let response: any = this.api.ProcesarRespuesta(data);
+      if (response.tipo == 0) {
+        response.result.forEach((x: any) => {
+          x.NuevoRegistro = false;
+        });
+        this.model.varCargosExperiencias = response.result;
+      }
+    });
   }
 
   getListas() {
@@ -563,7 +581,7 @@ export class CargosComponent implements OnInit {
     this.cargo.getCargosGrados({cargo_id: id}).subscribe(data => {
       let response: any = this.api.ProcesarRespuesta(data);
       if (response.tipo == 0) {
-        this.model.varGrados.forEach((x: any) => {
+        response.result.forEach((x: any) => {
           x.NuevoRegistro = false;
         })
         this.model.varGrados = response.result;
@@ -652,6 +670,14 @@ export class CargosComponent implements OnInit {
         })
       }
     });
+  }
+
+  addCargosExperiencias() {
+    this.model.varCargosExperiencias.push({cargo_experiencia_id: 0, cargo_configuracion_id:0, cargo_previo_id:0, anio: 0, mes: 0, usuario_creador: this.currentUser.usuario, usuario_modificador: this.currentUser.usuario, NuevoRegistro: true});
+  }
+
+  deleteCargosExperiencias(index: any) {
+    this.model.varCargosExperiencias.splice(index, 1);
   }
 
   openCuerpoSelect() {
@@ -828,6 +854,17 @@ export class CargosComponent implements OnInit {
       this.cargo.createCargosConfiguracion(this.model.varConfiguracion).subscribe(data => {
         let response: any = this.api.ProcesarRespuesta(data);
         if (response.tipo == 0) {
+          let id = response.id;
+          if (this.model.varCargosExperiencias.length > 0) {
+            this.model.varCargosExperiencias.forEach((x: any) => {
+              x.cargo_configuracion_id = id;
+              x.cargo_id = Number(x.cargo_id);
+      
+              if (x.NuevoRegistro == true) {
+                this.cargo.createCargosExperiencias(x).subscribe(data1 => {});
+              }
+            });
+          }
           swal({
             title: 'Cargo / Grado Configuración',
             text: "Fue creado exitosamente",
@@ -845,6 +882,19 @@ export class CargosComponent implements OnInit {
       this.cargo.updateCargosConfiguracion(this.model.varConfiguracion).subscribe(data => {
         let response: any = this.api.ProcesarRespuesta(data);
         if (response.tipo == 0) {
+          if (this.model.varCargosExperiencias.length > 0) {
+            this.model.varCargosExperiencias.forEach((x: any) => {
+              x.cargo_configuracion_id = this.model.varConfiguracion.cargo_configuracion_id;
+              x.cargo_id = Number(x.cargo_id);
+      
+              if (x.NuevoRegistro == true) {
+                this.cargo.createCargosExperiencias(x).subscribe(data1 => {});
+              }
+              else {
+                this.cargo.updateCargosExperiencias(x).subscribe(data1 => {});
+              }
+            });
+          }
           swal({
             title: 'Cargo / Grado Configuración',
             text: "Fue actualizado exitosamente",

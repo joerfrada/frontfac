@@ -231,16 +231,44 @@
                                     <option *ngFor="let item of varnivel5" value="{{item.id}}">{{item.detalle}}</option>
                                 </select>
                             </div>
-                            <div class="col col100 title-row">Tiempo mínimo en el cargo y Requisitos del Cargo</div>
                             <div class="line-col"></div>
-                            <div class="col col25">
-                                <div class="label-row">Número de años</div>
-                                <input type="number" [(ngModel)]="model.varConfiguracion.anio" min="0" notnegative>
+                            <div class="col col100 title-row">Experiencia: cargos a previos a desempeñar</div>
+                            <div class="table-content">
+                                <table class="table flex-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Cargos</th>
+                                            <th>Número de años</th>
+                                            <th>Número de meses</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="scroll">
+                                        <tr *ngFor="let item of model.varCargosExperiencias; let i = index">
+                                            <td>
+                                                <select [(ngModel)]="item.cargo_previo_id">
+                                                    <option value="0">Seleccionar</option>
+                                                    <option *ngFor="let cargo of lstCargos" value="{{cargo.cargo_id}}">{{cargo.cargo}}</option>
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <input type="number" [(ngModel)]="item.anio">
+                                            </td>
+                                            <td>
+                                                <input type="number" [(ngModel)]="item.mes">
+                                            </td>
+                                            <td>
+                                                <i class="fa fa-1m5x fa-times-circle pointer noselect" style="color: black !important;" *ngIf="model.varCargosExperiencias[i].NuevoRegistro" (click)="deleteCargosExperiencias(i)"></i>
+                                            </td>
+                                        </tr>
+                                        <tr class="add_row_full">
+                                            <button type="button" class="button btn-blue" (click)="addCargosExperiencias()">Agregar</button>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
-                            <div class="col col25">
-                                <div class="label-row">Número de meses</div>
-                                <input type="number" [(ngModel)]="model.varConfiguracion.mes" min="0" notnegative>
-                            </div>
+                            <div class="col col100 title-row">Requisitos del Cargo</div>
+                            <div class="line-col"></div>
                             <div class="col col100">
                                 <!-- <div class="col col95">
                                     <textarea rows="4" cols="80" [(ngModel)]="model.varRutaRequisito.ruta_requisito"></textarea>

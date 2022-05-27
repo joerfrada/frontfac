@@ -26,6 +26,11 @@ export class CargoService {
   private apiCreateCargosConfiguracion = this.api.getBaseUrl + "cargo/crearCargosConfiguracion";
   private apiUpdateCargosConfiguracion = this.api.getBaseUrl + "cargo/actualizarCargosConfiguracion";
 
+  // Cargos Experiencias
+  private apiGetCargosExperiencias = this.api.getBaseUrl + "cargo/getCargosExperienciasById";
+  private apiCreateCargosCargosExperiencias = this.api.getBaseUrl + "cargo/crearCargosExperiencias";
+  private apiUpdateCargosCargosExperiencias = this.api.getBaseUrl + "cargo/actualizarCargosExperiencias";
+
   // Historial Cuerpos
   private apiCreateHistorialCuerpos = this.api.getBaseUrl + "cargo/crearHistorialCuerpos";
   private apiUpdateHistorialCuerpos = this.api.getBaseUrl + "cargo/actualizarHistorialCuerpos";
@@ -98,6 +103,22 @@ export class CargoService {
 
   public updateCargosConfiguracion(data: any): Observable<any> {
     return this.http.post<any>(this.apiUpdateCargosConfiguracion, JSON.stringify(data), this.api.getHttpOptions('g'))
+    .pipe(retry(1), catchError(this.api.errorHandle));
+  }
+
+  // Cargos Experiencias
+  public getCargosExperiencias(data: any): Observable<any> {
+    return this.http.post<any>(this.apiGetCargosExperiencias, JSON.stringify(data), this.api.getHttpOptions('g'))
+    .pipe(retry(1), catchError(this.api.errorHandle));
+  }
+
+  public createCargosExperiencias(data: any): Observable<any> {
+    return this.http.post<any>(this.apiCreateCargosCargosExperiencias, JSON.stringify(data), this.api.getHttpOptions('g'))
+    .pipe(retry(1), catchError(this.api.errorHandle));
+  }
+
+  public updateCargosExperiencias(data: any): Observable<any> {
+    return this.http.post<any>(this.apiUpdateCargosCargosExperiencias, JSON.stringify(data), this.api.getHttpOptions('g'))
     .pipe(retry(1), catchError(this.api.errorHandle));
   }
 
