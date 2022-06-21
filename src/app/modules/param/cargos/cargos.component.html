@@ -124,7 +124,7 @@
                                 </select>
                             </td>
                             <td class="table-buttons-action">
-                                <button *ngIf="model.tipo == 'U' && item.NuevoRegistro != true" type="button" class="button btn-default" (click)="editConfigModal(item)">Configuración</button>
+                                <button *ngIf="model.tipo == 'U' && item.NuevoRegistro != true" type="button" class="button btn-default" (click)="editConfigModal(item, true)">Configuración</button>
                             </td>
                             <!-- <td>
                                 <div class="table-checkbox-component">
@@ -232,7 +232,7 @@
                                 </select>
                             </div>
                             <div class="line-col"></div>
-                            <div class="col col100 title-row">Experiencia: cargos a previos a desempeñar</div>
+                            <div class="col col100 title-row">Experiencia: cargos previos a desempeñar</div>
                             <div class="table-content">
                                 <table class="table flex-table">
                                     <thead>

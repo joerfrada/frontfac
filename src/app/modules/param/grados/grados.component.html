@@ -23,7 +23,7 @@
                         <tr>
                             <th>Grado</th>
                             <th>Descripción</th>
-                            <th>Duración</th>
+                            <th>Tiempo mínimo de servicio</th>
                             <th>Categoría</th>
                             <th>Nivel</th>
                             <th>Grado Previo</th>
@@ -90,9 +90,9 @@
                     <option *ngFor="let item of vargrado_prev" value="{{item.grado_id}}">{{item.grado}} - {{item.descripcion}}</option>
                 </select>
             </div>
-            <div class="col col15">
+            <div class="col col33">
                 <div class="label-row">Tiempo mínimo de servicio</div>
-                <input type="number" [(ngModel)]="model.varGrado.duracion" class="notspin" notnegative>
+                <input type="number" [(ngModel)]="model.varGrado.duracion" notnegative>
             </div>
             <div class="col col33">
                 <div class="label-row">Activo</div>

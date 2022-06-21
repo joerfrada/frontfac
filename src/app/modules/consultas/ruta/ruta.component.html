@@ -181,22 +181,22 @@
                         </tr>
                     </thead>
                     <tbody class="scroll">
-                        <tr *ngFor="let item of varruta;let i=index">
+                        <tr *ngFor="let item of varruta; let i = index">
                             <td>
-                                <select [(ngModel)]="varruta[i].cargo_id">
+                                <select [(ngModel)]="item.cargo_id" (change)="changeCargo(i, item.cargo_id)">
                                     <option value="0">Seleccionar</option>
-                                    <option *ngFor="let item of varcargo" value="{{item.cargo_id}}">{{item.cargo}}</option>
+                                    <option *ngFor="let cargo of varcargo" value="{{cargo.cargo_id}}">{{cargo.cargo}}</option>
                                 </select>
                             </td>
                             <td>
                                 <div class="table-checkbox-component">
                                     <label>
-                                        <input type="checkbox" checked="checked" [(ngModel)]="varruta[i].activo">
+                                        <input type="checkbox" checked="checked" [(ngModel)]="item.activo">
                                     </label>
                                 </div>
                             </td>
                             <td>
-                                <i class="fa fa-1m5x fa-times-circle pointer noselect" style="color: black !important;" *ngIf="varruta[i].NuevoRegistro" (click)="deleteRuta(i)"></i>
+                                <i class="fa fa-1m5x fa-times-circle pointer noselect" style="color: black !important;" *ngIf="item.NuevoRegistro" (click)="deleteRuta(i)"></i>
                             </td>
                         </tr>
                         <tr class="add_row_full">
@@ -506,16 +506,40 @@
                                     <option *ngFor="let item of varnivel5" value="{{item.id}}">{{item.detalle}}</option>
                                 </select>
                             </div>
-                            <div class="col col100 title-row">Tiempo mínimo en el cargo y Requisitos del Cargo</div>
                             <div class="line-col"></div>
-                            <div class="col col25">
-                                <div class="label-row">Número de años</div>
-                                <input type="number" [(ngModel)]="model.varConfiguracion.anio" min="0" notnegative disabled>
+                            <div class="col col100 title-row">Experiencia: cargos previos a desempeñar</div>
+                            <div class="table-content">
+                                <table class="table flex-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Cargos</th>
+                                            <th>Número de años</th>
+                                            <th>Número de meses</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="scroll">
+                                        <tr *ngFor="let item of varCargosExperiencias; let i = index">
+                                            <td>
+                                                <select [(ngModel)]="item.cargo_previo_id" disabled>
+                                                    <option value="0">Seleccionar</option>
+                                                    <option *ngFor="let cargo of lstCargos" value="{{cargo.cargo_id}}">{{cargo.cargo}}</option>
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <input type="number" [(ngModel)]="item.anio" disabled>
+                                            </td>
+                                            <td>
+                                                <input type="number" [(ngModel)]="item.mes" disabled>
+                                            </td>
+                                        </tr>
+                                        <tr *ngIf="varCargosExperiencias?.length == 0">
+                                            <div class="dbempty">No hay datos.</div>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
-                            <div class="col col25">
-                                <div class="label-row">Número de meses</div>
-                                <input type="number" [(ngModel)]="model.varConfiguracion.mes" min="0" notnegative disabled>
-                            </div>
+                            <div class="col col100 title-row">Requisitos del Cargo</div>
+                            <div class="line-col"></div>
                             <div class="col col100">
                                 <textarea rows="4" cols="80" [(ngModel)]="model.varConfiguracion.requisito_cargo" disabled></textarea>
                             </div>

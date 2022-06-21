@@ -69,6 +69,7 @@ export class Model {
   varGradosTemp: any = [];
 
   varCargosExperiencias: any = [];
+  varCargosExperienciasTemp: any = [];
 
   varRutaRequisito: any = {
     ruta_requisito_id: 0,
@@ -364,8 +365,8 @@ export class CargosComponent implements OnInit {
     this.configModal = bol;
   }
 
-  editConfigModal(data: any) {
-    this.configModal = true;
+  editConfigModal(data: any, IsModal: boolean) {
+    if (IsModal == true) this.configModal = true;
     this.model.grado = data.descripcion;
     this.model.varConfiguracion.cargo_grado_id = data.cargo_grado_id;
     this.lstCargos = this.lstCargos.filter((x: any) => x.categoria_id == data.categoria_id);
@@ -379,72 +380,7 @@ export class CargosComponent implements OnInit {
     this.arrCompetencia = Utilidades.toArray(data.competencia_id);
 
     if (data.cargo_grado_id != 0 && data.cargo_grado_id != null) {
-      this.cargo.getCargosConfiguracion({cargo_grado_id: data.cargo_grado_id}).subscribe(data1 => {
-        let response: any = this.api.ProcesarRespuesta(data1);
-        if (response.tipo == 0) {
-          if (response.result.length != 0) {
-            let cargo = response.result[0];
-            this.model.varConfiguracion.cargo_configuracion_id = cargo.cargo_configuracion_id;
-            this.model.varConfiguracion.puesto_cantidad = cargo.puesto_cantidad;
-            this.model.varConfiguracion.cargo_jefe_inmediato_id = cargo.cargo_jefe_inmediato_id;
-            this.model.varConfiguracion.nivel1 = cargo.nivel1;
-            this.model.varConfiguracion.nivel2 = cargo.nivel2;
-            this.model.varConfiguracion.nivel3 = cargo.nivel3;
-            this.model.varConfiguracion.nivel4 = cargo.nivel4;
-            this.model.varConfiguracion.nivel5 = cargo.nivel5;
-            this.model.varConfiguracion.anio = cargo.anio;
-            this.model.varConfiguracion.mes = cargo.mes;
-            this.model.varConfiguracion.requisito_cargo = cargo.requisito_cargo;
-            this.model.varCuerpo.cuerpo = cargo.cuerpo;
-            this.model.varConfiguracion.cuerpo_id = cargo.cuerpo_id;
-            this.model.varEspecialidad.especialidad = cargo.especialidad;
-            this.model.varConfiguracion.especialidad_id = cargo.especialidad_id;
-            this.model.varArea.area = cargo.area;
-            this.model.varConfiguracion.area_id = cargo.area_id;
-            this.model.varEducacion.educacion = cargo.educacion;
-            this.model.varConfiguracion.educacion_id = cargo.educacion_id;
-            this.model.varConocimiento.conocimiento = cargo.conocimiento;
-            this.model.varConfiguracion.conocimiento_id = cargo.conocimiento_id;
-            this.model.varExperiencia.experiencia = cargo.experiencia;
-            this.model.varConfiguracion.experiencia_id = cargo.experiencia_id;
-            this.model.varCompetencia.competencia = cargo.competencia;
-            this.model.varConfiguracion.competencia_id = cargo.competencia_id;
-            this.model.varConfiguracion.observaciones = cargo.observaciones;
-            
-            this.getCargosExperiencias(cargo.cargo_configuracion_id);
-          }
-          else {
-            this.model.varConfiguracion.cargo_configuracion_id = 0;
-            this.model.varConfiguracion.puesto_cantidad = 0;
-            this.model.varConfiguracion.cargo_jefe_inmediato_id = 0;
-            this.model.varConfiguracion.nivel1 = 0;
-            this.model.varConfiguracion.nivel2 = 0;
-            this.model.varConfiguracion.nivel3 = 0;
-            this.model.varConfiguracion.nivel4 = 0;
-            this.model.varConfiguracion.nivel5 = 0;
-            this.model.varConfiguracion.anio = 0;
-            this.model.varConfiguracion.mes = 0;
-            this.model.varConfiguracion.periodo = "";
-            this.model.varConfiguracion.requisito_cargo = "";
-            this.model.varCuerpo.cuerpo = "";
-            this.model.varConfiguracion.cuerpo_id = "";
-            this.model.varEspecialidad.especialidad = "";
-            this.model.varConfiguracion.especialidad_id = "";
-            this.model.varArea.area = "";
-            this.model.varConfiguracion.area_id = "";
-            this.model.varEducacion.educacion = "";
-            this.model.varConfiguracion.educacion_id = "";
-            this.model.varConocimiento.conocimiento = "";
-            this.model.varConfiguracion.conocimiento_id = "";
-            this.model.varExperiencia.experiencia = "",
-            this.model.varCompetencia.competencia = "";
-            this.model.varConfiguracion.competencia_id = "";
-            this.model.varConfiguracion.observaciones = "";
-
-            this.model.varCargosExperiencias = [];
-          }
-        }
-      });
+      this.getCargosConfiguracion(data);
     }
   }
 
@@ -456,6 +392,7 @@ export class CargosComponent implements OnInit {
           x.NuevoRegistro = false;
         });
         this.model.varCargosExperiencias = response.result;
+        this.model.varCargosExperienciasTemp = response.result;
       }
     });
   }
@@ -539,17 +476,6 @@ export class CargosComponent implements OnInit {
   }
 
   addGrado() {
-    // if (this.model.varGrados.length == 0) {
-    //   this.model.varGrados.push({cargo_grado_id: 0, cargo_id: 0, grado: "", grado_id:0, usuario_creador: "", usuario_modificador: "", activo: true, NuevoRegistro: true});
-    //   if (this.model.varGrados.length > 1) {
-    //     this.IsLectura = true;
-    //   }
-    // }
-    // else {
-    //   if (this.model.varGrados.length > 1) {
-    //     this.IsLectura = true;
-    //   }
-    // }
     this.model.varGrados.push({cargo_grado_id: 0, cargo_id: 0, grado: "", grado_id:0, usuario_creador: "", usuario_modificador: "", activo: true, NuevoRegistro: true});
   }
 
@@ -620,7 +546,7 @@ export class CargosComponent implements OnInit {
           showConfirmButton: true,
           type: 'success'
         }).then((result: any) => {
-          // this.modal = false;
+          this.modal = false;
           // this.reload();
           this.getCargosGrados(response.id);
         })
@@ -678,6 +604,23 @@ export class CargosComponent implements OnInit {
 
   deleteCargosExperiencias(index: any) {
     this.model.varCargosExperiencias.splice(index, 1);
+  }
+
+  changeCargoPrevio(index: any) {
+    let cargo: any = this.model.varCargosExperiencias[index];
+    let listaCargo: any = this.lstCargos.filter((x: any) => x.cargo_id == Number(cargo.cargo_previo_id));
+    let esEscontrado = this.model.varCargosExperienciasTemp.filter((x: any) => x.cargo_previo_id == Number(cargo.cargo_previo_id));
+    if (esEscontrado.length != 1) {
+      swal({
+        title: 'ADVERTENCIA',
+        text: "El cargo '" + listaCargo[0].cargo + "' ya existe.",
+        type: 'warning',
+        allowOutsideClick: false,
+        showConfirmButton: true
+      }).then((result: any) => {
+        this.model.varCargosExperiencias[index].cargo_id = 0;
+      });
+    }
   }
 
   openCuerpoSelect() {
@@ -921,6 +864,75 @@ export class CargosComponent implements OnInit {
       heightAuto: false,
       onOpen: () => {
         $('#swal-input2').val(texto);
+      }
+    });
+  }
+
+  getCargosConfiguracion(data: any) {
+    this.cargo.getCargosConfiguracion({cargo_grado_id: data.cargo_grado_id}).subscribe(data1 => {
+      let response: any = this.api.ProcesarRespuesta(data1);
+      if (response.tipo == 0) {
+        if (response.result.length != 0) {
+          let cargo = response.result[0];
+          this.model.varConfiguracion.cargo_configuracion_id = cargo.cargo_configuracion_id;
+          this.model.varConfiguracion.puesto_cantidad = cargo.puesto_cantidad;
+          this.model.varConfiguracion.cargo_jefe_inmediato_id = cargo.cargo_jefe_inmediato_id;
+          this.model.varConfiguracion.nivel1 = cargo.nivel1;
+          this.model.varConfiguracion.nivel2 = cargo.nivel2;
+          this.model.varConfiguracion.nivel3 = cargo.nivel3;
+          this.model.varConfiguracion.nivel4 = cargo.nivel4;
+          this.model.varConfiguracion.nivel5 = cargo.nivel5;
+          this.model.varConfiguracion.anio = cargo.anio;
+          this.model.varConfiguracion.mes = cargo.mes;
+          this.model.varConfiguracion.requisito_cargo = cargo.requisito_cargo;
+          this.model.varCuerpo.cuerpo = cargo.cuerpo;
+          this.model.varConfiguracion.cuerpo_id = cargo.cuerpo_id;
+          this.model.varEspecialidad.especialidad = cargo.especialidad;
+          this.model.varConfiguracion.especialidad_id = cargo.especialidad_id;
+          this.model.varArea.area = cargo.area;
+          this.model.varConfiguracion.area_id = cargo.area_id;
+          this.model.varEducacion.educacion = cargo.educacion;
+          this.model.varConfiguracion.educacion_id = cargo.educacion_id;
+          this.model.varConocimiento.conocimiento = cargo.conocimiento;
+          this.model.varConfiguracion.conocimiento_id = cargo.conocimiento_id;
+          this.model.varExperiencia.experiencia = cargo.experiencia;
+          this.model.varConfiguracion.experiencia_id = cargo.experiencia_id;
+          this.model.varCompetencia.competencia = cargo.competencia;
+          this.model.varConfiguracion.competencia_id = cargo.competencia_id;
+          this.model.varConfiguracion.observaciones = cargo.observaciones;
+          
+          this.getCargosExperiencias(cargo.cargo_configuracion_id);
+        }
+        else {
+          this.model.varConfiguracion.cargo_configuracion_id = 0;
+          this.model.varConfiguracion.puesto_cantidad = 0;
+          this.model.varConfiguracion.cargo_jefe_inmediato_id = 0;
+          this.model.varConfiguracion.nivel1 = 0;
+          this.model.varConfiguracion.nivel2 = 0;
+          this.model.varConfiguracion.nivel3 = 0;
+          this.model.varConfiguracion.nivel4 = 0;
+          this.model.varConfiguracion.nivel5 = 0;
+          this.model.varConfiguracion.anio = 0;
+          this.model.varConfiguracion.mes = 0;
+          this.model.varConfiguracion.periodo = "";
+          this.model.varConfiguracion.requisito_cargo = "";
+          this.model.varCuerpo.cuerpo = "";
+          this.model.varConfiguracion.cuerpo_id = "";
+          this.model.varEspecialidad.especialidad = "";
+          this.model.varConfiguracion.especialidad_id = "";
+          this.model.varArea.area = "";
+          this.model.varConfiguracion.area_id = "";
+          this.model.varEducacion.educacion = "";
+          this.model.varConfiguracion.educacion_id = "";
+          this.model.varConocimiento.conocimiento = "";
+          this.model.varConfiguracion.conocimiento_id = "";
+          this.model.varExperiencia.experiencia = "",
+          this.model.varCompetencia.competencia = "";
+          this.model.varConfiguracion.competencia_id = "";
+          this.model.varConfiguracion.observaciones = "";
+
+          this.model.varCargosExperiencias = [];
+        }
       }
     });
   }

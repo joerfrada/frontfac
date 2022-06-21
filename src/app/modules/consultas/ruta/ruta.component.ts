@@ -129,6 +129,7 @@ export class RutaComponent implements OnInit {
   varcargoOficial: any = [];
   varcargoSubOficial: any = [];
   varruta: any = [];
+  varrutaTemp: any = [];
   vargrado: any = [];
   vargradoTemp: any = [];
   vargradoOficial: any = [];
@@ -179,6 +180,8 @@ export class RutaComponent implements OnInit {
   varnivel3: any = [];
   varnivel4: any = [];
   varnivel5: any = [];
+
+  varCargosExperiencias: any = [];
 
   constructor(private router: Router,
               private api: ApiService,
@@ -453,6 +456,7 @@ export class RutaComponent implements OnInit {
           x.activo = (x.activo == 'S') ? true : false;
         });
         this.varruta = response.result;
+        this.varrutaTemp = response.result;
       }
     });
 
@@ -631,6 +635,26 @@ export class RutaComponent implements OnInit {
 
   deleteRuta(id: any) {
     this.varruta.splice(id, 1);
+  }
+
+  changeCargo(index: any, id: any) {
+    let cargo: any = this.varruta[index];
+    let listaCargo: any = this.varcargo.filter((x: any) => x.cargo_id == Number(cargo.cargo_id));
+    if (this.varrutaTemp.length == 0) {
+      this.varrutaTemp = this.varruta;
+    }
+    let esEscontrado = this.varrutaTemp.filter((x: any) => x.cargo_id == Number(id));
+    if (esEscontrado.length != 1) {
+      swal({
+        title: 'ADVERTENCIA',
+        text: "El cargo '" + listaCargo[0].cargo + "' ya existe.",
+        type: 'warning',
+        allowOutsideClick: false,
+        showConfirmButton: true
+      }).then((result: any) => {
+        this.varruta[index].cargo_id = 0;
+      });
+    }
   }
 
   changeCategoria(id: any) {
@@ -935,6 +959,8 @@ export class RutaComponent implements OnInit {
           this.model.varConfiguracion.experiencia = dato.experiencia;
           this.model.varConfiguracion.competencia = dato.competencia;
           this.model.varConfiguracion.observaciones = dato.observaciones;
+
+          this.getCargosExperiencias(dato.cargo_configuracion_id)
         }
       });
     }
@@ -966,6 +992,15 @@ export class RutaComponent implements OnInit {
       heightAuto: false,
       onOpen: () => {
         $('#swal-input2').val(texto);
+      }
+    });
+  }
+
+  getCargosExperiencias(id: any) {
+    this.cargo.getCargosExperiencias({cargo_configuracion_id: id}).subscribe(data => {
+      let response: any = this.api.ProcesarRespuesta(data);
+      if (response.tipo == 0) {
+        this.varCargosExperiencias = response.result;
       }
     });
   }
