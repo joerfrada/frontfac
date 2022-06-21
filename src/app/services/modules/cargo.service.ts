@@ -85,7 +85,7 @@ export class CargoService {
     .pipe(retry(1), catchError(this.api.errorHandle));
   }
 
-  public updateteCargosGrados(data: any): Observable<any> {
+  public updateCargosGrados(data: any): Observable<any> {
     return this.http.post<any>(this.apiUpdateCargosGrados, JSON.stringify(data), this.api.getHttpOptions('g'))
     .pipe(retry(1), catchError(this.api.errorHandle));
   }

@@ -380,7 +380,7 @@ export class CargosComponent implements OnInit {
     this.arrCompetencia = Utilidades.toArray(data.competencia_id);
 
     if (data.cargo_grado_id != 0 && data.cargo_grado_id != null) {
-      this.getCargosConfiguracion(data);
+      this.getCargosConfiguracion(data.cargo_grado_id);
     }
   }
 
@@ -578,10 +578,9 @@ export class CargosComponent implements OnInit {
               this.cargo.createCargosGrados(x).subscribe(data1 => {});
             }
             else {
-              this.cargo.updateteCargosGrados(x).subscribe(data1 => {});
+              this.cargo.updateCargosGrados(x).subscribe(data1 => {});
             }
           });
-          // console.log(this.model.varGrados);
         }
         swal({
           title: 'Cargos',
@@ -815,8 +814,10 @@ export class CargosComponent implements OnInit {
             showConfirmButton: true,
             type: 'success'
           }).then((result: any) => {
-            this.configModal = false;
-            this.reload();
+            //this.configModal = false;
+            //this.reload();
+            this.getCargosConfiguracion(this.model.varConfiguracion.cargo_grado_id);
+            this.tab = 1;
           })
         }
       });
@@ -845,8 +846,10 @@ export class CargosComponent implements OnInit {
             showConfirmButton: true,
             type: 'success'
           }).then((result: any) => {
-            this.configModal = false;
-            this.reload();
+            // this.configModal = false;
+            // this.reload();
+            this.getCargosConfiguracion(this.model.varConfiguracion.cargo_grado_id);
+            this.tab = 1;
           })
         }
       });
@@ -868,8 +871,8 @@ export class CargosComponent implements OnInit {
     });
   }
 
-  getCargosConfiguracion(data: any) {
-    this.cargo.getCargosConfiguracion({cargo_grado_id: data.cargo_grado_id}).subscribe(data1 => {
+  getCargosConfiguracion(id: any) {
+    this.cargo.getCargosConfiguracion({cargo_grado_id: id}).subscribe(data1 => {
       let response: any = this.api.ProcesarRespuesta(data1);
       if (response.tipo == 0) {
         if (response.result.length != 0) {
