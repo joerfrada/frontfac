@@ -71,6 +71,9 @@ export class Model {
   varCargosExperiencias: any = [];
   varCargosExperienciasTemp: any = [];
 
+  varUbicacionCargos: any = [];
+  varUbicacionCargosTemp: any = [];
+
   varRutaRequisito: any = {
     ruta_requisito_id: 0,
     ruta_requisito: ""
@@ -135,6 +138,8 @@ export class CargosComponent implements OnInit {
 
   lstCargos: any = [];
   lstGrados: any = [];
+  lstNiveles: any = [];
+  lstUbicaciones: any = [];
   vargradoOficial: any = [];
   vargradoSubOficial: any = [];
 
@@ -219,9 +224,11 @@ export class CargosComponent implements OnInit {
 
   reload() {
     let currentUrl = this.router.url;
-    this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
-      this.router.navigate([currentUrl]);
-    });
+    setTimeout(() => {
+      this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
+        this.router.navigate([currentUrl]);
+      });
+    }, 500);
   }
 
   search(e: any) {
@@ -337,6 +344,10 @@ export class CargosComponent implements OnInit {
     let listaGrado: any = this.lstGrados.filter((x: any) => x.grado_id == Number(grado.grado_id));
     this.model.grado = listaGrado[0].descripcion;
 
+    if (this.model.varGradosTemp.length == 0) {
+      this.model.varGradosTemp = this.model.varGrados;
+    }
+
     let esEscontrado = this.model.varGradosTemp.filter((x: any) => x.grado_id == Number(grado.grado_id));
     if (esEscontrado.length != 1) {
       swal({
@@ -379,6 +390,8 @@ export class CargosComponent implements OnInit {
     this.arrExperiencia = Utilidades.toArray(data.experiencia_id);
     this.arrCompetencia = Utilidades.toArray(data.competencia_id);
 
+    this.model.varUbicacionCargosTemp = [];
+
     if (data.cargo_grado_id != 0 && data.cargo_grado_id != null) {
       this.getCargosConfiguracion(data.cargo_grado_id);
     }
@@ -409,32 +422,42 @@ export class CargosComponent implements OnInit {
       x.id = x.lista_dinamica_id;
       x.detalle = x.lista_dinamica;
     });
-    let ubicacion: any = varlistas.filter((x: any) => x.nombre_lista == 'BAS_UBICACION_CARGO');
-    ubicacion.forEach((x: any) => {
-      x.padre_id = x.lista_dinamica_padre_id;
-    });
-    this.varnivel1 = ubicacion.filter((x: any) => x.padre_id == 7);
-    this.varnivel1.forEach((x: any) => {
+    this.lstUbicaciones = varlistas.filter((x: any) => x.nombre_lista == 'BAS_UBICACION_CARGO');
+    this.lstUbicaciones.forEach((x: any) => {
       x.id = x.lista_dinamica_id;
       x.detalle = x.lista_dinamica;
-    });
-    this.varnivel2 = ubicacion.filter((x: any) => x.padre_id == 8);
-    this.varnivel2.forEach((x: any) => {
-      x.id = x.lista_dinamica_id;
-      x.detalle = x.lista_dinamica;
-    });
-    this.varnivel3 = ubicacion.filter((x: any) => x.padre_id == 9);
-    this.varnivel3.forEach((x: any) => {
-      x.id = x.lista_dinamica_id;
-      x.detalle = x.lista_dinamica;
-    });
-    this.varnivel4 = ubicacion.filter((x: any) => x.padre_id == 23);
-    this.varnivel4.forEach((x: any) => {
-      x.id = x.lista_dinamica_id;
-      x.detalle = x.lista_dinamica;
-    });
-    this.varnivel5 = ubicacion.filter((x: any) => x.padre_id == 24);
-    this.varnivel5.forEach((x: any) => {
+    }); 
+    // let ubicacion: any = varlistas.filter((x: any) => x.nombre_lista == 'BAS_UBICACION_CARGO');
+    // ubicacion.forEach((x: any) => {
+    //   x.padre_id = x.lista_dinamica_padre_id;
+    // });
+    // this.varnivel1 = ubicacion.filter((x: any) => x.padre_id == 7);
+    // this.varnivel1.forEach((x: any) => {
+    //   x.id = x.lista_dinamica_id;
+    //   x.detalle = x.lista_dinamica;
+    // });
+    // this.varnivel2 = ubicacion.filter((x: any) => x.padre_id == 8);
+    // this.varnivel2.forEach((x: any) => {
+    //   x.id = x.lista_dinamica_id;
+    //   x.detalle = x.lista_dinamica;
+    // });
+    // this.varnivel3 = ubicacion.filter((x: any) => x.padre_id == 9);
+    // this.varnivel3.forEach((x: any) => {
+    //   x.id = x.lista_dinamica_id;
+    //   x.detalle = x.lista_dinamica;
+    // });
+    // this.varnivel4 = ubicacion.filter((x: any) => x.padre_id == 23);
+    // this.varnivel4.forEach((x: any) => {
+    //   x.id = x.lista_dinamica_id;
+    //   x.detalle = x.lista_dinamica;
+    // });
+    // this.varnivel5 = ubicacion.filter((x: any) => x.padre_id == 24);
+    // this.varnivel5.forEach((x: any) => {
+    //   x.id = x.lista_dinamica_id;
+    //   x.detalle = x.lista_dinamica;
+    // });
+    this.lstNiveles = varlistas.filter((x: any) => x.nombre_lista == 'BAS_NIVEL');
+    this.lstNiveles.forEach((x: any) => {
       x.id = x.lista_dinamica_id;
       x.detalle = x.lista_dinamica;
     });
@@ -524,35 +547,47 @@ export class CargosComponent implements OnInit {
     this.model.varCargo.categoria_id = Number(this.model.varCargo.categoria_id);
     this.model.varCargo.cargo_ruta_id = Number(this.model.varCargo.cargo_ruta_id);
 
-    this.cargo.createCargos(this.model.varCargo).subscribe(data => {
-      let response: any = this.api.ProcesarRespuesta(data);
-      if (response.tipo == 0) {
-        if (this.model.varGrados.length > 0) {
-          this.model.varGrados.forEach((x: any) => {
-            x.cargo_id = response.id;
-            x.grado_id = Number(x.grado_id);
-            x.usuario_creador = this.currentUser.usuario;
-            x.usuario_modificador = this.currentUser.usuario;
-      
-            if (x.NuevoRegistro == true) {
-              this.cargo.createCargosGrados(x).subscribe(data1 => {});
-            }
-          });
+    let esEscontrado = this.varhistorial.filter((x: any) => x.cargo == this.model.varCargo.cargo);
+    if (esEscontrado.length == 1) {
+      swal({
+        title: 'Cargos',
+        text: "El cargo '" + this.model.varCargo.cargo + "' ya existe",
+        allowOutsideClick: false,
+        showConfirmButton: true,
+        type: 'success'
+      });
+    }
+    else {
+      this.cargo.createCargos(this.model.varCargo).subscribe(data => {
+        let response: any = this.api.ProcesarRespuesta(data);
+        if (response.tipo == 0) {
+          if (this.model.varGrados.length > 0) {
+            this.model.varGrados.forEach((x: any) => {
+              x.cargo_id = response.id;
+              x.grado_id = Number(x.grado_id);
+              x.usuario_creador = this.currentUser.usuario;
+              x.usuario_modificador = this.currentUser.usuario;
+        
+              if (x.NuevoRegistro == true) {
+                this.cargo.createCargosGrados(x).subscribe(data1 => {});
+              }
+            });
+          }
+          swal({
+            title: 'Cargos',
+            text: response.mensaje,
+            allowOutsideClick: false,
+            showConfirmButton: true,
+            type: 'success'
+          }).then((result: any) => {
+            //this.modal = false;
+            // this.reload();
+            this.model.tipo = 'U';
+            this.getCargosGrados(response.id);
+          })
         }
-        swal({
-          title: 'Cargos',
-          text: response.mensaje,
-          allowOutsideClick: false,
-          showConfirmButton: true,
-          type: 'success'
-        }).then((result: any) => {
-          this.modal = false;
-          // this.reload();
-          this.getCargosGrados(response.id);
-        })
-      }
-    })
-    
+      });
+    }
   }
 
   updateCargos() {
@@ -591,6 +626,7 @@ export class CargosComponent implements OnInit {
         }).then((result: any) => {
           // this.modal = false;
           // this.reload();
+          this.model.tipo = 'U';
           this.getCargosGrados(this.model.varCargo.cargo_id);
         })
       }
@@ -608,7 +644,13 @@ export class CargosComponent implements OnInit {
   changeCargoPrevio(index: any) {
     let cargo: any = this.model.varCargosExperiencias[index];
     let listaCargo: any = this.lstCargos.filter((x: any) => x.cargo_id == Number(cargo.cargo_previo_id));
+    
+    if (this.model.varCargosExperienciasTemp.length == 0) {
+      this.model.varCargosExperienciasTemp = this.model.varCargosExperiencias;
+    }
+    
     let esEscontrado = this.model.varCargosExperienciasTemp.filter((x: any) => x.cargo_previo_id == Number(cargo.cargo_previo_id));
+    
     if (esEscontrado.length != 1) {
       swal({
         title: 'ADVERTENCIA',
@@ -807,6 +849,19 @@ export class CargosComponent implements OnInit {
               }
             });
           }
+
+          if (this.model.varUbicacionCargos.length > 0) {
+            this.model.varUbicacionCargos.forEach((x: any) => {
+              x.cargo_configuracion_id = id;
+              x.nivel_id = Number(x.nivel_id);
+              x.usuario_creador = this.currentUser.usuario;
+              x.usuario_modificador = this.currentUser.usuario;
+
+              if (x.NuevoRegistro == true) {
+                this.cargo.createUbicacionCargos(x).subscribe(data1 => {});
+              }
+            });
+          }
           swal({
             title: 'Cargo / Grado Configuración',
             text: "Fue creado exitosamente",
@@ -836,6 +891,22 @@ export class CargosComponent implements OnInit {
               }
               else {
                 this.cargo.updateCargosExperiencias(x).subscribe(data1 => {});
+              }
+            });
+          }
+
+          if (this.model.varUbicacionCargos.length > 0) {
+            this.model.varUbicacionCargos.forEach((x: any) => {
+              x.cargo_configuracion_id = this.model.varConfiguracion.cargo_configuracion_id;
+              x.nivel_id = Number(x.nivel_id);
+              x.usuario_creador = this.currentUser.usuario;
+              x.usuario_modificador = this.currentUser.usuario;
+
+              if (x.NuevoRegistro == true) {
+                this.cargo.createUbicacionCargos(x).subscribe(data1 => {});
+              }
+              else {
+                this.cargo.updateUbicacionCargos(x).subscribe(data1 => {});
               }
             });
           }
@@ -905,6 +976,7 @@ export class CargosComponent implements OnInit {
           this.model.varConfiguracion.observaciones = cargo.observaciones;
           
           this.getCargosExperiencias(cargo.cargo_configuracion_id);
+          this.getUbicacionCargos(cargo.cargo_configuracion_id);
         }
         else {
           this.model.varConfiguracion.cargo_configuracion_id = 0;
@@ -935,8 +1007,53 @@ export class CargosComponent implements OnInit {
           this.model.varConfiguracion.observaciones = "";
 
           this.model.varCargosExperiencias = [];
+          this.model.varUbicacionCargos = [];
+          this.model.varUbicacionCargosTemp = [];
         }
       }
     });
+  }
+
+  getUbicacionCargos(id: any) {
+    this.cargo.getUbicacionCargosId({cargo_configuracion_id: id}).subscribe(data => {
+      let response: any = this.api.ProcesarRespuesta(data);
+      if (response.tipo == 0) {
+        response.result.forEach((x: any) => {
+          x.NuevoRegistro = false;
+        });
+        this.model.varUbicacionCargos = response.result;
+        this.model.varUbicacionCargosTemp = response.result;
+      }
+    });
+  }
+
+  addUbicacion() {
+    this.model.varUbicacionCargos.push({ ubicacion_cargo_id:0,cargo_configuracion_id:0,nivel_id:0,usuario_creador:"",usuario_modificador:"", NuevoRegistro:true });
+  }
+
+  deleteUbicacion(index: any) {
+    this.model.varUbicacionCargos.splice(index, 1);
+  }
+
+  changeNivel(index: any) {
+    let ubicacion = this.model.varUbicacionCargos[index];
+    let listaNivel = this.lstNiveles.filter((x: any) => x.id == Number(ubicacion.nivel_id));
+
+    if (this.model.varUbicacionCargosTemp.length == 0) {
+      this.model.varUbicacionCargosTemp = this.model.varUbicacionCargos;
+    }
+
+    let esEscontrado = this.model.varUbicacionCargosTemp.filter((x: any) => x.nivel_id == Number(ubicacion.nivel_id));
+    if (esEscontrado != 1) {
+      swal({
+        title: 'Ubicaciones de Cargos',
+        text: "El nivel '" + listaNivel[0].detalle + "' ya existe.",
+        type: 'warning',
+        allowOutsideClick: false,
+        showConfirmButton: true
+      }).then((result: any) => {
+        this.model.varUbicacionCargos[index].nivel_id = 0;
+      });
+    }
   }
 }
