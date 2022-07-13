@@ -194,61 +194,53 @@
                                 <option value="0">Seleccionar</option>
                                 <option *ngFor="let item of lstCargos" value="{{item.cargo_id}}">{{item.cargo}}</option>
                             </select>
-                            <!-- <input type="text" [(ngModel)]="model.varConfiguracion.cargo_jefe_inmediato"> -->
                         </div>
 
                         <div class="col col100 title-row">Ubicaciones de Cargo</div>
                         <div class="line-col"></div>
                         <div class="col col100">
-                            <!-- <div class="col col20">
-                                <div class="label-row">Nivel 1</div>
-                                <select [(ngModel)]="model.varConfiguracion.nivel1">
-                                    <option value="0">Seleccionar</option>
-                                    <option *ngFor="let item of varnivel1" value="{{item.id}}">{{item.detalle}}</option>
-                                </select>
-                            </div>
-                            <div class="col col20">
-                                <div class="label-row">Nivel 2</div>
-                                <select [(ngModel)]="model.varConfiguracion.nivel2">
-                                    <option value="0">Seleccionar</option>
-                                    <option *ngFor="let item of varnivel2" value="{{item.id}}">{{item.detalle}}</option>
-                                </select>
-                            </div>
-                            <div class="col col20">
-                                <div class="label-row">Nivel 3</div>
-                                <select [(ngModel)]="model.varConfiguracion.nivel3">
-                                    <option value="0">Seleccionar</option>
-                                    <option *ngFor="let item of varnivel3" value="{{item.id}}">{{item.detalle}}</option>
-                                </select>
-                            </div>
-                            <div class="col col20">
-                                <div class="label-row">Nivel 4</div>
-                                <select [(ngModel)]="model.varConfiguracion.nivel4">
-                                    <option value="0">Seleccionar</option>
-                                    <option *ngFor="let item of varnivel4" value="{{item.id}}">{{item.detalle}}</option>
-                                </select>
-                            </div>
-                            <div class="col col20">
-                                <div class="label-row">Nivel 5</div>
-                                <select [(ngModel)]="model.varConfiguracion.nivel5">
-                                    <option value="0">Seleccionar</option>
-                                    <option *ngFor="let item of varnivel5" value="{{item.id}}">{{item.detalle}}</option>
-                                </select>
-                            </div> -->
                             <div class="table-content">
                                 <table class="table flex-table">
                                     <thead>
                                         <tr>
-                                            <th>Nivel</th>
+                                            <th>Nivel 1</th>
+                                            <th>Nivel 2</th>
+                                            <th>Nivel 3</th>
+                                            <th>Nivel 4</th>
+                                            <th>Nivel 5</th>
                                             <th>Acciones</th>
                                         </tr>
                                     </thead>
                                     <tbody class="scroll">
                                         <tr *ngFor="let item of model.varUbicacionCargos; let i = index">
                                             <td>
-                                                <select [(ngModel)]="item.nivel_id">
+                                                <select [(ngModel)]="item.nivel_id1">
                                                     <option value="0">Seleccionar</option>
-                                                    <option *ngFor="let nivel of lstUbicaciones" value="{{nivel.id}}">{{nivel.detalle}}</option>
+                                                    <option *ngFor="let nivel of lstNivel1" value="{{nivel.id}}">{{nivel.detalle}}</option>
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <select [(ngModel)]="item.nivel_id2">
+                                                    <option value="0">Seleccionar</option>
+                                                    <option *ngFor="let nivel of lstNivel2" value="{{nivel.id}}">{{nivel.detalle}}</option>
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <select [(ngModel)]="item.nivel_id3">
+                                                    <option value="0">Seleccionar</option>
+                                                    <option *ngFor="let nivel of lstNivel3" value="{{nivel.id}}">{{nivel.detalle}}</option>
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <select [(ngModel)]="item.nivel_id4">
+                                                    <option value="0">Seleccionar</option>
+                                                    <option *ngFor="let nivel of lstNivel4" value="{{nivel.id}}">{{nivel.detalle}}</option>
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <select [(ngModel)]="item.nivel_id5">
+                                                    <option value="0">Seleccionar</option>
+                                                    <option *ngFor="let nivel of lstNivel5" value="{{nivel.id}}">{{nivel.detalle}}</option>
                                                 </select>
                                             </td>
                                             <td>

@@ -83,6 +83,8 @@ export class Model {
     experiencia: "",
     competencia: ""
   }
+
+  varUbicacionCargos: any = [];
 }
 
 @Component({
@@ -172,14 +174,15 @@ export class RutaComponent implements OnInit {
   cargo_desc = "";
   grado_desc = "";
   categoria = "";
+  descripcion = "";
 
   lstCargos: any = [];
 
-  varnivel1: any = [];
-  varnivel2: any = [];
-  varnivel3: any = [];
-  varnivel4: any = [];
-  varnivel5: any = [];
+  lstNivel1: any = [];
+  lstNivel2: any = [];
+  lstNivel3: any = [];
+  lstNivel4: any = [];
+  lstNivel5: any = [];
 
   varCargosExperiencias: any = [];
 
@@ -373,28 +376,28 @@ export class RutaComponent implements OnInit {
     ubicacion.forEach((x: any) => {
       x.padre_id = x.lista_dinamica_padre_id;
     });
-    this.varnivel1 = ubicacion.filter((x: any) => x.padre_id == 7);
-    this.varnivel1.forEach((x: any) => {
+    this.lstNivel1 = ubicacion.filter((x: any) => x.padre_id == 7);
+    this.lstNivel1.forEach((x: any) => {
       x.id = x.lista_dinamica_id;
       x.detalle = x.lista_dinamica;
     });
-    this.varnivel2 = ubicacion.filter((x: any) => x.padre_id == 8);
-    this.varnivel2.forEach((x: any) => {
+    this.lstNivel2 = ubicacion.filter((x: any) => x.padre_id == 8);
+    this.lstNivel2.forEach((x: any) => {
       x.id = x.lista_dinamica_id;
       x.detalle = x.lista_dinamica;
     });
-    this.varnivel3 = ubicacion.filter((x: any) => x.padre_id == 9);
-    this.varnivel3.forEach((x: any) => {
+    this.lstNivel3 = ubicacion.filter((x: any) => x.padre_id == 9);
+    this.lstNivel3.forEach((x: any) => {
       x.id = x.lista_dinamica_id;
       x.detalle = x.lista_dinamica;
     });
-    this.varnivel4 = ubicacion.filter((x: any) => x.padre_id == 23);
-    this.varnivel4.forEach((x: any) => {
+    this.lstNivel4 = ubicacion.filter((x: any) => x.padre_id == 23);
+    this.lstNivel4.forEach((x: any) => {
       x.id = x.lista_dinamica_id;
       x.detalle = x.lista_dinamica;
     });
-    this.varnivel5 = ubicacion.filter((x: any) => x.padre_id == 24);
-    this.varnivel5.forEach((x: any) => {
+    this.lstNivel5 = ubicacion.filter((x: any) => x.padre_id == 24);
+    this.lstNivel5.forEach((x: any) => {
       x.id = x.lista_dinamica_id;
       x.detalle = x.lista_dinamica;
     });
@@ -904,6 +907,7 @@ export class RutaComponent implements OnInit {
     this.cargo_desc = dato.cargo;
     this.grado_desc = dato.grado_desc;
     this.categoria = dato.categoria;
+    this.descripcion = dato.descripcion;
     
     this.ruta.getDetalleCargoRutaCarrera({cargo_id: dato.cargo_id,grado_id: dato.grado_id}).subscribe(data => {
       let response: any = this.api.ProcesarRespuesta(data);
@@ -941,13 +945,9 @@ export class RutaComponent implements OnInit {
           this.model.varConfiguracion.cargo = this.cargo_desc;
           this.model.varConfiguracion.grado = this.grado_desc;
           this.model.varConfiguracion.categoria = this.categoria;
+          this.model.varConfiguracion.descripcion = this.descripcion;
           this.model.varConfiguracion.puesto_cantidad = dato.puesto_cantidad;
           this.model.varConfiguracion.cargo_jefe_inmediato_id = dato.cargo_jefe_inmediato_id;
-          this.model.varConfiguracion.nivel1 = dato.nivel1;
-          this.model.varConfiguracion.nivel2 = dato.nivel2;
-          this.model.varConfiguracion.nivel3 = dato.nivel3;
-          this.model.varConfiguracion.nivel4 = dato.nivel4;
-          this.model.varConfiguracion.nivel5 = dato.nivel5;
           this.model.varConfiguracion.anio = dato.anio;
           this.model.varConfiguracion.mes = dato.mes;
           this.model.varConfiguracion.requisito_cargo = dato.requisito_cargo;
@@ -960,7 +960,8 @@ export class RutaComponent implements OnInit {
           this.model.varConfiguracion.competencia = dato.competencia;
           this.model.varConfiguracion.observaciones = dato.observaciones;
 
-          this.getCargosExperiencias(dato.cargo_configuracion_id)
+          this.getUbicacionCargos(dato.cargo_configuracion_id);
+          this.getCargosExperiencias(dato.cargo_configuracion_id);
         }
       });
     }
@@ -992,6 +993,18 @@ export class RutaComponent implements OnInit {
       heightAuto: false,
       onOpen: () => {
         $('#swal-input2').val(texto);
+      }
+    });
+  }
+
+  getUbicacionCargos(id: any) {
+    this.cargo.getUbicacionCargosId({cargo_configuracion_id: id}).subscribe(data => {
+      let response: any = this.api.ProcesarRespuesta(data);
+      if (response.tipo == 0) {
+        response.result.forEach((x: any) => {
+          x.NuevoRegistro = false;
+        });
+        this.model.varUbicacionCargos = response.result;
       }
     });
   }

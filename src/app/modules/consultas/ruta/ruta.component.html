@@ -446,6 +446,10 @@
                 <input type="text" disabled [(ngModel)]="model.varConfiguracion.categoria">
             </div>
             <div class="col col100">
+                <div class="label-row">Descripción</div>
+                <textarea rows="4" cols="80" [(ngModel)]="model.varConfiguracion.descripcion" maxlength="8000" disabled></textarea>
+            </div>
+            <div class="col col100">
                 <div class="flex-tabs">
                     <ul>
                         <li (click)="selectTab(1)" [ngClass]="{'active': tab === 1}">Rutas y Requisitos</li>
@@ -471,78 +475,94 @@
                         <div class="col col100 title-row">Ubicaciones de Cargo</div>
                         <div class="line-col"></div>
                         <div class="col col100">
-                            <div class="col col20">
-                                <div class="label-row">Nivel 1</div>
-                                <select [(ngModel)]="model.varConfiguracion.nivel1" disabled>
-                                    <option value="0">Seleccionar</option>
-                                    <option *ngFor="let item of varnivel1" value="{{item.id}}">{{item.detalle}}</option>
-                                </select>
-                            </div>
-                            <div class="col col20">
-                                <div class="label-row">Nivel 2</div>
-                                <select [(ngModel)]="model.varConfiguracion.nivel2" disabled>
-                                    <option value="0">Seleccionar</option>
-                                    <option *ngFor="let item of varnivel2" value="{{item.id}}">{{item.detalle}}</option>
-                                </select>
-                            </div>
-                            <div class="col col20">
-                                <div class="label-row">Nivel 3</div>
-                                <select [(ngModel)]="model.varConfiguracion.nivel3" disabled>
-                                    <option value="0">Seleccionar</option>
-                                    <option *ngFor="let item of varnivel3" value="{{item.id}}">{{item.detalle}}</option>
-                                </select>
-                            </div>
-                            <div class="col col20">
-                                <div class="label-row">Nivel 4</div>
-                                <select [(ngModel)]="model.varConfiguracion.nivel4" disabled>
-                                    <option value="0">Seleccionar</option>
-                                    <option *ngFor="let item of varnivel4" value="{{item.id}}">{{item.detalle}}</option>
-                                </select>
-                            </div>
-                            <div class="col col20">
-                                <div class="label-row">Nivel 5</div>
-                                <select [(ngModel)]="model.varConfiguracion.nivel5" disabled>
-                                    <option value="0">Seleccionar</option>
-                                    <option *ngFor="let item of varnivel5" value="{{item.id}}">{{item.detalle}}</option>
-                                </select>
-                            </div>
-                            <div class="line-col"></div>
-                            <div class="col col100 title-row">Experiencia: cargos previos a desempeñar</div>
                             <div class="table-content">
                                 <table class="table flex-table">
                                     <thead>
                                         <tr>
-                                            <th>Cargos</th>
-                                            <th>Número de años</th>
-                                            <th>Número de meses</th>
+                                            <th>Nivel 1</th>
+                                            <th>Nivel 2</th>
+                                            <th>Nivel 3</th>
+                                            <th>Nivel 4</th>
+                                            <th>Nivel 5</th>
+                                            <th>Acciones</th>
                                         </tr>
                                     </thead>
                                     <tbody class="scroll">
-                                        <tr *ngFor="let item of varCargosExperiencias; let i = index">
+                                        <tr *ngFor="let item of model.varUbicacionCargos; let i = index">
                                             <td>
-                                                <select [(ngModel)]="item.cargo_previo_id" disabled>
+                                                <select disabled [(ngModel)]="item.nivel_id1">
                                                     <option value="0">Seleccionar</option>
-                                                    <option *ngFor="let cargo of lstCargos" value="{{cargo.cargo_id}}">{{cargo.cargo}}</option>
+                                                    <option *ngFor="let nivel of lstNivel1" value="{{nivel.id}}">{{nivel.detalle}}</option>
                                                 </select>
                                             </td>
                                             <td>
-                                                <input type="number" [(ngModel)]="item.anio" disabled>
+                                                <select disabled [(ngModel)]="item.nivel_id2">
+                                                    <option value="0">Seleccionar</option>
+                                                    <option *ngFor="let nivel of lstNivel2" value="{{nivel.id}}">{{nivel.detalle}}</option>
+                                                </select>
                                             </td>
                                             <td>
-                                                <input type="number" [(ngModel)]="item.mes" disabled>
+                                                <select disabled [(ngModel)]="item.nivel_id3">
+                                                    <option value="0">Seleccionar</option>
+                                                    <option *ngFor="let nivel of lstNivel3" value="{{nivel.id}}">{{nivel.detalle}}</option>
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <select disabled [(ngModel)]="item.nivel_id4">
+                                                    <option value="0">Seleccionar</option>
+                                                    <option *ngFor="let nivel of lstNivel4" value="{{nivel.id}}">{{nivel.detalle}}</option>
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <select disabled [(ngModel)]="item.nivel_id5">
+                                                    <option value="0">Seleccionar</option>
+                                                    <option *ngFor="let nivel of lstNivel5" value="{{nivel.id}}">{{nivel.detalle}}</option>
+                                                </select>
                                             </td>
                                         </tr>
-                                        <tr *ngIf="varCargosExperiencias?.length == 0">
-                                            <div class="dbempty">No hay datos.</div>
+                                        <tr *ngIf="model.varUbicacionCargos?.length == 0">
+                                            <div class="dbempty">No hay datos</div>
                                         </tr>
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="col col100 title-row">Requisitos del Cargo</div>
-                            <div class="line-col"></div>
-                            <div class="col col100">
-                                <textarea rows="4" cols="80" [(ngModel)]="model.varConfiguracion.requisito_cargo" disabled></textarea>
-                            </div>
+                        </div>
+                        <div class="line-col"></div>
+                        <div class="col col100 title-row">Experiencia: cargos previos a desempeñar</div>
+                        <div class="table-content">
+                            <table class="table flex-table">
+                                <thead>
+                                    <tr>
+                                        <th>Cargos</th>
+                                        <th>Número de años</th>
+                                        <th>Número de meses</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="scroll">
+                                    <tr *ngFor="let item of varCargosExperiencias; let i = index">
+                                        <td>
+                                            <select [(ngModel)]="item.cargo_previo_id" disabled>
+                                                <option value="0">Seleccionar</option>
+                                                <option *ngFor="let cargo of lstCargos" value="{{cargo.cargo_id}}">{{cargo.cargo}}</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <input type="number" [(ngModel)]="item.anio" disabled>
+                                        </td>
+                                        <td>
+                                            <input type="number" [(ngModel)]="item.mes" disabled>
+                                        </td>
+                                    </tr>
+                                    <tr *ngIf="varCargosExperiencias?.length == 0">
+                                        <div class="dbempty">No hay datos.</div>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col col100 title-row">Propósito y funciones</div>
+                        <div class="line-col"></div>
+                        <div class="col col100">
+                            <textarea rows="4" cols="80" [(ngModel)]="model.varConfiguracion.requisito_cargo" disabled></textarea>
                         </div>
                     </div>
                     <div class="tabs-content" *ngIf="tab === 2">
@@ -575,7 +595,7 @@
                         </div>
                     </div>
                     <div class="tabs-content" *ngIf="tab === 4">
-                        <div class="col col100 title-row">Experiencia de Conocimiento</div>
+                        <div class="col col100 title-row">Experiencia de Proceso</div>
                         <div class="line-col"></div>
                         <div class="col col100">
                             <textarea rows="4" cols="80" [(ngModel)]="model.varConfiguracion.experiencia" disabled></textarea>

@@ -85,7 +85,6 @@ export class ApiService {
   }
 
   public ProcesarRespuesta(request: any) {
-    //console.log('Procesar Respuesta:', request);
     if (request != undefined && request.tipo != 0 && request.tipo != -1) {
       swal({
         title: 'ERROR EN EL SISTEMA',

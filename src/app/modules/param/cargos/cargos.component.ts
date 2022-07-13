@@ -138,7 +138,6 @@ export class CargosComponent implements OnInit {
 
   lstCargos: any = [];
   lstGrados: any = [];
-  lstNiveles: any = [];
   lstUbicaciones: any = [];
   vargradoOficial: any = [];
   vargradoSubOficial: any = [];
@@ -188,11 +187,11 @@ export class CargosComponent implements OnInit {
   varcompetenciaitems: any = [];
   varcompetenciaselectedItems: any = [];
 
-  varnivel1: any = [];
-  varnivel2: any = [];
-  varnivel3: any = [];
-  varnivel4: any = [];
-  varnivel5: any = [];
+  lstNivel1: any = [];
+  lstNivel2: any = [];
+  lstNivel3: any = [];
+  lstNivel4: any = [];
+  lstNivel5: any = [];
 
   currentUser: any;
 
@@ -427,37 +426,32 @@ export class CargosComponent implements OnInit {
       x.id = x.lista_dinamica_id;
       x.detalle = x.lista_dinamica;
     }); 
-    // let ubicacion: any = varlistas.filter((x: any) => x.nombre_lista == 'BAS_UBICACION_CARGO');
-    // ubicacion.forEach((x: any) => {
-    //   x.padre_id = x.lista_dinamica_padre_id;
-    // });
-    // this.varnivel1 = ubicacion.filter((x: any) => x.padre_id == 7);
-    // this.varnivel1.forEach((x: any) => {
-    //   x.id = x.lista_dinamica_id;
-    //   x.detalle = x.lista_dinamica;
-    // });
-    // this.varnivel2 = ubicacion.filter((x: any) => x.padre_id == 8);
-    // this.varnivel2.forEach((x: any) => {
-    //   x.id = x.lista_dinamica_id;
-    //   x.detalle = x.lista_dinamica;
-    // });
-    // this.varnivel3 = ubicacion.filter((x: any) => x.padre_id == 9);
-    // this.varnivel3.forEach((x: any) => {
-    //   x.id = x.lista_dinamica_id;
-    //   x.detalle = x.lista_dinamica;
-    // });
-    // this.varnivel4 = ubicacion.filter((x: any) => x.padre_id == 23);
-    // this.varnivel4.forEach((x: any) => {
-    //   x.id = x.lista_dinamica_id;
-    //   x.detalle = x.lista_dinamica;
-    // });
-    // this.varnivel5 = ubicacion.filter((x: any) => x.padre_id == 24);
-    // this.varnivel5.forEach((x: any) => {
-    //   x.id = x.lista_dinamica_id;
-    //   x.detalle = x.lista_dinamica;
-    // });
-    this.lstNiveles = varlistas.filter((x: any) => x.nombre_lista == 'BAS_NIVEL');
-    this.lstNiveles.forEach((x: any) => {
+    let ubicacion: any = varlistas.filter((x: any) => x.nombre_lista == 'BAS_UBICACION_CARGO');
+    ubicacion.forEach((x: any) => {
+      x.padre_id = x.lista_dinamica_padre_id;
+    });
+    this.lstNivel1 = ubicacion.filter((x: any) => x.padre_id == 7);
+    this.lstNivel1.forEach((x: any) => {
+      x.id = x.lista_dinamica_id;
+      x.detalle = x.lista_dinamica;
+    });
+    this.lstNivel2 = ubicacion.filter((x: any) => x.padre_id == 8);
+    this.lstNivel2.forEach((x: any) => {
+      x.id = x.lista_dinamica_id;
+      x.detalle = x.lista_dinamica;
+    });
+    this.lstNivel3 = ubicacion.filter((x: any) => x.padre_id == 9);
+    this.lstNivel3.forEach((x: any) => {
+      x.id = x.lista_dinamica_id;
+      x.detalle = x.lista_dinamica;
+    });
+    this.lstNivel4 = ubicacion.filter((x: any) => x.padre_id == 23);
+    this.lstNivel4.forEach((x: any) => {
+      x.id = x.lista_dinamica_id;
+      x.detalle = x.lista_dinamica;
+    });
+    this.lstNivel5 = ubicacion.filter((x: any) => x.padre_id == 24);
+    this.lstNivel5.forEach((x: any) => {
       x.id = x.lista_dinamica_id;
       x.detalle = x.lista_dinamica;
     });
@@ -810,12 +804,6 @@ export class CargosComponent implements OnInit {
 
     if (this.model.varConfiguracion.cargo_jefe_inmediato_id == 0) this.model.varConfiguracion.cargo_jefe_inmediato_id = null;
 
-    this.model.varConfiguracion.nivel1 = Number(this.model.varConfiguracion.nivel1);
-    this.model.varConfiguracion.nivel2 = Number(this.model.varConfiguracion.nivel2);
-    this.model.varConfiguracion.nivel3 = Number(this.model.varConfiguracion.nivel3);
-    this.model.varConfiguracion.nivel4 = Number(this.model.varConfiguracion.nivel4);
-    this.model.varConfiguracion.nivel5 = Number(this.model.varConfiguracion.nivel5);
-
     this.model.varConfiguracion.cuerpo = this.model.varCuerpo.cuerpo;
     this.model.varConfiguracion.especialidad = this.model.varEspecialidad.especialidad;
     this.model.varConfiguracion.area = this.model.varArea.area;
@@ -853,7 +841,11 @@ export class CargosComponent implements OnInit {
           if (this.model.varUbicacionCargos.length > 0) {
             this.model.varUbicacionCargos.forEach((x: any) => {
               x.cargo_configuracion_id = id;
-              x.nivel_id = Number(x.nivel_id);
+              x.nivel1_id = Number(x.nivel1_id);
+              x.nivel2_id = Number(x.nivel2_id);
+              x.nivel3_id = Number(x.nivel3_id);
+              x.nivel4_id = Number(x.nivel4_id);
+              x.nivel5_id = Number(x.nivel5_id);
               x.usuario_creador = this.currentUser.usuario;
               x.usuario_modificador = this.currentUser.usuario;
 
@@ -898,7 +890,11 @@ export class CargosComponent implements OnInit {
           if (this.model.varUbicacionCargos.length > 0) {
             this.model.varUbicacionCargos.forEach((x: any) => {
               x.cargo_configuracion_id = this.model.varConfiguracion.cargo_configuracion_id;
-              x.nivel_id = Number(x.nivel_id);
+              x.nivel1_id = Number(x.nivel1_id);
+              x.nivel2_id = Number(x.nivel2_id);
+              x.nivel3_id = Number(x.nivel3_id);
+              x.nivel4_id = Number(x.nivel4_id);
+              x.nivel5_id = Number(x.nivel5_id);
               x.usuario_creador = this.currentUser.usuario;
               x.usuario_modificador = this.currentUser.usuario;
 
@@ -951,11 +947,6 @@ export class CargosComponent implements OnInit {
           this.model.varConfiguracion.cargo_configuracion_id = cargo.cargo_configuracion_id;
           this.model.varConfiguracion.puesto_cantidad = cargo.puesto_cantidad;
           this.model.varConfiguracion.cargo_jefe_inmediato_id = cargo.cargo_jefe_inmediato_id;
-          this.model.varConfiguracion.nivel1 = cargo.nivel1;
-          this.model.varConfiguracion.nivel2 = cargo.nivel2;
-          this.model.varConfiguracion.nivel3 = cargo.nivel3;
-          this.model.varConfiguracion.nivel4 = cargo.nivel4;
-          this.model.varConfiguracion.nivel5 = cargo.nivel5;
           this.model.varConfiguracion.anio = cargo.anio;
           this.model.varConfiguracion.mes = cargo.mes;
           this.model.varConfiguracion.requisito_cargo = cargo.requisito_cargo;
@@ -982,11 +973,6 @@ export class CargosComponent implements OnInit {
           this.model.varConfiguracion.cargo_configuracion_id = 0;
           this.model.varConfiguracion.puesto_cantidad = 0;
           this.model.varConfiguracion.cargo_jefe_inmediato_id = 0;
-          this.model.varConfiguracion.nivel1 = 0;
-          this.model.varConfiguracion.nivel2 = 0;
-          this.model.varConfiguracion.nivel3 = 0;
-          this.model.varConfiguracion.nivel4 = 0;
-          this.model.varConfiguracion.nivel5 = 0;
           this.model.varConfiguracion.anio = 0;
           this.model.varConfiguracion.mes = 0;
           this.model.varConfiguracion.periodo = "";
@@ -1028,32 +1014,10 @@ export class CargosComponent implements OnInit {
   }
 
   addUbicacion() {
-    this.model.varUbicacionCargos.push({ ubicacion_cargo_id:0,cargo_configuracion_id:0,nivel_id:0,usuario_creador:"",usuario_modificador:"", NuevoRegistro:true });
+    this.model.varUbicacionCargos.push({ ubicacion_cargo_id:0,cargo_configuracion_id:0,nivel_id1:0,nivel_id2:0,nivel_id3:0,nivel_id4:0,nivel_id5:0,usuario_creador:"",usuario_modificador:"", NuevoRegistro:true });
   }
 
   deleteUbicacion(index: any) {
     this.model.varUbicacionCargos.splice(index, 1);
-  }
-
-  changeNivel(index: any) {
-    let ubicacion = this.model.varUbicacionCargos[index];
-    let listaNivel = this.lstNiveles.filter((x: any) => x.id == Number(ubicacion.nivel_id));
-
-    if (this.model.varUbicacionCargosTemp.length == 0) {
-      this.model.varUbicacionCargosTemp = this.model.varUbicacionCargos;
-    }
-
-    let esEscontrado = this.model.varUbicacionCargosTemp.filter((x: any) => x.nivel_id == Number(ubicacion.nivel_id));
-    if (esEscontrado != 1) {
-      swal({
-        title: 'Ubicaciones de Cargos',
-        text: "El nivel '" + listaNivel[0].detalle + "' ya existe.",
-        type: 'warning',
-        allowOutsideClick: false,
-        showConfirmButton: true
-      }).then((result: any) => {
-        this.model.varUbicacionCargos[index].nivel_id = 0;
-      });
-    }
   }
 }
