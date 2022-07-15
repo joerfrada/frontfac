@@ -48,25 +48,30 @@ export class SelectListModalComponent implements OnInit {
   }
 
   btnRight() {
-    this.i = this.i + 1;
-    var count = $("#mySelect :selected").length;
+    // this.i = this.i + 1;
+    // var count = $("#mySelect :selected").length;
     
-    if (this.i > 5 || count > 5) {
-      swal({
-        title: 'ADVERTENCIA',
-        text: "Puede seleccionar hasta 5 opciones solamente",
-        allowOutsideClick: false,
-        showConfirmButton: true,
-        type: 'warning'
-      });
-    }
-    else {
-      this.selectedItems = this.selectedItems.concat(this.selectedToAdd);
-      this.items = this.items.filter((selectedData: any) => {
-        return this.selectedItems.indexOf(selectedData) < 0;
-      });
-      this.selectedToAdd = [];
-    }
+    // if (this.i > 5 || count > 5) {
+    //   swal({
+    //     title: 'ADVERTENCIA',
+    //     text: "Puede seleccionar hasta 5 opciones solamente",
+    //     allowOutsideClick: false,
+    //     showConfirmButton: true,
+    //     type: 'warning'
+    //   });
+    // }
+    // else {
+    //   this.selectedItems = this.selectedItems.concat(this.selectedToAdd);
+    //   this.items = this.items.filter((selectedData: any) => {
+    //     return this.selectedItems.indexOf(selectedData) < 0;
+    //   });
+    //   this.selectedToAdd = [];
+    // }
+    this.selectedItems = this.selectedItems.concat(this.selectedToAdd);
+    this.items = this.items.filter((selectedData: any) => {
+      return this.selectedItems.indexOf(selectedData) < 0;
+    });
+    this.selectedToAdd = [];
   }
 
   btnLeft() {

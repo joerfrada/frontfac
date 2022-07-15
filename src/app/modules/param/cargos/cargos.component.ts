@@ -577,7 +577,7 @@ export class CargosComponent implements OnInit {
             //this.modal = false;
             // this.reload();
             this.model.tipo = 'U';
-            this.getCargosGrados(response.id);
+            this.getCargosInd(response.id);
           })
         }
       });
@@ -621,7 +621,7 @@ export class CargosComponent implements OnInit {
           // this.modal = false;
           // this.reload();
           this.model.tipo = 'U';
-          this.getCargosGrados(this.model.varCargo.cargo_id);
+          this.getCargosInd(this.model.varCargo.cargo_id);
         })
       }
     });
@@ -1019,5 +1019,27 @@ export class CargosComponent implements OnInit {
 
   deleteUbicacion(index: any) {
     this.model.varUbicacionCargos.splice(index, 1);
+  }
+
+  getCargosInd(id: any) {
+    this.cargo.getCargosId({cargo_id: id}).subscribe(data => {
+      let response: any = this.api.ProcesarRespuesta(data);
+      if (response.tipo == 0) {
+        let cargo = response.result[0];
+        this.model.varCargo.cargo_id = cargo.cargo_id;
+        this.model.varCargo.cargo = cargo.cargo;
+        this.model.varCargo.descripcion = cargo.descripcion;
+        this.model.varCargo.clase_cargo_id = cargo.clase_cargo_id;
+        this.model.varCargo.categoria_id = cargo.categoria_id;
+        this.model.varCargo.cargo_ruta_id = cargo.cargo_ruta_id;
+        this.model.varCargo.activo = (cargo.activo == 'S') ? true : false;
+
+        this.model.cargo = cargo.cargo;
+
+        this.changeCategoria(cargo.categoria_id);
+
+        this.getCargosGrados(cargo.cargo_id);
+      }
+    });
   }
 }

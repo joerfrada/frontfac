@@ -519,6 +519,9 @@
                                                     <option *ngFor="let nivel of lstNivel5" value="{{nivel.id}}">{{nivel.detalle}}</option>
                                                 </select>
                                             </td>
+                                            <td>
+                                                <i class="fa fa-1m5x fa-times-circle pointer noselect" style="color: black !important;" *ngIf="item.NuevoRegistro"></i>
+                                            </td>
                                         </tr>
                                         <tr *ngIf="model.varUbicacionCargos?.length == 0">
                                             <div class="dbempty">No hay datos</div>

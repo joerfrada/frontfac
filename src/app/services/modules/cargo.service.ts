@@ -66,7 +66,7 @@ export class CargoService {
   }
 
   public getCargosId(data: any): Observable<any> {
-    return this.http.post<any>(this.apiGetCargosId, JSON.stringify(data), this.api.ProcesarRespuesta('g'))
+    return this.http.post<any>(this.apiGetCargosId, JSON.stringify(data), this.api.getHttpOptions('g'))
     .pipe(retry(1), catchError(this.api.errorHandle));
   }
 
