@@ -1,0 +1,525 @@
+<app-breadcrumb [icon]="'fa-address-card'" [title]="'Cargos'" [items]="'Módulo,Param,Cargos'"></app-breadcrumb>
+<div class="app-content-inner">
+    <div class="app-content-tile">
+        <div class="loading" *ngIf="loading">
+            <i class="fa fa-10x fa-sync fa-pulse"></i>
+        </div>
+        <div class="flex-content">
+            <div class="filter-content">
+                <ul class="filter-inner">
+                    <li class="filter-item" *ngIf="varPermisos.crear == 1">
+                        <button type="button" class="button btn-default" (click)="openModal()">Crear</button>
+                    </li>
+                    <li class="filter-item">
+                        <div class="input-group-btn">
+                            <input type="search" placeholder="Buscar..." (keyup)="search($event)" (search)="clearSearch($event)">
+                            <button type="button" class="button btn-default">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="table-content">
+                <table id="table" class="table flex-table">
+                    <thead>
+                        <tr>
+                            <th>Identificador</th>
+                            <th>Cargo</th>
+                            <th>Descripción</th>
+                            <th>Clase</th>
+                            <th>Categoría</th>
+                            <th>Tipo Ruta</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody class="scroll">
+                        <tr *ngFor="let item of varhistorial; let i = index">
+                            <td>{{item.cargo_id}}</td>
+                            <td>{{item.cargo}}</td>
+                            <td>
+                                <button type="button" class="button btn-default" (click)="openDescripcion(item.descripcion)" *ngIf="item.desc_data == 'S'">Ver</button>
+                            </td>
+                            <td>{{item.clase_cargo}}</td>
+                            <td>{{item.categoria}}</td>
+                            <td>{{item.cargo_ruta}}</td>
+                            <td>
+                                <i class="fa fa-1m5x fa-check-circle" *ngIf="item.activo == 'S'"></i>
+                                <i class="fa fa-1m5x fa-times-circle" *ngIf="item.activo == 'N'"></i>
+                            </td>
+                            <td class="table-buttons-action">
+                                <!-- <button type="button" class="button btn-icon btn-trash"><i class="fa fa-trash"></i></button>
+                                <button type="button" class="button btn-icon btn-edit"><i class="fa fa-edit"></i></button>
+                                <button type="button" class="button btn-icon btn-plus"><i class="fa fa-plus"></i></button> -->
+                                <button type="button" class="button btn-edit" (click)="openDetalle(item)" *ngIf="varPermisos.consultar == 1">Detalle</button>
+                                <button type="button" class="button btn-edit" (click)="editCargos(item)" *ngIf="varPermisos.actualizar == 1">Editar</button>
+                                <!-- <button type="button" class="button btn-default">Detalle</button> -->
+                            </td>
+                        </tr>
+                        <tr *ngIf="varhistorial?.length == 0">
+                            <div class="dbempty">No hay datos.</div>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="pagination-content"></div>
+        </div>
+    </div>
+</div>
+
+<app-modal [title]="model.title" [show]="modal" [size]="'modal-md'" (close)="closeModal($event)">
+    <div role="body">
+        <div class="inner-col">
+            <div class="col col75">
+                <div class="label-row">Cargo</div>
+                <input type="text" [(ngModel)]="model.varCargo.cargo" [disabled]="IsLectura">
+            </div>
+            <div class="col col25">
+                <div class="label-row">Categoría</div>
+                <select [disabled]="IsLectura" [(ngModel)]="model.varCargo.categoria_id" (change)="changeCategoria(model.varCargo.categoria_id)">
+                    <option value="0">Seleccionar</option>
+                    <option *ngFor="let item of varcategoria" value="{{item.id}}">{{item.detalle}}</option>
+                </select>
+            </div>
+            <div class="col col25">
+                <div class="label-row">Clase de Cargo</div>
+                <select [disabled]="IsLectura" [(ngModel)]="model.varCargo.clase_cargo_id">
+                    <option value="0">Seleccionar</option>
+                    <option *ngFor="let item of varclase" value="{{item.id}}">{{item.detalle}}</option>
+                </select>
+            </div>
+            <div class="col col25">
+                <div class="label-row">Tipo de Cargo</div>
+                <select [disabled]="IsLectura"  [(ngModel)]="model.varCargo.cargo_ruta_id">
+                    <option value="0">Seleccionar</option>
+                    <option *ngFor="let item of varcargoruta" value="{{item.id}}">{{item.detalle}}</option>
+                </select>
+            </div>
+            <div class="col col25">
+                <div class="label-row">Activo</div>
+                <div class="checkbox-component" style="padding-bottom: 15px;padding-top: 0 !important;">
+                    <label>
+                        <input type="checkbox" checked="checked" [(ngModel)]="model.varCargo.activo" [disabled]="IsLectura" >
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+            </div>
+            <div class="col col100">
+                <div class="label-row">Descripción</div>
+                <textarea style="white-space: pre-line;" [disabled]="IsLectura"  rows="4" cols="80" [(ngModel)]="model.varCargo.descripcion" maxlength="8000"></textarea>
+            </div>
+            <div class="line-col"></div>
+            <div class="col col100 title-row">Grados</div>
+            <div class="table-content">
+                <table class="table flex-table">
+                    <thead>
+                        <tr>
+                            <th>Grado</th>
+                            <th></th>
+                            <!-- <th>Activo</th> -->
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody class="scroll">
+                        <tr *ngFor="let item of model.varGrados;let i = index">
+                            <td>
+                                <select [disabled]="IsLectura" [(ngModel)]="item.grado_id" (change)="changeGrado(i)">
+                                    <option value="0">Seleccionar</option>
+                                    <option *ngFor="let grado of lstGrados" value="{{grado.grado_id}}">{{grado.grado}} - {{grado.descripcion}}</option>
+                                </select>
+                            </td>
+                            <td class="table-buttons-action">
+                                <button *ngIf="model.tipo == 'U' && item.NuevoRegistro != true" type="button" class="button btn-default" (click)="editConfigModal(item, true)">Configuración</button>
+                                <button *ngIf="model.tipo == 'L' && item.NuevoRegistro != true && varPermisos.consultar == 1" type="button" class="button btn-default" (click)="openDetalleConfig(item)">Configuración</button>
+                            </td>
+                            <!-- <td>
+                                <div class="table-checkbox-component">
+                                    <input type="checkbox" checked="checked" [(ngModel)]="model.varGrados[i].activo">
+                                </div>
+                            </td> -->
+                            <td>
+                                <i class="fa fa-1m5x fa-times-circle pointer noselect" style="color: black !important;" *ngIf="model.varGrados[i].NuevoRegistro" (click)="deleteGrado(i)"></i>
+                                <i class="fa fa-1m5x fa-trash pointer noselect" style="color: red !important;" *ngIf="model.varGrados[i].EliminarRegistro && isEliminar" (click)="eliminarRegistro(item, i)"></i>
+                            </td>
+                        </tr>
+                        <tr class="add_row_full" *ngIf="!IsLectura ">
+                            <!-- <button *ngIf="IsLectura==true" type="button" class="button btn-gray">Agregar</button> -->
+                            <button type="button" class="button btn-blue" (click)="addGrado()">Agregar</button>
+                        </tr>
+                        <tr *ngIf="model.varGrados?.length == 0 && IsLectura">
+                            <div class="dbempty">No hay datos.</div>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div role="footer">
+        <button type="button" class="btn btn-red" (click)="closeModal(false)">Cerrar</button>
+        <button *ngIf="model.tipo == 'C'" type="button" class="btn btn-blue" (click)="saveCargos()">Guardar</button>
+        <button *ngIf="model.tipo == 'U'" type="button" class="btn btn-blue" (click)="updateCargos()">Actualizar</button>
+    </div>
+</app-modal>
+
+<app-modal [title]="'Cargos / Grados Configuración'" [show]="configModal" [size]="'modal-lg-2'" (close)="closeConfigModal($event)">
+    <div role="body">
+        <div class="inner-col">
+            <div class="col col33">
+                <div class="label-row">Grado</div>
+                <input type="text" disabled [(ngModel)]="model.grado">
+            </div>
+            <div class="col col33">
+                <div class="label-row">Cargo</div>
+                <input type="text" disabled [(ngModel)]="model.varCargo.cargo">
+            </div>
+            <div class="col col33">
+                <div class="label-row">Categoría</div>
+                <input type="text" disabled [(ngModel)]="model.categoria">
+            </div>
+            <div class="col col100">
+                <div class="label-row">Descripción</div>
+                <textarea rows="4" cols="80" [(ngModel)]="model.varCargo.descripcion" maxlength="8000" disabled></textarea>
+            </div>
+            <div class="col col100">
+                <div class="flex-tabs">
+                    <ul>
+                        <li (click)="selectTab(1)" [ngClass]="{'active': tab === 1}">Rutas y Requisitos</li>
+                        <li (click)="selectTab(2)" [ngClass]="{'active': tab === 2}">Cuerpos, Especialidades y Áreas</li>
+                        <li (click)="selectTab(3)" [ngClass]="{'active': tab === 3}">Educación y Conocimientos</li>
+                        <li (click)="selectTab(4)" [ngClass]="{'active': tab === 4}">Experiencia y Competencias</li>
+                    </ul>
+                </div>
+                <div class="tabs-inner">
+                    <div class="tabs-content" *ngIf="tab === 1">
+                        <!-- <div class="col col15">
+                            <div class="label-row">Puestos Cant.</div>
+                            <input [disabled]="IsLectura" type="number" [(ngModel)]="model.varConfiguracion.puesto_cantidad" min="0" notnegative>
+                        </div>
+                        <div class="col col50">
+                            <div class="label-row">Cargo Jefe Inmediato:</div>
+                            <input type="text" [disabled]="IsLectura" placeholder="Seleccionar..." [(ngModel)]="model.varConfiguracion.cargo_jefe_inmediato" (click)="saveJefe()">
+                        </div> -->
+
+                        <div class="col col100 title-row">Ubicaciones de Cargo</div>
+                        <div class="line-col"></div>
+                        <div class="col col100">
+                            <div class="table-content">
+                                <table class="table flex-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Nivel 1</th>
+                                            <th>Nivel 2</th>
+                                            <th>Nivel 3</th>
+                                            <th>Nivel 4</th>
+                                            <th>Nivel 5</th>
+                                            <th>Nivel 6</th>
+                                            <th>Nivel 7</th>
+                                            <th>Nivel 8</th>
+                                            <th>Puesto Cantidad</th>
+                                            <th>Cargo Jefe Inmediato</th>
+                                            <th *ngIf="!IsLectura">Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="scroll">
+                                        <tr *ngFor="let item of model.varUbicacionCargos; let i = index">
+                                            <td>
+                                                <input title="{{ item.nivel1 }}" type="text" [disabled]="IsLectura" placeholder="Seleccionar..." [(ngModel)]="item.nivel1" (click)="saveNivel1(i)">
+                                            </td>
+                                            <td>
+                                                <input title="{{ item.nivel2 }}" type="text" [disabled]="IsLectura" placeholder="Seleccionar..." [(ngModel)]="item.nivel2" (click)="saveNivel2(i)">
+                                            </td>
+                                            <td>
+                                                <input title="{{ item.nivel3 }}" type="text" [disabled]="IsLectura" placeholder="Seleccionar..." [(ngModel)]="item.nivel3" (click)="saveNivel3(i)">
+                                            </td>
+                                            <td>
+                                                <input title="{{ item.nivel4 }}" type="text" [disabled]="IsLectura" placeholder="Seleccionar..." [(ngModel)]="item.nivel4" (click)="saveNivel4(i)">
+                                            </td>
+                                            <td>
+                                                <input title="{{ item.nivel5 }}" type="text" [disabled]="IsLectura" placeholder="Seleccionar..." [(ngModel)]="item.nivel5" (click)="saveNivel5(i)">
+                                            </td>
+                                            <td>
+                                                <input title="{{ item.nivel6 }}" type="text" [disabled]="IsLectura" placeholder="Seleccionar..." [(ngModel)]="item.nivel6" (click)="saveNivel6(i)">
+                                            </td>
+                                            <td>
+                                                <input title="{{ item.nivel7 }}" type="text" [disabled]="IsLectura" placeholder="Seleccionar..." [(ngModel)]="item.nivel7" (click)="saveNivel7(i)">
+                                            </td>
+                                            <td>
+                                                <input title="{{ item.nivel8 }}" type="text" [disabled]="IsLectura" placeholder="Seleccionar..." [(ngModel)]="item.nivel8" (click)="saveNivel8(i)">
+                                            </td>
+                                            <td>
+                                                <input type="number" [disabled]="IsLectura" [(ngModel)]="item.puesto_cantidad" min="0" notnegative>
+                                            </td>
+                                            <td>
+                                                <input title="{{ item.cargo_jefe_inmediato }}" type="text" [disabled]="IsLectura" placeholder="Seleccionar..." [(ngModel)]="item.cargo_jefe_inmediato" (click)="saveJefe(i)">
+                                            </td>
+                                            <td *ngIf="!IsLectura">
+                                                <i class="fa fa-1m5x fa-times-circle pointer noselect" style="color: black !important;" *ngIf="item.NuevoRegistro" (click)="deleteUbicacion(i)"></i>
+                                                <i class="fa fa-1m5x fa-trash pointer noselect" style="color: red !important;" *ngIf="item.EliminarRegistro" (click)="eliminarUbicacionRegistro(item, i)"></i>
+                                            </td>
+                                        </tr>
+                                        <tr class="add_row_full" *ngIf="!IsLectura">
+                                            <button type="button" class="button btn-blue" (click)="addUbicacion()">Agregar</button>
+                                        </tr>
+                                        <tr *ngIf="model.varUbicacionCargos?.length == 0 && IsLectura">
+                                            <div class="dbempty">Sin datos</div>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="line-col"></div>
+                        <div class="col col100 title-row">Experiencia: cargos previos a desempeñar</div>
+                        <div class="col col100">
+                            <div class="table-content">
+                                <table class="table flex-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Cargos</th>
+                                            <th>Número de años</th>
+                                            <th>Número de meses</th>
+                                            <th *ngIf="!IsLectura">Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="scroll">
+                                        <tr *ngFor="let item of model.varCargosExperiencias; let i = index">
+                                            <td>
+                                                <input title="{{ item.cargo_previo }}" type="text" [disabled]="IsLectura" placeholder="Seleccionar..." [(ngModel)]="item.cargo_previo" (click)="saveCargoExperiencia(i)">
+                                            </td>
+                                            <td>
+                                                <input [disabled]="IsLectura" type="number" [(ngModel)]="item.anio">
+                                            </td>
+                                            <td>
+                                                <input [disabled]="IsLectura" type="number" [(ngModel)]="item.mes">
+                                            </td>
+                                            <td *ngIf="!IsLectura">
+                                                <i class="fa fa-1m5x fa-times-circle pointer noselect" style="color: black !important;" *ngIf="model.varCargosExperiencias[i].NuevoRegistro" (click)="deleteCargosExperiencias(i)"></i>
+                                                <i class="fa fa-1m5x fa-trash pointer noselect" style="color: red !important;" *ngIf="model.varCargosExperiencias[i].EliminarRegistro" (click)="eliminarCargosExperienciasRegistro(item, i)"></i>
+                                            </td>
+                                        </tr>
+                                        <tr class="add_row_full" *ngIf="!IsLectura">
+                                            <button type="button" class="button btn-blue" (click)="addCargosExperiencias()">Agregar</button>
+                                        </tr>
+                                        <tr *ngIf="model.varCargosExperiencias?.length == 0 && IsLectura">
+                                            <div class="dbempty">Sin datos</div>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="col col100">
+                            <div class="col col100 title-row">Propósito y funciones</div>
+                            <div class="line-col"></div>
+                            <div class="col col100">
+                                <!-- <div class="col col95">
+                                    <textarea rows="4" cols="80" [(ngModel)]="model.varRutaRequisito.ruta_requisito"></textarea>
+                                </div>
+                                <div class="col col5">
+                                    <button type="button" class="btn-select btn-select-red pointer" style="margin-bottom: 10px;" (click)="openSelect()">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                    <button type="button" class="btn-select btn-select-blue pointer" style="margin-bottom: 10px;">
+                                        <i class="fa fa-minus"></i>
+                                    </button>
+                                </div> -->
+                                <textarea [disabled]="IsLectura" rows="6" cols="80" style="height: 200px !important; text-align: justify;" [(ngModel)]="model.varConfiguracion.requisito_cargo"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tabs-content" *ngIf="tab === 2">
+                        <div class="col col100 title-row">Cuerpos</div>
+                        <div class="line-col"></div>
+                        <div class="col col100">
+                            <div class="col col95">
+                                <textarea [disabled]="IsLectura" rows="4" cols="80" [(ngModel)]="model.varCuerpo.cuerpo"></textarea>
+                            </div>
+                            <div class="col col5" *ngIf="!IsLectura">
+                                <button type="button" class="btn-select btn-select-red pointer" style="margin-bottom: 10px;" (click)="openCuerpoSelect()">
+                                    <i class="fa fa-plus"></i>
+                                </button>
+                                <!-- <button type="button" class="btn-select btn-select-blue pointer" style="margin-bottom: 10px;">
+                                    <i class="fa fa-minus"></i>
+                                </button> -->
+                            </div>
+                        </div>
+                        <div class="col col100 title-row">Especialidades</div>
+                        <div class="line-col"></div>
+                        <div class="col col100">
+                            <div class="col col95">
+                                <textarea [disabled]="IsLectura" rows="4" cols="80" [(ngModel)]="model.varEspecialidad.especialidad"></textarea>
+                            </div>
+                            <div class="col col5" *ngIf="!IsLectura">
+                                <button type="button" class="btn-select btn-select-red pointer" style="margin-bottom: 10px;" (click)="openEspecialidadSelect()">
+                                    <i class="fa fa-plus"></i>
+                                </button>
+                                <!-- <button type="button" class="btn-select btn-select-blue pointer" style="margin-bottom: 10px;">
+                                    <i class="fa fa-minus"></i>
+                                </button> -->
+                            </div>
+                        </div>
+                        <div class="col col100 title-row">Áreas de Conocimiento</div>
+                        <div class="line-col"></div>
+                        <div class="col col100">
+                            <div class="col col95">
+                                <textarea [disabled]="IsLectura" rows="4" cols="80" [(ngModel)]="model.varArea.area"></textarea>
+                            </div>
+                            <div class="col col5" *ngIf="!IsLectura">
+                                <button type="button" class="btn-select btn-select-red pointer" style="margin-bottom: 10px;" (click)="openAreaSelect()">
+                                    <i class="fa fa-plus"></i>
+                                </button>
+                                <!-- <button type="button" class="btn-select btn-select-blue pointer" style="margin-bottom: 10px;">
+                                    <i class="fa fa-minus"></i>
+                                </button> -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tabs-content" *ngIf="tab === 3">
+                        <div class="col col100 title-row">Educación formal requerida</div>
+                        <div class="line-col"></div>
+                        <div class="col col100">
+                            <div class="col col95">
+                                <textarea [disabled]="IsLectura" rows="4" cols="80" [(ngModel)]="model.varEducacion.educacion"></textarea>
+                            </div>
+                            <div class="col col5" *ngIf="!IsLectura">
+                                <button type="button" class="btn-select btn-select-red pointer" style="margin-bottom: 10px;" (click)="openEducacionSelect()">
+                                    <i class="fa fa-plus"></i>
+                                </button>
+                                <!-- <button type="button" class="btn-select btn-select-blue pointer" style="margin-bottom: 10px;">
+                                    <i class="fa fa-minus"></i>
+                                </button> -->
+                            </div>
+                        </div>
+                        <div class="col col100 title-row">Conocimientos Adicionales</div>
+                        <div class="line-col"></div>
+                        <div class="col col100">
+                            <div class="col col95">
+                                <textarea [disabled]="IsLectura" rows="4" cols="80" [(ngModel)]="model.varConocimiento.conocimiento"></textarea>
+                            </div>
+                            <div class="col col5" *ngIf="!IsLectura">
+                                <button type="button" class="btn-select btn-select-red pointer" style="margin-bottom: 10px;" (click)="openConocimientoSelect()">
+                                    <i class="fa fa-plus"></i>
+                                </button>
+                                <!-- <button type="button" class="btn-select btn-select-blue pointer" style="margin-bottom: 10px;">
+                                    <i class="fa fa-minus"></i>
+                                </button> -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tabs-content" *ngIf="tab === 4">
+                        <div class="col col100 title-row">Experiencia de Proceso</div>
+                        <div class="line-col"></div>
+                        <div class="col col100">
+                            <div class="col col95">
+                                <textarea [disabled]="IsLectura" rows="4" cols="80" [(ngModel)]="model.varExperiencia.experiencia"></textarea>
+                            </div>
+                            <div class="col col5" *ngIf="!IsLectura">
+                                <button type="button" class="btn-select btn-select-red pointer" style="margin-bottom: 10px;" (click)="openExperienciaSelect()">
+                                    <i class="fa fa-plus"></i>
+                                </button>
+                                <!-- <button type="button" class="btn-select btn-select-blue pointer" style="margin-bottom: 10px;">
+                                    <i class="fa fa-minus"></i>
+                                </button> -->
+                            </div>
+                        </div>
+                        <div class="col col100 title-row">Competencias Requeridas</div>
+                        <div class="line-col"></div>
+                        <div class="col col100">
+                            <div class="col col95">
+                                <textarea [disabled]="IsLectura" rows="4" cols="80" [(ngModel)]="model.varCompetencia.competencia"></textarea>
+                            </div>
+                            <div class="col col5" *ngIf="!IsLectura">
+                                <button type="button" class="btn-select btn-select-red pointer" style="margin-bottom: 10px;" (click)="openCompetenciaSelect()">
+                                    <i class="fa fa-plus"></i>
+                                </button>
+                                <!-- <button type="button" class="btn-select btn-select-blue pointer" style="margin-bottom: 10px;">
+                                    <i class="fa fa-minus"></i>
+                                </button> -->
+                            </div>
+                        </div>
+                        <div class="col col100 title-row">Observaciones Generales</div>
+                        <div class="line-col"></div>
+                        <div class="col col100">
+                            <textarea rows="4" cols="80" [(ngModel)]="model.varConfiguracion.observaciones" [disabled]="IsLectura"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div role="footer">
+        <button type="button" class="btn btn-red" (click)="closeConfigModal(false)">Cerrar</button>
+        <button type="button" class="btn btn-blue" (click)="saveConfiguracion()" *ngIf="!IsLectura">Guardar</button>
+    </div>
+</app-modal>
+
+<app-select-list-modal [title]="'Cuerpos'"
+    [items]="varcuerpoitems"
+    [itemsTemp]="varcuerpoitems"
+    [selectedItems]="varcuerposelectedItems"
+    [show]="selectCuerpoModal"
+    [size]="'modal-select-list'"
+    (output)="saveCuerpoSelected($event)"
+    (close)="closeCuerpoSelectModal($event)">
+</app-select-list-modal>
+
+<app-select-list-modal [title]="'Especialidades'"
+    [items]="varespecialidaditems"
+    [itemsTemp]="varespecialidaditems"
+    [selectedItems]="varespecialidadselectedItems"
+    [show]="selectEspecialidadModal"
+    [size]="'modal-select-list'"
+    (output)="saveEspecialidadSelected($event)"
+    (close)="closeEspecialidadSelectModal($event)">
+</app-select-list-modal>
+
+<app-select-list-modal [title]="'Áreas'"
+    [items]="varareaitems"
+    [itemsTemp]="varareaitems"
+    [selectedItems]="varareaselectedItems"
+    [show]="selectAreaModal"
+    [size]="'modal-select-list'"
+    (output)="saveAreaSelected($event)"
+    (close)="closeAreaSelectModal($event)">
+</app-select-list-modal>
+
+<app-select-list-modal [title]="'Educación'"
+    [items]="vareducacionitems"
+    [itemsTemp]="vareducacionitems"
+    [selectedItems]="vareducacionselectedItems"
+    [show]="selectEducacionModal"
+    [size]="'modal-select-list'"
+    (output)="saveEducacionSelected($event)"
+    (close)="closeEducacionSelectModal($event)">
+</app-select-list-modal>
+
+<app-select-list-modal [title]="'Conocimientos'"
+    [items]="varconocimientoitems"
+    [itemsTemp]="varconocimientoitems"
+    [selectedItems]="varconocimientoselectedItems"
+    [show]="selectConocimientoModal"
+    [size]="'modal-select-list'"
+    (output)="saveConocimientoSelected($event)"
+    (close)="closeConocimientoSelectModal($event)">
+</app-select-list-modal>
+
+<app-select-list-modal [title]="'Experiencia de Conocimiento'"
+    [items]="varexperienciaitems"
+    [itemsTemp]="varexperienciaitems"
+    [selectedItems]="varexperienciaselectedItems"
+    [show]="selectExperienciaModal"
+    [size]="'modal-select-list'"
+    (output)="saveExperienciaSelected($event)"
+    (close)="closeExperienciaSelectModal($event)">
+</app-select-list-modal>
+
+<app-select-list-modal [title]="'Competencias Requeridas'"
+    [items]="varcompetenciaitems"
+    [itemsTemp]="varcompetenciaitems"
+    [selectedItems]="varcompetenciaselectedItems"
+    [show]="selectCompetenciaModal"
+    [size]="'modal-select-list'"
+    (output)="saveCompetenciaSelected($event)"
+    (close)="closeCompetenciaSelectModal($event)">
+</app-select-list-modal>
+
+<app-select-modal [title]="titleModal" [show]="selectModal" [array]="array" [arrayTemp]="array" (output)="dataform(inputform, $event)" (close)="closeSelectModal($event)"></app-select-modal>

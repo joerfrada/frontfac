@@ -1,0 +1,564 @@
+<app-breadcrumb [icon]="'fa-bezier-curve'" [title]="'Ruta de Carrera'"  [items]="'Módulo,Consultas,Ruta de Carrera'"></app-breadcrumb>
+<div class="app-content-inner">
+    <div class="app-content-tile">
+        <div class="loading" *ngIf="loading">
+            <i class="fa fa-10x fa-sync fa-pulse"></i>
+        </div>
+        <div class="flex-content">
+            <div class="filter-content">
+                <ul class="filter-inner">
+                    <li class="filter-item">
+                        <button type="button" class="button btn-default" (click)="openConsulta()" *ngIf="varPermisos.consultar == 1">Consultar</button>
+                    </li>
+                    <li class="filter-item">
+                        <button type="button" class="button btn-default" (click)="openModal()" *ngIf="varPermisos.crear == 1">Crear</button>
+                    </li>
+                    <li class="filter-item">
+                        <div class="input-group-btn">
+                            <input type="search" placeholder="Buscar..." (keyup)="search($event)" (search)="clearSearch($event)">
+                            <button type="button" class="button btn-default">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="table-content">
+                <table class="table flex-table">
+                    <thead>
+                        <tr>
+                            <th>Descripción</th>
+                            <th>Tipo Ruta</th>
+                            <th>Categoría</th>
+                            <th>Sigla Cuerpo</th>
+                            <th>Cuerpo</th>
+                            <th>Sigla Especialidad</th>
+                            <th>Especialidad</th>
+                            <th>Sigla Área</th>
+                            <th>Área de Conocimiento</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody class="scroll">
+                        <tr *ngFor="let item of varhistorial; let i = index">
+                            <td><button type="button" class="button btn-default" (click)="openDescripcion(item.descripcion)" *ngIf="item.desc_data == 'S'">Ver</button></td>
+                            <td>{{item.tipo_ruta}}</td>
+                            <td>{{item.tipo_categoria}}</td>
+                            <td>{{item.siglaCuerpo}}</td>
+                            <td>{{item.cuerpo}}</td>
+                            <td>{{item.siglaEspecialidad}}</td>
+                            <td>{{item.especialidad}}</td>
+                            <td>{{item.siglaArea}}</td>
+                            <td>{{item.area}}</td>
+                            <td>
+                                <i class="fa fa-1m5x fa-check-circle" *ngIf="item.activo == 'S'"></i>
+                                <i class="fa fa-1m5x fa-times-circle" *ngIf="item.activo == 'N'"></i>
+                            </td>
+                            <td class="table-buttons-action">
+                                <!-- <button type="button" class="button btn-icon btn-trash"><i class="fa fa-trash"></i></button>
+                                <button type="button" class="button btn-icon btn-edit"><i class="fa fa-edit"></i></button>
+                                <button type="button" class="button btn-icon btn-plus"><i class="fa fa-plus"></i></button> -->
+                                <button type="button" class="button btn-edit" (click)="openDetalleRuta(item)" *ngIf="varPermisos.consultar == 1">Detalle</button>
+                                <button type="button" class="button btn-edit" (click)="editRutaCarrera(item)" *ngIf="varPermisos.actualizar == 1">Editar</button>
+                                <!-- <button type="button" class="button btn-default">Detalle</button> -->
+                            </td>
+                        </tr>
+                        <tr *ngIf="varhistorial?.length == 0">
+                            <div class="dbempty">No hay datos.</div>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="pagination-content"></div>
+        </div>
+    </div>
+</div>
+
+<app-modal [title]="model.title" [show]="modal" [size]="'modal-md-w'" (close)="closeModal($event)">
+    <div role="body">
+        <div class="inner-col">
+            <div class="col col25">
+                <div class="label-row">Categoría</div>
+                <select [disabled]="IsLectura" [(ngModel)]="model.varRutaCarrera.tipo_categoria_id" (change)="changeCategoria(model.varRutaCarrera.tipo_categoria_id)">
+                    <option value="0">Seleccionar</option>
+                    <option *ngFor="let item of varcategoria" value="{{item.id}}">{{item.detalle}}</option>
+                </select>
+            </div>
+            <div class="col col25">
+                <div class="label-row">Cuerpo</div>
+                <input type="text" placeholder="Selecciona..." (click)="saveCuerpo()" [(ngModel)]="model.varRutaCarrera.cuerpo" [disabled]="IsLectura" >
+            </div>
+            <div class="col col25">
+                <div class="label-row">Especialidad</div>
+                <input type="text" placeholder="Selecciona..." (click)="saveEspecialidad()" [(ngModel)]="model.varRutaCarrera.especialidad" [disabled]="IsLectura" >
+            </div>
+            <div class="col col25">
+                <div class="label-row">Área de Conocimiento</div>
+                <input type="text" placeholder="Selecciona..." (click)="saveArea()" [(ngModel)]="model.varRutaCarrera.area" [disabled]="IsLectura" >
+            </div>
+            <div class="col col25">
+                <div class="label-row">Tipo Ruta</div>
+                <select [disabled]="IsLectura" [(ngModel)]="model.varRutaCarrera.tipo_ruta_id">
+                    <option value="0">Seleccionar</option>
+                    <option *ngFor="let item of vartiporuta" value="{{item.id}}">{{item.detalle}}</option>
+                </select>
+            </div>
+            <div class="col col25">
+                <div class="label-row">Activo</div>
+                <div class="checkbox-component">
+                    <label>
+                        <input type="checkbox" checked="checked" [(ngModel)]="model.varRutaCarrera.activo" [disabled]="IsLectura">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+            </div>
+            <div class="col col100">
+                <div class="label-row">Descripción</div>
+                <textarea [disabled]="IsLectura" [(ngModel)]="model.varRutaCarrera.descripcion" maxlength="8000"></textarea>
+            </div>
+            
+            <div class="line-col"></div>
+            <div class="col col100 title-row">Rutas</div>
+            <div class="table-content">
+                <table class="table flex-table">
+                    <thead>
+                        <tr>
+                            <th>Cargo</th>
+                            <th>Estado</th>
+                            <th *ngIf="!IsLectura">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody class="scroll">
+                        <tr *ngFor="let item of varruta; let i = index">
+                            <td>
+                                <!-- <select [(ngModel)]="item.cargo_id" (change)="changeCargo(i, item.cargo_id)">
+                                    <option value="0">Seleccionar</option>
+                                    <option *ngFor="let cargo of varcargo" value="{{cargo.cargo_id}}">{{cargo.cargo}}</option>
+                                </select> -->
+                                <input type="text" [disabled]="IsLectura" placeholder="Seleccionar..." [(ngModel)]="item.cargo" (click)="saveCargo(i)">
+                            </td>
+                            <td>
+                                <div class="table-checkbox-component">
+                                    <label>
+                                        <input type="checkbox" checked="checked" [(ngModel)]="item.activo" [disabled]="IsLectura" >
+                                    </label>
+                                </div>
+                            </td>
+                            <td *ngIf="!IsLectura">
+                                <i class="fa fa-1m5x fa-times-circle pointer noselect" style="color: black !important;" *ngIf="item.NuevoRegistro" (click)="deleteRuta(i)"></i>
+                            </td>
+                        </tr>
+                        <tr class="add_row_full" *ngIf="!IsLectura">
+                            <button type="button" class="button btn-blue" (click)="addRuta()">Agregar</button>
+                        </tr>
+                        <tr *ngIf="varruta?.length == 0 && IsLectura">
+                            <div class="dbempty">No hay datos</div>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div role="footer">
+        <button type="button" class="btn btn-red" (click)="closeModal(false)">Cerrar</button>
+        <button *ngIf="model.tipo == 'C'" type="button" class="btn btn-blue" (click)="saveRuta()">Guardar</button>
+        <button *ngIf="model.tipo == 'U'" type="button" class="btn btn-blue" (click)="updateRuta()">Actualizar</button>
+    </div>
+</app-modal>
+
+<app-modal [title]="'Consultas'" [show]="consultaModal" [size]="'modal-tm2'" (close)="closeConsultaModal($event)">
+    <div role="body">
+        <div class="inner-col">
+            <div class="col col25">
+                <div class="label-row">Tipo Ruta</div>
+                <input type="text" placeholder="Selecciona..." [(ngModel)]="model.varConsulta.tipo_ruta" (click)="saveTipoRuta()">
+            </div>
+            <div class="col col25">
+                <div class="label-row">Categoría</div>
+                <input type="text" disabled [(ngModel)]="model.varConsulta.tipo_categoria">
+            </div>
+            <div class="col col25">
+                <div class="label-row">Especialidad</div>
+                <input type="text" disabled [(ngModel)]="model.varConsulta.especialidad">
+            </div>
+            <div class="col col25">
+                <div class="label-row">Área de Conocimiento</div>
+                <input type="text" disabled [(ngModel)]="model.varConsulta.area">
+            </div>
+            <div class="col col25">
+                <div class="label-row">Tipo Cargo</div>
+                <select [(ngModel)]="model.varConsulta.cargo_ruta_id">
+                    <option value="0">Seleccionar</option>
+                    <option *ngFor="let item of varcargoruta" value="{{item.id}}">{{item.detalle}}</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div role="footer">
+        <button type="button" class="btn btn-blue" (click)="openWorkflow()">Generar Ruta de Carrera</button>
+        <button type="button" class="btn btn-blue" (click)="openPiramide()">Generar Pirámide de Carrera</button>
+    </div>
+</app-modal>
+
+<workflow-modal [title]="model.titleRuta" [show]="workflowModal" [size]="'modal-wmd-4'" (close)="closeWorkflowModal($event)">
+    <div class="semaforo">
+        <div class="directo">Directo</div>
+        <div class="indirecto">Indirecto</div>
+        <div class="externo">Externo</div>
+        <div class="confianza">Confianza</div>
+        <div class="clave">Clave</div>
+        <div class="critico">Critíco</div>
+        <div class="ninguno">N/A</div>
+    </div>
+    <div id="chart-ruta">
+        <div class="ruta_level">
+            <ul *ngFor="let item of lstRutas" class="ruta_cargo">
+                <li *ngFor="let cargo of item.cargos" class="{{cargo.clase_cargo}} {{cargo.tipo_ruta}} cargo_box title">
+                    <div class="title_cargo">{{cargo.cargo}}</div>
+                    <div class="title_grado">({{cargo.grado}})</div>
+                    <i class="icon fas fa-1mx fa-arrow-circle-right pointer noselect" (click)="openDetalleCargoRutaCarrera(cargo)"></i>
+                </li>
+            </ul>
+        </div>
+    </div>
+</workflow-modal>
+
+<viewcargo-modal [title]="tituloCargo" [show]="viewCargoModal" [size]="'modal-view-sm'" (close)="closeViewCargoModal($event)">
+    <div role="body">
+        <div class="view-cargo">
+            <div id="textcargo" style="padding: 10px;">
+                <div *ngIf="lstCuerpo?.length != 0" style="margin-bottom: 5px;">
+                    <b>Cuerpos</b>
+                    <ul>
+                        <li *ngFor="let cuerpo of lstCuerpo">{{cuerpo}}</li>
+                    </ul>
+                </div>
+                <div *ngIf="lstEspec?.length != 0" style="margin-bottom: 5px;">
+                    <b>Especialidades</b>
+                    <ul>
+                        <li *ngFor="let especialidad of lstEspec">{{especialidad}}</li>
+                    </ul>
+                </div>
+                <div *ngIf="lstArea?.length != 0" style="margin-bottom: 5px;">
+                    <b>Áreas</b>
+                    <ul>
+                        <li *ngFor="let area of lstArea">{{area}}</li>
+                    </ul>
+                </div>
+                <div *ngIf="lstCuerpo?.length == 0 && lstEspec?.length == 0 && lstArea?.length == 0">
+                    <p>No hay información</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div role="footer1">
+        <button type="button" class="btn btn-blue" (click)="openConfigModal()">Detalle del Cargo</button>
+        <button type="button" class="btn btn-blue">Imprimir PDF</button>
+    </div>
+</viewcargo-modal>
+
+<piramide-modal [title]="titleEsp" [show]="piramideModal" [size]="'modal-piramide-md'" (close)="closePiramideModal($event)">
+    <div class="col col50">
+        <div class="table-content">
+            <table class="table table-piramide">
+                <tbody class="scroll">
+                    <tr *ngFor="let item of varPiramide1; let i = index">
+                        <td>
+                            <div class="title-grado">{{item.grado}}</div>
+                            <div class="duration-grado">Tiempo mínimo de servicio - {{item.duracion}}</div>
+                            <div class="requisito-grado">
+                                <button type="button" class="button btn-edit" (click)="openDetalle(item, item.grado)">Requisitos de Ley</button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="col col50">
+        <div class="table-content">
+            <table class="table table-piramide">
+                <tbody class="scroll">
+                    <tr *ngFor="let item of varPiramide2; let i = index">
+                        <td>
+                            <div class="trapeze-grado">
+                                <div class="trapeze-grado-inner">
+                                    <div class="title-nivel-inner">{{item.nivel}}</div>
+                                    <div class="title-grado-inner">{{item.grado}}</div>
+                                    <div class="detalle-grado">
+                                        <button type="button" class="button btn-edit" (click)="openDirectos(item, item.nivel, item.grado)">Cargos Directos e Indirectos</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</piramide-modal>
+
+<detalle-modal [title]="titleReq" [show]="detalleReqModal" [size]="'modal-detalle-tm'" (close)="closeDetalleReqModal($event)">
+    <div class="view-detail">
+        <div id="text" style="padding: 10px;">
+            <div id="text"></div>
+        </div>
+    </div>
+</detalle-modal>
+
+<detalle-modal [title]="titleGrado" [show]="detalleModal" [size]="sizeModal" (close)="closeDetalleModal($event)">
+    <div class="view-detail">
+        <div id="text" style="padding: 10px;">
+            <div *ngFor="let item of lstCargo" style="margin-bottom: 5px;">
+                <b>{{item.cargo_ruta}}</b>
+                <ul>
+                    <li *ngFor="let cargo of item.cargo">{{cargo}}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</detalle-modal>
+
+<app-select-modal [title]="titleModal" [show]="selectModal" [array]="array" [arrayTemp]="array" (output)="dataform(inputform, $event)" (close)="closeSelectModal($event)"></app-select-modal>
+
+<app-modal [title]="'Detalle del Cargo'" [show]="detalleCargoModal" [size]="'modal-md-5'" (close)="closeDetalleCargoModal($event)">
+    <div role="body">
+        <div class="inner-col">
+            <div class="col col100">
+                <div class="label-row">Cargo</div>
+                <input type="text" disabled [(ngModel)]="model.varDetalleCargo.cargo">
+            </div>
+            <div class="col col100">
+                <div class="label-row">Categoría</div>
+                <input type="text" disabled [(ngModel)]="model.varDetalleCargo.categoria">
+            </div>
+            <div class="col col100">
+                <div class="label-row">Clase de Cargo</div>
+                <input type="text" disabled [(ngModel)]="model.varDetalleCargo.clase_cargo">
+            </div>
+            <div class="col col100">
+                <div class="label-row">Tipo de Cargo</div>
+                <input type="text" disabled [(ngModel)]="model.varDetalleCargo.cargo_ruta">
+            </div>
+            <div class="col col100">
+                <div class="label-row">Descripción</div>
+                <textarea disabled rows="5" cols="40" [(ngModel)]="model.varDetalleCargo.descripcion"></textarea>
+            </div>
+        </div>
+    </div>
+    <div role="footer">
+        <button type="button" class="btn btn-red" (click)="closeDetalleCargoModal(false)">Cerrar</button>
+    </div>
+</app-modal>
+
+<app-modal [title]="'Detalle del Grado'" [show]="detalleGradoModal" [size]="'modal-md-5'" (close)="closeDetalleGradoModal($event)">
+    <div role="body">
+        <div class="inner-col">
+            <div class="col col100">
+                <div class="label-row">Grado</div>
+                <input type="text" disabled [(ngModel)]="model.varDetalleGrado.grado">
+            </div>
+            <div class="col col100">
+                <div class="label-row">Descripción</div>
+                <input type="text" disabled [(ngModel)]="model.varDetalleGrado.descripcion">
+            </div>
+            <div class="col col100">
+                <div class="label-row">Duración</div>
+                <input type="number" disabled [(ngModel)]="model.varDetalleGrado.duracion">
+            </div>
+            <div class="col col100">
+                <div class="label-row">Nivel</div>
+                <input type="text" disabled [(ngModel)]="model.varDetalleGrado.nivel">
+            </div>
+            <div class="col col100">
+                <div class="label-row">Categoría</div>
+                <input type="text" disabled [(ngModel)]="model.varDetalleGrado.categoria">
+            </div>
+        </div>
+    </div>
+    <div role="footer">
+        <button type="button" class="btn btn-red" (click)="closeDetalleGradoModal(false)">Cerrar</button>
+    </div>
+</app-modal>
+
+<app-select-route-modal [title]="'Ruta de Carrera'" [show]="rutaCarreraModal" [array]="array" [arrayTemp]="array" (output)="dataform(inputform, $event, 2)" (close)="closeRutaCarreraModal($event)"></app-select-route-modal>
+
+<app-modal [title]="'Cargos / Grados Configuración'" [show]="configModal" [size]="'modal-lg-2'" (close)="closeConfigModal($event)">
+    <div role="body">
+        <div class="inner-col">
+            <div class="col col33">
+                <div class="label-row">Grado</div>
+                <input type="text" disabled [(ngModel)]="model.varConfiguracion.grado">
+            </div>
+            <div class="col col33">
+                <div class="label-row">Cargo</div>
+                <input type="text" disabled [(ngModel)]="model.varConfiguracion.cargo">
+            </div>
+            <div class="col col33">
+                <div class="label-row">Categoría</div>
+                <input type="text" disabled [(ngModel)]="model.varConfiguracion.categoria">
+            </div>
+            <div class="col col100">
+                <div class="label-row">Descripción</div>
+                <textarea rows="4" cols="80" [(ngModel)]="model.varConfiguracion.descripcion" maxlength="8000" disabled></textarea>
+            </div>
+            <div class="col col100">
+                <div class="flex-tabs">
+                    <ul>
+                        <li (click)="selectTab(1)" [ngClass]="{'active': tab === 1}">Rutas y Requisitos</li>
+                        <li (click)="selectTab(2)" [ngClass]="{'active': tab === 2}">Cuerpos, Especialidades y Áreas</li>
+                        <li (click)="selectTab(3)" [ngClass]="{'active': tab === 3}">Educación y Conocimientos</li>
+                        <li (click)="selectTab(4)" [ngClass]="{'active': tab === 4}">Experiencia y Competencias</li>
+                    </ul>
+                </div>
+                <div class="tabs-inner">
+                    <div class="tabs-content" *ngIf="tab === 1">
+                        <div class="col col100 title-row">Ubicaciones de Cargo</div>
+                        <div class="line-col"></div>
+                        <div class="col col100">
+                            <div class="table-content">
+                                <table class="table flex-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Nivel 1</th>
+                                            <th>Nivel 2</th>
+                                            <th>Nivel 3</th>
+                                            <th>Nivel 4</th>
+                                            <th>Nivel 5</th>
+                                            <th>Nivel 6</th>
+                                            <th>Nivel 7</th>
+                                            <th>Nivel 8</th>
+                                            <th>Puesto Cantidad</th>
+                                            <th>Cargo Jefe Inmediato</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="scroll">
+                                        <tr *ngFor="let item of model.varUbicacionCargos; let i = index">
+                                            <td>
+                                                <input title="{{ item.nivel1 }}" type="text" disabled placeholder="Seleccionar..." [(ngModel)]="item.nivel1">
+                                            </td>
+                                            <td>
+                                                <input title="{{ item.nivel2 }}" type="text" disabled placeholder="Seleccionar..." [(ngModel)]="item.nivel2">
+                                            </td>
+                                            <td>
+                                                <input title="{{ item.nivel3 }}" type="text" disabled placeholder="Seleccionar..." [(ngModel)]="item.nivel3">
+                                            </td>
+                                            <td>
+                                                <input title="{{ item.nivel4 }}" type="text" disabled placeholder="Seleccionar..." [(ngModel)]="item.nivel4">
+                                            </td>
+                                            <td>
+                                                <input title="{{ item.nivel5 }}" type="text" disabled placeholder="Seleccionar..." [(ngModel)]="item.nivel5">
+                                            </td>
+                                            <td>
+                                                <input title="{{ item.nivel6 }}" type="text" disabled placeholder="Seleccionar..." [(ngModel)]="item.nivel6">
+                                            </td>
+                                            <td>
+                                                <input title="{{ item.nivel7 }}" type="text" disabled placeholder="Seleccionar..." [(ngModel)]="item.nivel7">
+                                            </td>
+                                            <td>
+                                                <input title="{{ item.nivel8 }}" type="text" disabled placeholder="Seleccionar..." [(ngModel)]="item.nivel8">
+                                            </td>
+                                            <td>
+                                                <input type="number" disabled [(ngModel)]="item.puesto_cantidad" min="0" notnegative>
+                                            </td>
+                                            <td>
+                                                <input title="{{ item.cargo_jefe_inmediato }}" type="text" disabled placeholder="Seleccionar..." [(ngModel)]="item.cargo_jefe_inmediato">
+                                            </td>
+                                        </tr>
+                                        <tr *ngIf="model.varUbicacionCargos?.length == 0">
+                                            <div class="dbempty">No hay datos</div>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="line-col"></div>
+                        <div class="col col100 title-row">Experiencia: cargos previos a desempeñar</div>
+                        <div class="table-content">
+                            <table class="table flex-table">
+                                <thead>
+                                    <tr>
+                                        <th>Cargos</th>
+                                        <th>Número de años</th>
+                                        <th>Número de meses</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="scroll">
+                                    <tr *ngFor="let item of varCargosExperiencias; let i = index">
+                                        <td>
+                                            <input title="{{ item.cargo_previo }}" type="text" [(ngModel)]="item.cargo_previo" disabled>
+                                        </td>
+                                        <td>
+                                            <input type="number" [(ngModel)]="item.anio" disabled>
+                                        </td>
+                                        <td>
+                                            <input type="number" [(ngModel)]="item.mes" disabled>
+                                        </td>
+                                    </tr>
+                                    <tr *ngIf="varCargosExperiencias?.length == 0">
+                                        <div class="dbempty">No hay datos.</div>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col col100 title-row">Propósito y funciones</div>
+                        <div class="line-col"></div>
+                        <div class="col col100">
+                            <textarea rows="4" cols="80" [(ngModel)]="model.varConfiguracion.requisito_cargo" disabled></textarea>
+                        </div>
+                    </div>
+                    <div class="tabs-content" *ngIf="tab === 2">
+                        <div class="col col100 title-row">Cuerpos</div>
+                        <div class="line-col"></div>
+                        <div class="col col100">
+                            <textarea rows="4" cols="80" [(ngModel)]="model.varConfiguracion.cuerpo" disabled></textarea>
+                        </div>
+                        <div class="col col100 title-row">Especialidades</div>
+                        <div class="line-col"></div>
+                        <div class="col col100">
+                            <textarea rows="4" cols="80" [(ngModel)]="model.varConfiguracion.especialidad" disabled></textarea>
+                        </div>
+                        <div class="col col100 title-row">Áreas de Conocimiento</div>
+                        <div class="line-col"></div>
+                        <div class="col col100">
+                            <textarea rows="4" cols="80" [(ngModel)]="model.varConfiguracion.area" disabled></textarea>
+                        </div>
+                    </div>
+                    <div class="tabs-content" *ngIf="tab === 3">
+                        <div class="col col100 title-row">Educación formal requerida</div>
+                        <div class="line-col"></div>
+                        <div class="col col100">
+                            <textarea rows="4" cols="80" [(ngModel)]="model.varConfiguracion.educacion" disabled></textarea>
+                        </div>
+                        <div class="col col100 title-row">Conocimientos Adicionales</div>
+                        <div class="line-col"></div>
+                        <div class="col col100">
+                            <textarea rows="4" cols="80" [(ngModel)]="model.varConfiguracion.conocimiento" disabled></textarea>
+                        </div>
+                    </div>
+                    <div class="tabs-content" *ngIf="tab === 4">
+                        <div class="col col100 title-row">Experiencia de Proceso</div>
+                        <div class="line-col"></div>
+                        <div class="col col100">
+                            <textarea rows="4" cols="80" [(ngModel)]="model.varConfiguracion.experiencia" disabled></textarea>
+                        </div>
+                        <div class="col col100 title-row">Competencias Requeridas</div>
+                        <div class="line-col"></div>
+                        <div class="col col100">
+                            <textarea rows="4" cols="80" [(ngModel)]="model.varConfiguracion.competencia" disabled></textarea>
+                        </div>
+                        <div class="col col100 title-row">Observaciones Generales</div>
+                        <div class="line-col"></div>
+                        <div class="col col100">
+                            <textarea rows="4" cols="80" [(ngModel)]="model.varConfiguracion.observaciones" disabled></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div role="footer">
+        <button type="button" class="btn btn-red" (click)="closeConfigModal(false)">Cerrar</button>
+    </div>
+</app-modal>

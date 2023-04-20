@@ -1,0 +1,186 @@
+<app-breadcrumb [icon]="'fa-list-ul'" [title]="'Valores Flexibles'" [items]="'Módulo,Param,Valores Flexibles'"></app-breadcrumb>
+<div class="app-content-inner">
+    <div class="app-content-tile">
+        <div class="loading" *ngIf="loading">
+            <i class="fa fa-10x fa-sync fa-pulse"></i>
+        </div>
+        <div class="flex-content">
+            <div class="filter-content">
+                <ul class="filter-inner">
+                    <li class="filter-item">
+                        <button type="button" class="button btn-default" (click)="openModal()">Crear</button>
+                    </li>
+                    <li class="filter-item">
+                        <div class="input-group-btn">
+                            <input type="search" placeholder="Buscar..." (keyup)="searchLista($event)" (search)="clearListaSearch($event)">
+                            <button type="button" class="button btn-default">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="table-content">
+                <table class="table flex-table">
+                    <thead>
+                        <tr>
+                            <th>Nombre Lista</th>
+                            <th>Descripción</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody class="scroll">
+                        <tr *ngFor="let item of varhistorial; let i = index">
+                            <td>{{item.nombre_lista}}</td>
+                            <td>{{item.descripcion}}</td>
+                            <td>
+                                <i class="fa fa-1m5x fa-check-circle" *ngIf="item.activo == 'S'"></i>
+                                <i class="fa fa-1m5x fa-times-circle" *ngIf="item.activo == 'N'"></i>
+                            </td>
+                            <td class="table-buttons-action">
+                                <!-- <button type="button" class="button btn-icon btn-trash"><i class="fa fa-trash"></i></button>
+                                <button type="button" class="button btn-icon btn-edit"><i class="fa fa-edit"></i></button>
+                                <button type="button" class="button btn-icon btn-plus"><i class="fa fa-plus"></i></button> -->
+                                <button type="button" class="button btn-edit" (click)="editNombreLista(item)">Editar</button>
+                                <button type="button" class="button btn-edit" (click)="openValor(item)">Valores</button>
+                                <!-- <button type="button" class="button btn-default">Detalle</button> -->
+                            </td>
+                        </tr>
+                        <tr *ngIf="varhistorial?.length == 0">
+                            <div class="dbempty">No hay datos.</div>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="pagination-content"></div>
+        </div>
+    </div>
+</div>
+
+<app-modal [title]="model.title" [show]="modal" [size]="'modal-sm'" (close)="closeModal($event)">
+    <div role="body">
+        <div class="inner-col">
+            <div class="col col40">
+                <div class="label-row">Nombre Lista</div>
+                <input type="text" [(ngModel)]="model.varNombreLista.nombre_lista" style="text-transform:uppercase">
+            </div>
+            <div class="col col60">
+                <div class="label-row">Descripción</div>
+                <input type="text" [(ngModel)]="model.varNombreLista.descripcion">
+            </div>
+            <div class="col col40">
+                <div class="label-row">Nombre Padre</div>
+                <select [(ngModel)]="model.varNombreLista.nombre_lista_padre_id">
+                    <option value="0">Seleccionar</option>
+                    <option *ngFor="let item of varnombreLista" value="{{item.nombre_lista_id}}">{{item.nombre_lista}}</option>
+                </select>
+            </div>
+            <div class="col col25">
+                <div class="label-row">Activo</div>
+                <div class="checkbox-component">
+                    <label>
+                        <input type="checkbox" checked="checked" [(ngModel)]="model.varNombreLista.activo">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div role="footer">
+        <button type="button" class="btn btn-red" (click)="closeModal(false)">Cerrar</button>
+        <button *ngIf="model.tipo == 'C'" type="button" class="btn btn-blue" (click)="saveNombreLista()">Guardar</button>
+        <button *ngIf="model.tipo == 'U'" type="button" class="btn btn-blue" (click)="updateNombreLista()">Actualizar</button>
+    </div>
+</app-modal>
+
+<app-modal [title]="model.title" [show]="valorModal" [size]="'modal-md-w'" (close)="closeValorModal($event)">
+    <div role="body">
+        <div class="flex-content">
+            <div class="filter-content">
+                <ul class="filter-inner">
+                    <li class="filter-item">
+                        <button type="button" class="button btn-default" (click)="crearValorModal()">Crear</button>
+                    </li>
+                    <li class="filter-item">
+                        <div class="input-group-btn">
+                            <input type="search" placeholder="Buscar..." (keyup)="searchValor($event)" (search)="clearValorSearch($event)">
+                            <button type="button" class="button btn-default">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="table-content">
+                <table class="table flex-table">
+                    <thead>
+                        <tr>
+                            <th>Lista Dinámica</th>
+                            <th>Definición</th>
+                            <th>Padre</th>
+                            <th>Activo</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody class="scroll">
+                        <tr *ngFor="let item of varvalor; let i = index">
+                            <td>{{item.lista_dinamica}}</td>
+                            <td>{{item.descripcion}}</td>
+                            <td>{{item.lista_dinamica_padre}}</td>
+                            <td>
+                                <i class="fa fa-1m5x fa-check-circle" *ngIf="item.activo == 'S'"></i>
+                                <i class="fa fa-1m5x fa-times-circle" *ngIf="item.activo == 'N'"></i>
+                            </td>
+                            <td class="table-buttons-action">
+                                <button type="button" class="button btn-edit" (click)="editarValorModal(item)">Editar</button>
+                            </td>
+                        </tr>
+                        <tr *ngIf="varvalor?.length == 0">
+                            <div class="dbempty">No hay datos.</div>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div role="footer">
+        <button type="button" class="btn btn-red" (click)="closeValorModal(false)">Cerrar</button>
+    </div>
+</app-modal>
+
+<app-modal [title]="model.title" [show]="editValorModal" [size]="'modal-sm-1'" (close)="closeEditarValorModal($event)">
+    <div role="body">
+        <div class="inner-col">
+            <div class="col col33">
+                <div class="label-row">Nombre</div>
+                <input type="text" [(ngModel)]="model.varListaDinamica.lista_dinamica">
+            </div>
+            <div class="col col33">
+                <div class="label-row">Lista Padre</div>
+                <select [(ngModel)]="model.varListaDinamica.lista_dinamica_padre_id">
+                    <option value="0">Seleccionar</option>
+                    <option *ngFor="let item of varlista" value={{item.id}}>{{item.detalle}}</option>
+                </select>
+            </div>
+            <div class="col col33">
+                <div class="label-row">Activo</div>
+                <div class="checkbox-component">
+                    <label>Activo
+                        <input type="checkbox" checked="checked" [(ngModel)]="model.varListaDinamica.activo">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+            </div>
+            <div class="col col100">
+                <div class="label-row">Definición</div>
+                <textarea style="height: 180px !important;" rows="6" cols="40" [(ngModel)]="model.varListaDinamica.descripcion"></textarea>
+            </div>
+        </div>
+    </div>
+    <div role="footer">
+        <button type="button" class="btn btn-red" (click)="closeEditarValorModal(false)">Cerrar</button>
+        <button *ngIf="model.tipo == 'C'" type="button" class="btn btn-blue" (click)="createValor()">Guardar</button>
+        <button *ngIf="model.tipo == 'U'" type="button" class="btn btn-blue" (click)="updateValor()">Actualizar</button>
+    </div>
+</app-modal>

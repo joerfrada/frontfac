@@ -1,0 +1,35 @@
+<div class="modal-viewcargo animated fadeIn fast" id={{size}} *ngIf="show">
+    <div class="modal-box modal-box-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">{{title}}</div>
+                <div class="close-modal pointer noselect" (click)="closeModal()"><i class="fa fa-times-circle"></i></div>
+            </div>
+            <div class="modal-body">
+                <div class="select-filter">
+                    <input type="search" placeholder="Buscar..." (keyup)="search($event)" (search)="clearSearch($event)" autofocus>
+                </div>
+                <div class="select-container">
+                    <div class="select-left">
+                        <select id="mySelect" multiple [(ngModel)]="selectedToAdd">
+                            <option *ngFor="let item of items" data-title="{{item.texto}}" [ngValue]="item">{{item.descr}}</option>
+                        </select>
+                    </div>
+                    <div class="select-buttons">
+                        <div class="btn-arrows" (click)="btnRight()"><i class="fa fa-angle-right"></i></div>
+                        <div class="btn-arrows" (click)="btnLeft()"><i class="fa fa-angle-left"></i></div>
+                    </div>
+                    <div class="select-right">
+                        <select multiple [(ngModel)]="selectedToRemove">
+                            <option *ngFor="let item of selectedItems" [ngValue]="item">{{item.descr}}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-red" (click)="closeModal()">Cerrar</button>
+                <button type="button" class="btn btn-blue" (click)="saveModal()">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>

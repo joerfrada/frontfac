@@ -1,0 +1,124 @@
+<app-breadcrumb [icon]="'fa-address-book'" [title]="'Requisitos del Ley'" [items]="'Módulo,Param,Requisitos de Ley'"></app-breadcrumb>
+<div class="app-content-inner">
+    <div class="app-content-tile">
+        <div class="loading" *ngIf="loading">
+            <i class="fa fa-10x fa-sync fa-pulse"></i>
+        </div>
+        <div class="flex-content">
+            <div class="filter-content">
+                <ul class="filter-inner">
+                    <li class="filter-item" *ngIf="varPermisos.crear == 1">
+                        <button type="button" class="button btn-default" (click)="openModal()">Crear</button>
+                    </li>
+                    <li class="filter-item">
+                        <div class="input-group-btn">
+                            <input type="search" placeholder="Buscar..." (keyup)="search($event)" (search)="clearSearch($event)">
+                            <button type="button" class="button btn-default">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="table-content">
+                <table class="table flex-table">
+                    <thead>
+                        <tr>
+                            <th>Requisito del Ley</th>
+                            <th>Descripción</th>
+                            <th>Categoría</th>
+                            <th>Cuerpo</th>
+                            <th>Especialidad</th>
+                            <th>Grado</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody class="scroll">
+                        <tr *ngFor="let item of varhistorial; let i = index">
+                            <td>{{item.requisito_ley}}</td>
+                            <td><button type="button" class="button btn-default" (click)="openDescripcion(item.descripcion)" *ngIf="item.descripcion != null">Ver</button></td>
+                            <td>{{item.categoria}}</td>
+                            <td>{{item.cuerpoDescripcion}}</td>
+                            <td><button type="button" class="button btn-default" (click)="getRequisitosEspecialidades(item.requisito_ley_id, item.cuerpo_id, true)"><i class="fa fa-eye"></i></button></td>
+                            <td><button type="button" class="button btn-default" (click)="getRequisitosGrados(item.requisito_ley_id, item.categoria_id, true)"><i class="fa fa-eye"></i></button></td>
+                            <td>
+                                <i class="fa fa-1m5x fa-check-circle" *ngIf="item.activo == 'S'"></i>
+                                <i class="fa fa-1m5x fa-times-circle" *ngIf="item.activo == 'N'"></i>
+                            </td>
+                            <td class="table-buttons-action">
+                                <!-- <button type="button" class="button btn-icon btn-trash"><i class="fa fa-trash"></i></button>
+                                <button type="button" class="button btn-icon btn-edit"><i class="fa fa-edit"></i></button>
+                                <button type="button" class="button btn-icon btn-plus"><i class="fa fa-plus"></i></button> -->
+                                <!-- <button type="button" class="button btn-edit" *ngIf="varPermisos.consultar == 1">Detalle</button> -->
+                                <button type="button" class="button btn-edit" (click)="openDetalle(item)" *ngIf="varPermisos.consultar == 1">Detalle</button>
+                                <button type="button" class="button btn-edit" (click)="editRequisito(item)" *ngIf="varPermisos.actualizar == 1">Editar</button>
+                                <!-- <button type="button" class="button btn-default">Detalle</button> -->
+                            </td>
+                        </tr>
+                        <tr *ngIf="varhistorial?.length == 0">
+                            <div class="dbempty">No hay datos.</div>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="pagination-content"></div>
+        </div>
+    </div>
+</div>
+
+<app-modal [title]="model.title" [show]="modal" [size]="'modal-md-2'" (close)="closeModal($event)">
+    <div role="body">
+        <div class="inner-col">
+            <div class="col col40">
+                <div class="label-row">Requisitos del Ley</div>
+                <input type="text" [(ngModel)]="model.varRequisito.requisito_ley" [disabled]="model.IsLectura">
+            </div>
+            <div class="col col30">
+                <div class="label-row">Categoría</div>
+                <select [(ngModel)]="model.varRequisito.categoria_id" (change)="changeCategoria(model.varRequisito.categoria_id)" [disabled]="model.IsLectura">
+                    <option value="0">Seleccionar</option>
+                    <option *ngFor="let item of varcategoria" value="{{item.id}}">{{item.detalle}}</option>
+                </select>
+            </div>
+            <div class="col col30">
+                <div class="label-row">Cuerpo</div>
+                <input type="text" placeholder="Selecciona..." (click)="saveCuerpo()" [(ngModel)]="model.varRequisito.cuerpo" [disabled]="model.IsLectura">
+            </div>
+            <div class="col col30">
+                <div class="label-row">Especialidad</div>
+                <!-- <input type="text" placeholder="Selecciona..." (click)="saveEspecialidad()" [(ngModel)]="model.varRequisito.especialidad"> -->
+                <button type="button" class="button btn-default" (click)="saveEspecialidad()"><i class="fa fa-user-shield"></i></button>
+            </div>
+            <div class="col col25">
+                <div class="label-row">Grado</div>
+                <!-- <input type="text" placeholder="Selecciona..." (click)="saveGrado()" [(ngModel)]="model.varRequisito.grado"> -->
+                <button type="button" class="button btn-default" (click)="saveGrado()"><i class="fa fa-user-graduate"></i></button>
+            </div>
+            <div class="col col25">
+                <div class="label-row">Activo</div>
+                <div class="checkbox-component">
+                    <label>
+                        <input type="checkbox" checked="checked" [(ngModel)]="model.varRequisito.activo" [disabled]="model.IsLectura">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+            </div>
+            <div class="col col100">
+                <div class="label-row">Descripción</div>
+                <textarea [(ngModel)]="model.varRequisito.descripcion" maxlength="1000" [disabled]="model.IsLectura"></textarea>
+            </div>
+        </div>
+    </div>
+    <div role="footer">
+        <button type="button" class="btn btn-red" (click)="closeModal(false)">Cerrar</button>
+        <button *ngIf="model.tipo == 'C' && !model.IsLectura" type="button" class="btn btn-blue" (click)="saveRequisito()">Guardar</button>
+        <button *ngIf="model.tipo == 'U' && !model.IsLectura" type="button" class="btn btn-blue" (click)="updateRequisito()">Actualizar</button>
+    </div>
+</app-modal>
+
+<app-select-modal [title]="titleModal" [show]="selectModal" [array]="array" [arrayTemp]="array" (output)="dataform(inputform, $event)" (close)="closeSelectModal($event)"></app-select-modal>
+
+<app-select-especialidad-modal [title]="titleModal" [show]="especialidadModal" [array]="array" [arrayTemp]="array" [IsLectura]="model.IsLectura" (output)="dataSelectEspecialidad($event)" (close)="closeEspecialidadModal($event)"></app-select-especialidad-modal>
+
+<app-select-grado-modal [title]="titleModal" [show]="gradoModal" [array]="array" [arrayTemp]="array" [IsLectura]="model.IsLectura" (output)="dataSelectGrado($event)" (close)="closeGradoModal($event)"></app-select-grado-modal>

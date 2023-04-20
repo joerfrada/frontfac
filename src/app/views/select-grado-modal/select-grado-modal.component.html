@@ -1,0 +1,54 @@
+<div class="modal animated fadeIn fast" id="{{size}}" *ngIf="show">
+    <div class="modal-box modal-box-centered modal-box-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">{{title}}</div>
+                <div class="close-modal pointer noselect" (click)="closeModal()"><i class="fa fa-times-circle"></i></div>
+            </div>
+            <div class="modal-body">
+                <div class="filter-content">
+                    <ul class="filter-inner">
+                        <li class="filter-item" *ngIf="!IsLectura">
+                            <button type="button" class="button btn-default" (click)="save()">Guardar</button>
+                        </li>
+                        <li class="filter-item">
+                            <div class="input-group-btn">
+                                <input type="search" #input placeholder="Buscar..." (keyup)="search($event)" (search)="clearSearch($event)" autofocus>
+                                <button type="button" class="button btn-default">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="table-content">
+                    <table class="table flex-table">
+                        <thead>
+                            <tr>
+                                <th><ng-container *ngIf="!IsLectura"><input type="checkbox" [checked]="isAllCheckBoxChecked()" (change)="checkAllCheckBox($event)"></ng-container></th>
+                                <th>Descripción</th>
+                                <th>Sigla</th>
+                            </tr>
+                        </thead>
+                        <tbody class="scroll">
+                            <tr *ngFor="let dato of array; let i = index">
+                                <td>
+                                    <ng-container *ngIf="!IsLectura"><input type="checkbox" value="{{dato.id}}" [(ngModel)]="array[i].checked"></ng-container>
+                                    <ng-container *ngIf="IsLectura">
+                                        <i class="fa fa-1m5x fa-check-circle" *ngIf="dato.checked == true"></i>
+                                        <i class="fa fa-1m5x fa-times-circle" *ngIf="dato.checked == false"></i>
+                                    </ng-container>
+                                </td>
+                                <td>{{dato.descripcion}}</td>
+                                <td>{{dato.sigla}}</td>
+                            </tr>
+                            <tr *ngIf="array?.length == 0">
+                                <div class="dbempty">Sin resultados</div>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

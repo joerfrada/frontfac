@@ -1,0 +1,232 @@
+<app-breadcrumb [icon]="'fa-list-ul'" [title]="'Siglas'" [items]="'Módulo,Param,Siglas'"></app-breadcrumb>
+<div class="app-content-inner">
+    <div class="app-content-tile">
+        <div class="loading" *ngIf="loading">
+            <i class="fa fa-10x fa-sync fa-pulse"></i>
+        </div>
+        <div class="flex-content">
+            <div class="filter-content">
+                <ul class="filter-inner">
+                    <li class="filter-item">
+                        <button *ngIf="tab == 1 && varPermisos.crear == 1" type="button" class="button btn-default" (click)="openModal(1)">Crear Cuerpo</button>
+                        <button *ngIf="tab == 2 && varPermisos.crear == 1" type="button" class="button btn-default" (click)="openModal(2)" style="width: 123px !important;">Crear Especialidad</button>
+                        <button *ngIf="tab == 3 && varPermisos.crear == 1" type="button" class="button btn-default" (click)="openModal(3)" style="width: 183px !important;">Crear Área de Conocimiento</button>
+                    </li>
+                    <li class="filter-item">
+                        <div class="input-group-btn">
+                            <input type="search" placeholder="Buscar..." *ngIf="tab === 1" (keyup)="searchCuerpo($event)" (search)="clearSearchCuerpo($event)">
+                            <input type="search" placeholder="Buscar..." *ngIf="tab === 2" (keyup)="searchEspecialidad($event)" (search)="clearSearchEspecialidad($event)">
+                            <input type="search" placeholder="Buscar..." *ngIf="tab === 3" (keyup)="searchArea($event)" (search)="clearSearchArea($event)">
+                            <button type="button" class="button btn-default">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="tab-content">
+                <div class="flex-tabs">
+                    <ul>
+                        <li (click)="selectTab(1)" [ngClass]="{'active': tab === 1}">Cuerpos</li>
+                        <li (click)="selectTab(2)" [ngClass]="{'active': tab === 2}">Especialidades</li>
+                        <li (click)="selectTab(3)" [ngClass]="{'active': tab === 3}">Área de Conocimiento</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="tabs-inner">
+                <div class="tabs-content" *ngIf="tab === 1">
+                    <div class="table-content">
+                        <table class="table flex-table">
+                            <thead>
+                                <tr>
+                                    <th>Tipo Categoría</th>
+                                    <th>Sigla</th>
+                                    <th>Cuerpo</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody class="scroll">
+                                <tr *ngFor="let item of varcuerpo; let i = index">
+                                    <td>{{item.tipo_categoria}}</td>
+                                    <td>{{item.sigla}}</td>
+                                    <td>{{item.cuerpo}}</td>
+                                    <td class="table-buttons-action">
+                                        <!-- <button type="button" class="button btn-icon btn-trash"><i class="fa fa-trash"></i></button>
+                                        <button type="button" class="button btn-icon btn-edit"><i class="fa fa-edit"></i></button>
+                                        <button type="button" class="button btn-icon btn-plus"><i class="fa fa-plus"></i></button> -->
+                                        <button type="button" class="button btn-edit" (click)="openDetalle(item, 1)" *ngIf="varPermisos.consultar == 1">Detalle</button>
+                                        <button type="button" class="button btn-edit" (click)="editModal(item, 1)" *ngIf="varPermisos.actualizar == 1">Editar</button>
+                                        <!-- <button type="button" class="button btn-default">Detalle</button> -->
+                                    </td>
+                                </tr>
+                                <tr *ngIf="varcuerpo?.length == 0">
+                                    <div class="dbempty">No hay datos.</div>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="tabs-content" *ngIf="tab === 2">
+                    <div class="table-content">
+                        <table class="table flex-table">
+                            <thead>
+                                <tr>
+                                    <th>Tipo Categoría</th>
+                                    <th>Sigla</th>
+                                    <th>Especialidad</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody class="scroll">
+                                <tr *ngFor="let item of varespecialidad; let i = index">
+                                    <td>{{item.tipo_categoria}}</td>
+                                    <td>{{item.sigla}}</td>
+                                    <td>{{item.especialidad}}</td>
+                                    <td class="table-buttons-action">
+                                        <!-- <button type="button" class="button btn-icon btn-trash"><i class="fa fa-trash"></i></button>
+                                        <button type="button" class="button btn-icon btn-edit"><i class="fa fa-edit"></i></button>
+                                        <button type="button" class="button btn-icon btn-plus"><i class="fa fa-plus"></i></button> -->
+                                        <button type="button" class="button btn-edit" (click)="openDetalle(item, 2)" *ngIf="varPermisos.consultar == 1">Detalle</button>
+                                        <button type="button" class="button btn-edit" (click)="editModal(item, 2)" *ngIf="varPermisos.actualizar == 1">Editar</button>
+                                        <!-- <button type="button" class="button btn-default">Detalle</button> -->
+                                    </td>
+                                </tr>
+                                <tr *ngIf="varespecialidad?.length == 0">
+                                    <div class="dbempty">No hay datos.</div>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="tabs-content" *ngIf="tab === 3">
+                    <div class="table-content">
+                        <table class="table flex-table">
+                            <thead>
+                                <tr>
+                                    <th>Tipo Categoría</th>
+                                    <th>Sigla</th>
+                                    <th>Área</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody class="scroll">
+                                <tr *ngFor="let item of vararea; let i = index">
+                                    <td>{{item.tipo_categoria}}</td>
+                                    <td>{{item.sigla}}</td>
+                                    <td>{{item.area}}</td>
+                                    <td class="table-buttons-action">
+                                        <!-- <button type="button" class="button btn-icon btn-trash"><i class="fa fa-trash"></i></button>
+                                        <button type="button" class="button btn-icon btn-edit"><i class="fa fa-edit"></i></button>
+                                        <button type="button" class="button btn-icon btn-plus"><i class="fa fa-plus"></i></button> -->
+                                        <button type="button" class="button btn-edit" (click)="openDetalle(item, 3)" *ngIf="varPermisos.consultar == 1">Detalle</button>
+                                        <button type="button" class="button btn-edit" (click)="editModal(item, 3)" *ngIf="varPermisos.actualizar == 1">Editar</button>
+                                        <!-- <button type="button" class="button btn-default">Detalle</button> -->
+                                    </td>
+                                </tr>
+                                <tr *ngIf="vararea?.length == 0">
+                                    <div class="dbempty">No hay datos.</div>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="pagination-content"></div>
+        </div>
+    </div>
+</div>
+
+<app-modal [title]="model.title" [show]="cuerpoModal" [size]="'modal-sm'" (close)="closeModal($event, 1)">
+    <div role="body">
+        <div class="inner-col">
+            <div class="col col25">
+                <div class="label-row">Tipo de Categoría</div>
+                <select [disabled]="IsLectura" [(ngModel)]="model.varCuerpo.tipo_categoria_id">
+                    <option value="0">Seleccionar</option>
+                    <option *ngFor="let item of varcategoria" value="{{item.id}}">{{item.detalle}}</option>
+                </select>
+            </div>
+            <div class="col col25">
+                <div class="label-row">Sigla</div>
+                <input type="text" [(ngModel)]="model.varCuerpo.sigla" [disabled]="IsLectura">
+            </div>
+            <div class="col col50">
+                <div class="label-row">Cuerpo</div>
+                <input type="text" [(ngModel)]="model.varCuerpo.cuerpo" [disabled]="IsLectura">
+            </div>
+        </div>
+    </div>
+    <div role="footer">
+        <button type="button" class="btn btn-red" (click)="closeModal(false, 1)">Cerrar</button>
+        <button *ngIf="model.tipo == 'C'" type="button" class="btn btn-blue" (click)="saveData(1)">Guardar</button>
+        <button *ngIf="model.tipo == 'U'" type="button" class="btn btn-blue" (click)="updateData(1)">Actualizar</button>
+    </div>
+</app-modal>
+
+<app-modal [title]="model.title" [show]="especialidadModal" [size]="'modal-sm'" (close)="closeModal($event, 2)">
+    <div role="body">
+        <div class="inner-col">
+            <div class="col col25">
+                <div class="label-row">Tipo de Categoría</div>
+                <select [disabled]="IsLectura" [(ngModel)]="model.varEspecialidad.tipo_categoria_id" (change)="changeCategoriaEspecialidad(model.varEspecialidad.tipo_categoria_id)">
+                    <option value="0">Seleccionar</option>
+                    <option *ngFor="let item of varcategoria" value="{{item.id}}">{{item.detalle}}</option>
+                </select>
+            </div>
+            <div class="col col25">
+                <div class="label-row">Sigla</div>
+                <input type="text" [(ngModel)]="model.varEspecialidad.sigla" [disabled]="IsLectura">
+            </div>
+            <div class="col col50">
+                <div class="label-row">Especialidad</div>
+                <input type="text" [(ngModel)]="model.varEspecialidad.especialidad" [disabled]="IsLectura">
+            </div>
+            <div class="col col25">
+                <div class="label-row">Cuerpo</div>
+                <select [disabled]="IsLectura" [(ngModel)]="model.varEspecialidad.cuerpo_id">
+                    <option value="0">Seleccionar</option>
+                    <option *ngFor="let item of lstCuerpo" value="{{item.cuerpo_id}}">{{item.cuerpo}}</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div role="footer">
+        <button type="button" class="btn btn-red" (click)="closeModal(false, 2)">Cerrar</button>
+        <button *ngIf="model.tipo == 'C'" type="button" class="btn btn-blue" (click)="saveData(2)">Guardar</button>
+        <button *ngIf="model.tipo == 'U'" type="button" class="btn btn-blue" (click)="updateData(2)">Actualizar</button>
+    </div>
+</app-modal>
+
+<app-modal [title]="model.title" [show]="areaModal" [size]="'modal-sm'" (close)="closeModal($event, 3)">
+    <div role="body">
+        <div class="inner-col">
+            <div class="col col25">
+                <div class="label-row">Tipo de Categoría</div>
+                <select [disabled]="IsLectura" [(ngModel)]="model.varArea.tipo_categoria_id" (change)="changeCategoriaArea(model.varArea.tipo_categoria_id)">
+                    <option value="0">Seleccionar</option>
+                    <option *ngFor="let item of varcategoria" value="{{item.id}}">{{item.detalle}}</option>
+                </select>
+            </div>
+            <div class="col col25">
+                <div class="label-row">Sigla</div>
+                <input type="text" [(ngModel)]="model.varArea.sigla" [disabled]="IsLectura">
+            </div>
+            <div class="col col50">
+                <div class="label-row">Área</div>
+                <input type="text" [(ngModel)]="model.varArea.area" [disabled]="IsLectura">
+            </div>
+            <div class="col col25">
+                <div class="label-row">Especialidad</div>
+                <select [disabled]="IsLectura" [(ngModel)]="model.varArea.especialidad_id">
+                    <option value="0">Seleccionar</option>
+                    <option *ngFor="let item of lstEspecialidad" value="{{item.especialidad_id}}">{{item.especialidad}}</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div role="footer">
+        <button type="button" class="btn btn-red" (click)="closeModal(false, 3)">Cerrar</button>
+        <button *ngIf="model.tipo == 'C'" type="button" class="btn btn-blue" (click)="saveData(3)">Guardar</button>
+        <button *ngIf="model.tipo == 'U'" type="button" class="btn btn-blue" (click)="updateData(3)">Actualizar</button>
+    </div>
+</app-modal>

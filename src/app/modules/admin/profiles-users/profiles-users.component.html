@@ -1,0 +1,99 @@
+<app-breadcrumb [icon]="'fa-users'" [title]="'Perfiles - Usuarios'"  [items]="'Módulo,Admin,Perfiles - Usuarios'"></app-breadcrumb>
+<div class="app-content-inner">
+    <div class="app-content-tile">
+        <div class="flex-content">
+            <div class="filter-content">
+                <ul class="filter-inner">
+                    <li class="filter-item">
+                        <button type="button" class="button btn-default" (click)="openModal()">Crear</button>
+                    </li>
+                    <li class="filter-item">
+                        <div class="input-group-btn">
+                            <input type="search" placeholder="Buscar...">
+                            <button type="button" class="button btn-default">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="table-content">
+                <table class="table flex-table">
+                    <thead>
+                        <tr>
+                            <th>Usuario</th>
+                            <th>Perfil</th>
+                            <th>Tipo Perfil</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody class="scroll">
+                        <tr *ngFor="let item of varhistorial; let i = index">
+                            <td>{{item.usuario}}</td>
+                            <td>{{item.nombreCompleto}}</td>
+                            <td>{{item.tipo_perfil}}</td>
+                            <td>
+                                <i class="fa fa-1m5x fa-check-circle" *ngIf="item.activo == 'S'"></i>
+                                <i class="fa fa-1m5x fa-times-circle" *ngIf="item.activo == 'N'"></i>
+                            </td>
+                            <td class="table-buttons-action">
+                                <!-- <button type="button" class="button btn-icon btn-trash"><i class="fa fa-trash"></i></button>
+                                <button type="button" class="button btn-icon btn-edit"><i class="fa fa-edit"></i></button>
+                                <button type="button" class="button btn-icon btn-plus"><i class="fa fa-plus"></i></button> -->
+                                <button type="button" class="button btn-edit">Editar</button>
+                                <!-- <button type="button" class="button btn-default">Detalle</button> -->
+                            </td>
+                        </tr>
+                        <tr *ngIf="varhistorial?.length == 0">
+                            <div class="dbempty">No hay datos.</div>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="pagination-content"></div>
+        </div>
+    </div>
+</div>
+
+<app-modal [title]="model.title" [show]="modal" [size]="'modal-sm'" (close)="closeModal($event)">
+    <div role="body">
+        <div class="inner-col">
+            <div class="col col50">
+                <div class="label-row">Usuario</div>
+                <select [(ngModel)]="model.varPerfilUsuario.usuario_id">
+                    <option value="0">Seleccionar</option>
+                    <option *ngFor="let item of varusuario" value="{{item.usuario_id}}">{{item.usuario}}</option>
+                </select>
+            </div>
+            <div class="col col50">
+                <div class="label-row">Perfil</div>
+                <select [(ngModel)]="model.varPerfilUsuario.perfil_id">
+                    <option value="0">Seleccionar</option>
+                    <option *ngFor="let item of varperfil" value="{{item.perfil_id}}">{{item.perfil}}</option>
+                </select>
+            </div>
+            <div class="col col50">
+                <div class="label-row">Tipo Perfil</div>
+                <select [(ngModel)]="model.varPerfilUsuario.tipo_perfil_id">
+                    <option value="0">Seleccionar</option>
+                    <option *ngFor="let item of vartipoperfil" value="{{item.id}}">{{item.detalle}}</option>
+                </select>
+            </div>
+            <div class="col col50">
+                <div class="label-row">Activo</div>
+                <div class="checkbox-component">
+                    <label>
+                        <input type="checkbox" checked="checked" [(ngModel)]="model.varPerfilUsuario.activo">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div role="footer">
+        <button type="button" class="btn btn-red" (click)="closeModal(false)">Cerrar</button>
+        <button *ngIf="model.tipo == 'C'" type="button" class="btn btn-blue" (click)="savePerfilUsuario()">Guardar</button>
+        <button *ngIf="model.tipo == 'U'" type="button" class="btn btn-blue" (click)="updatePerfilUsuario()">Guardar</button>
+    </div>
+</app-modal>

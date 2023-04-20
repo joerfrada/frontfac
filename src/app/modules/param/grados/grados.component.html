@@ -1,0 +1,121 @@
+<app-breadcrumb [icon]="'fa-user-shield'" [title]="'Grados'" [items]="'Módulo,Param,Grados'"></app-breadcrumb>
+<div class="app-content-inner">
+    <div class="app-content-tile">
+        <div class="loading" *ngIf="loading">
+            <i class="fa fa-10x fa-sync fa-pulse"></i>
+        </div>
+        <div class="flex-content">
+            <div class="filter-content">
+                <ul class="filter-inner">
+                    <li class="filter-item">
+                        <button type="button" class="button btn-default" (click)="openModal()" *ngIf="varPermisos.crear == 1">Crear</button>
+                    </li>
+                    <li class="filter-item">
+                        <div class="input-group-btn">
+                            <input type="search" placeholder="Buscar..." (keyup)="search($event)" (search)="clearSearch($event)">
+                            <button type="button" class="button btn-default">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="table-content">
+                <table class="table flex-table">
+                    <thead>
+                        <tr>
+                            <th>Grado</th>
+                            <th>Descripción</th>
+                            <th>Tiempo mínimo de servicio</th>
+                            <th>Categoría</th>
+                            <th>Nivel</th>
+                            <th>Grado Previo</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody class="scroll">
+                        <tr *ngFor="let item of varhistorial; let i = index">
+                            <td>{{item.grado}}</td>
+                            <td>{{item.descripcion}}</td>
+                            <td>{{item.duracion}}</td>
+                            <td>{{item.categoria}}</td>
+                            <td>{{item.nivel}}</td>
+                            <td>{{item.grado_previo}}</td>
+                            <td>
+                                <i class="fa fa-1m5x fa-check-circle" *ngIf="item.activo == 'S'"></i>
+                                <i class="fa fa-1m5x fa-times-circle" *ngIf="item.activo == 'N'"></i>
+                            </td>
+                            <td class="table-buttons-action">
+                                <!-- <button type="button" class="button btn-icon btn-trash"><i class="fa fa-trash"></i></button>
+                                <button type="button" class="button btn-icon btn-edit"><i class="fa fa-edit"></i></button>
+                                <button type="button" class="button btn-icon btn-plus"><i class="fa fa-plus"></i></button> -->
+                                <button type="button" class="button btn-edit" (click)="openDetalle(item)" *ngIf="varPermisos.consultar == 1">Detalle</button>
+                                <button type="button" class="button btn-edit" (click)="editGrado(item)" *ngIf="varPermisos.actualizar == 1">Editar</button>
+                                <!-- <button type="button" class="button btn-default">Detalle</button> -->
+                            </td>
+                        </tr>
+                        <tr *ngIf="varhistorial?.length == 0">
+                            <div class="dbempty">No hay datos.</div>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="pagination-content"></div>
+        </div>
+    </div>
+</div>
+
+<app-modal [title]="model.title" [show]="modal" [size]="'modal-sm-1'" (close)="closeModal($event)">
+    <div role="body">
+        <div class="inner-col">
+            <div class="col col33">
+                <div class="label-row">Grado</div>
+                <input type="text" [(ngModel)]="model.varGrado.grado" [disabled]="IsLectura">
+            </div>
+            <div class="col col33">
+                <div class="label-row">Categoría</div>
+                <select  [disabled]="IsLectura" [(ngModel)]="model.varGrado.categoria_id" (change)="changeNivel(model.varGrado.categoria_id)">
+                    <option value="0">Seleccionar</option>
+                    <option *ngFor="let item1 of varcategoria" value="{{item1.id}}">{{item1.detalle}}</option>
+                </select>
+            </div>
+            <div class="col col33">
+                <div class="label-row">Nivel</div>
+                <select  [disabled]="IsLectura" [(ngModel)]="model.varGrado.nivel_id">
+                    <option value="0">Seleccionar</option>
+                    <option *ngFor="let item2 of varnivel" value="{{item2.id}}">{{item2.detalle}}</option>
+                </select>
+            </div>
+            <div class="col col33">
+                <div class="label-row">Grado Previo</div>
+                <select  [disabled]="IsLectura" [(ngModel)]="model.varGrado.grado_previo_id">
+                    <option value="0">Seleccionar</option>
+                    <option *ngFor="let item of vargrado_prev" value="{{item.grado_id}}">{{item.grado}} - {{item.descripcion}}</option>
+                </select>
+            </div>
+            <div class="col col33">
+                <div class="label-row">Tiempo mínimo de servicio</div>
+                <input  [disabled]="IsLectura" type="number" [(ngModel)]="model.varGrado.duracion" notnegative>
+            </div>
+            <div class="col col33">
+                <div class="label-row">Activo</div>
+                <div class="checkbox-component">
+                    <label>
+                        <input type="checkbox" checked="checked" [(ngModel)]="model.varGrado.activo" [disabled]="IsLectura">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+            </div>
+            <div class="col col100">
+                <div class="label-row">Descripción</div>
+                <textarea rows="4" cols="80" [(ngModel)]="model.varGrado.descripcion" [disabled]="IsLectura"></textarea>
+            </div>
+        </div>
+    </div>
+    <div role="footer">
+        <button type="button" class="btn btn-red" (click)="closeModal(false)">Cerrar</button>
+        <button *ngIf="model.tipo == 'C'" type="button" class="btn btn-blue" (click)="saveGrado()">Guardar</button>
+        <button *ngIf="model.tipo == 'U'" type="button" class="btn btn-blue" (click)="updateGrado()">Actualizar</button>
+    </div>
+</app-modal>
