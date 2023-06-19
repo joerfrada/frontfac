@@ -31,6 +31,7 @@ import { TableCheckboxModalComponent } from '../views/table-checkbox-modal/table
 import { SelectEspecialidadModalComponent } from '../views/select-especialidad-modal/select-especialidad-modal.component';
 import { SelectGradoModalComponent } from '../views/select-grado-modal/select-grado-modal.component';
 import { SelectRolModalComponent } from '../views/select-rol-modal/select-rol-modal.component';
+import { RestrictDirective } from '../directives/restrict.directive';
 
 @NgModule({
   declarations: [
@@ -59,7 +60,8 @@ import { SelectRolModalComponent } from '../views/select-rol-modal/select-rol-mo
     TableCheckboxModalComponent,
     SelectEspecialidadModalComponent,
     SelectGradoModalComponent,
-    SelectRolModalComponent
+    SelectRolModalComponent,
+    RestrictDirective
   ],
   imports: [
     CommonModule,

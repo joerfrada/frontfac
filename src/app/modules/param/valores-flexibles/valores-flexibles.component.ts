@@ -91,18 +91,9 @@ export class ValoresFlexiblesComponent implements OnInit {
 
   searchValor(e: any) {
     let filtro = e.target.value.trim().toLowerCase();
-    if (filtro.length == 0) {
-      this.varvalor = this.varvalorTemp;
-    }
-    else {
-      this.varvalor = this.varvalorTemp.filter((item: any) => {
-        if (item.lista_dinamica.toString().toLowerCase().indexOf(filtro) !== -1 ||
-            item.lista_dinamica_padre.toString().toLowerCase().indexOf(filtro) !== -1) {
-            return true;
-        }
-        return false;
-      });
-    }
+    this.varvalor = this.varvalorTemp.filter((val: any) =>
+      val.lista_dinamica.toLowerCase().includes(filtro) || val.lista_dinamica_padre.toLowerCase().includes(filtro)
+    );
   }
 
   getNombresListasFull() {
@@ -211,49 +202,69 @@ export class ValoresFlexiblesComponent implements OnInit {
     this.model.varNombreLista.descripcion = data.descripcion;
     this.model.varNombreLista.nombre_lista_padre_id = data.nombre_lista_padre_id;
     this.model.varNombreLista.activo = (data.activo == 'S') ? true : false;
-
-    console.log(this.model.varNombreLista);
   }
 
   saveNombreLista() {
     this.model.varNombreLista.nombre_lista_padre_id = Number(this.model.varNombreLista.nombre_lista_padre_id);
-    
-    this.listaDinamica.createNombresListas(this.model.varNombreLista).subscribe((data => {
-      let response: any = this.api.ProcesarRespuesta(data);
-      if (response.tipo == 0) {
-        swal({
-          title: 'Nombres Listas',
-          text: response.mensaje,
-          allowOutsideClick: false,
-          showConfirmButton: true,
-          type: 'success'
-        }).then((result: any) => {
-          this.modal = false;
-          this.reload();
-        })
-      }
-    }));
+
+    if (this.model.varNombreLista == "") {
+      swal({
+        title: 'ERROR',
+        text: "Por favor ingrese el campo 'Nombre Lista'",
+        allowOutsideClick: false,
+        showConfirmButton: true,
+        type: 'error'
+      })
+    }
+    else {
+      this.listaDinamica.createNombresListas(this.model.varNombreLista).subscribe((data => {
+        let response: any = this.api.ProcesarRespuesta(data);
+        if (response.tipo == 0) {
+          swal({
+            title: 'Nombres Listas',
+            text: response.mensaje,
+            allowOutsideClick: false,
+            showConfirmButton: true,
+            type: 'success'
+          }).then((result: any) => {
+            this.modal = false;
+            this.reload();
+          })
+        }
+      }));
+    }
   }
 
   updateNombreLista() {
     this.model.varNombreLista.nombre_lista_padre_id = Number(this.model.varNombreLista.nombre_lista_padre_id);
    
-    this.listaDinamica.updateNombresListas(this.model.varNombreLista).subscribe((data => {
-      let response: any = this.api.ProcesarRespuesta(data);
-      if (response.tipo == 0) {
-        swal({
-          title: 'Nombres Listas',
-          text: response.mensaje,
-          allowOutsideClick: false,
-          showConfirmButton: true,
-          type: 'success'
-        }).then((result: any) => {
-          this.modal = false;
-          this.openValorById(this.model.varNombreLista.nombre_lista_id);
-          this.reload();
-        })
-      }
-    }));
+    if (this.model.varNombreLista == "") {
+      swal({
+        title: 'ERROR',
+        text: "Por favor ingrese el campo 'Nombre Lista'",
+        allowOutsideClick: false,
+        showConfirmButton: true,
+        type: 'error'
+      })
+    }
+    else {
+      this.listaDinamica.updateNombresListas(this.model.varNombreLista).subscribe((data => {
+        let response: any = this.api.ProcesarRespuesta(data);
+        if (response.tipo == 0) {
+          swal({
+            title: 'Nombres Listas',
+            text: response.mensaje,
+            allowOutsideClick: false,
+            showConfirmButton: true,
+            type: 'success'
+          }).then((result: any) => {
+            this.modal = false;
+            this.openValorById(this.model.varNombreLista.nombre_lista_id);
+            this.reload();
+          })
+        }
+      }));
+    }
   }
 
   crearValorModal() {

@@ -43,7 +43,8 @@ export class Model {
     especialidad: "",
     area_id: 0,
     area: "",
-    cargo_ruta_id: 0
+    cargo_ruta_id: 0,
+    ruta_carrera_id: 0
   }
 
   varDetalleCargo: any = {
@@ -614,8 +615,6 @@ export class RutaComponent implements OnInit {
     this.piramideModal = true;
     this.consultaModal = false;
 
-    this.model.varConsulta.especialidad_id = Number(this.model.varConsulta.especialidad_id);
-    this.model.varConsulta.area_id = Number(this.model.varConsulta.area_id);
     this.titleEsp = "Pirámide (Especialidad: " + this.model.varConsulta.especialidad + " / Área de Conocimiento: " + this.model.varConsulta.area + ")";
 
     this.ruta.getGradosByEspecialidad(this.model.varConsulta).subscribe(data => {
@@ -635,6 +634,7 @@ export class RutaComponent implements OnInit {
 
   closePiramideModal(bol: any) {
     this.piramideModal = bol;
+    this.reload();
   }
 
   openDetalle(dato: any, title: any) {
@@ -951,6 +951,7 @@ export class RutaComponent implements OnInit {
       this.model.varConsulta.especialidad = data.especialidad;
       this.model.varConsulta.area_id = data.area_id;
       this.model.varConsulta.area = data.area;
+      this.model.varConsulta.ruta_carrera_id = data.ruta_carrera_id;
       this.model.titleRuta = "Ruta de Carrera (" + data.tipo_ruta + " / " + data.tipo_categoria + " / " + data.cuerpo + " / Especialidad: " + data.especialidad + " / Área de Conocimiento: " + data.area +")";
     }
     if (inputform == 'cargo') {

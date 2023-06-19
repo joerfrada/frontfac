@@ -131,7 +131,15 @@
                     </div>
                 </div>
             </div>
-            <div class="pagination-content"></div>
+            <div class="pagination-content" *ngIf="tab == 1">
+                Registros totales: {{ varcuerpo?.length }}
+            </div>
+            <div class="pagination-content" *ngIf="tab == 2">
+                Registros totales: {{ varespecialidad?.length }}
+            </div>
+            <div class="pagination-content" *ngIf="tab == 3">
+                Registros totales: {{ vararea?.length }}
+            </div>
         </div>
     </div>
 </div>
