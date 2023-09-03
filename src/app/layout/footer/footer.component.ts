@@ -8,10 +8,14 @@ import { Component, OnInit } from '@angular/core';
 export class FooterComponent implements OnInit {
 
   version = "v.1.0.1";
+  year: any;
   
   constructor() { }
 
   ngOnInit(): void {
+    const fecha = new Date();
+
+    this.year = fecha.getFullYear();
   }
 
 }

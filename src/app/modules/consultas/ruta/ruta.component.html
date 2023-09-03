@@ -143,7 +143,7 @@
                             <td>
                                 <div class="table-checkbox-component">
                                     <label>
-                                        <input type="checkbox" checked="checked" [(ngModel)]="item.activo" [disabled]="IsLectura" >
+                                        <input type="checkbox" checked="checked" [(ngModel)]="item.activo" [disabled]="IsLectura" (change)="changeRuta(i)" >
                                     </label>
                                 </div>
                             </td>

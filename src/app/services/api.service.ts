@@ -8,8 +8,8 @@ declare var swal:any;
   providedIn: 'root'
 })
 export class ApiService {
-  private baseurl = "http://localhost/apiplan/api/";
-  // private baseurl = "https://plancarrera.fac.mil.co/apiplan/api/";
+  // private baseurl = "http://localhost/apiplan/api/";
+  private baseurl = "https://plancarrera.fac.mil.co/apiplan/api/";
 
   constructor() { }
 

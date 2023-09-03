@@ -478,6 +478,7 @@ export class RutaComponent implements OnInit {
       if (response.tipo == 0) {
         response.result.forEach((x: any) => {
           x.NuevoRegistro = false;
+          x.x = 0;
           x.activo = (x.activo == 'S') ? true : false;
         });
         this.varruta = response.result;
@@ -693,7 +694,7 @@ export class RutaComponent implements OnInit {
   }
 
   addRuta() {
-    this.varruta.push({ruta_id:0,ruta_carrera_id:0,cargo_id:0,cargo_prev_id:0,cargo: "", ruta_padre_id:0,activo:true,usuario_creador: this.currentUser.usuario,usuario_modificador: this.currentUser.usuario, NuevoRegistro: true})
+    this.varruta.push({ruta_id:0,ruta_carrera_id:0,cargo_id:0,cargo_prev_id:0,cargo: "", ruta_padre_id:0,activo:true,usuario_creador: this.currentUser.usuario,usuario_modificador: this.currentUser.usuario, NuevoRegistro: true, x: 0})
   }
 
   deleteRuta(id: any) {
@@ -749,6 +750,10 @@ export class RutaComponent implements OnInit {
       this.vargrado = this.vargradoSubOficial;
       this.varruta = [];
     }
+  }
+
+  changeRuta(index: any) {
+    this.varruta[index].x = 1;
   }
 
   saveRuta() {
@@ -830,9 +835,11 @@ export class RutaComponent implements OnInit {
               });
             }
             else {
-              this.ruta.updateRutas(element).subscribe(data1 => {
-                this.api.ProcesarRespuesta(data1);
-              });
+              if (element.x == 1) {
+                this.ruta.updateRutas(element).subscribe(data1 => {
+                  this.api.ProcesarRespuesta(data1);
+                });
+              }
             }
           });
         }
