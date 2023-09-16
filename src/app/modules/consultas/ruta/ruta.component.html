@@ -121,34 +121,32 @@
             </div>
             
             <div class="line-col"></div>
-            <div class="col col100 title-row">Rutas</div>
+            <div class="col col100 title-row">Rutas {{ strRegistro }}</div>
+            <div class="tabla-ruta">
             <div class="table-content">
                 <table class="table flex-table">
                     <thead>
                         <tr>
-                            <th>Cargo</th>
-                            <th>Estado</th>
-                            <th *ngIf="!IsLectura">Acciones</th>
+                            <th style="width: 80% !important;">Cargo</th>
+                            <th style="width: 10% !important; ">Estado</th>
+                            <th style="width: 10% !important;" *ngIf="!IsLectura">Acciones</th>
                         </tr>
                     </thead>
                     <tbody class="scroll">
                         <tr *ngFor="let item of varruta; let i = index">
-                            <td>
-                                <!-- <select [(ngModel)]="item.cargo_id" (change)="changeCargo(i, item.cargo_id)">
-                                    <option value="0">Seleccionar</option>
-                                    <option *ngFor="let cargo of varcargo" value="{{cargo.cargo_id}}">{{cargo.cargo}}</option>
-                                </select> -->
-                                <input type="text" [disabled]="IsLectura" placeholder="Seleccionar..." [(ngModel)]="item.cargo" (click)="saveCargo(i)">
+                            <td style="width: 80% !important;">
+                                <input type="text" [disabled]="IsLectura" placeholder="Seleccionar..." title="{{item.cargo}}" [(ngModel)]="item.cargo" (click)="saveCargo(i)">
                             </td>
-                            <td>
+                            <td style="width: 10% !important;">
                                 <div class="table-checkbox-component">
                                     <label>
                                         <input type="checkbox" checked="checked" [(ngModel)]="item.activo" [disabled]="IsLectura" (change)="changeRuta(i)" >
                                     </label>
                                 </div>
                             </td>
-                            <td *ngIf="!IsLectura">
+                            <td style="width: 10% !important;" *ngIf="!IsLectura">
                                 <i class="fa fa-1m5x fa-times-circle pointer noselect" style="color: black !important;" *ngIf="item.NuevoRegistro" (click)="deleteRuta(i)"></i>
+                                <i class="fa fa-1m5x fa-trash pointer noselect" style="color: red !important;" *ngIf="item.EliminarRegistro" (click)="eliminarRuta(item, i)"></i>
                             </td>
                         </tr>
                         <tr class="add_row_full" *ngIf="!IsLectura">
@@ -159,6 +157,7 @@
                         </tr>
                     </tbody>
                 </table>
+            </div>
             </div>
         </div>
     </div>

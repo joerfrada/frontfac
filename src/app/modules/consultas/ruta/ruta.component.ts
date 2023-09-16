@@ -194,6 +194,8 @@ export class RutaComponent implements OnInit {
     actualizar: 0,
     eliminar: 0
   }
+  
+  strRegistro: any;
 
   constructor(private router: Router,
               private api: ApiService,
@@ -429,6 +431,7 @@ export class RutaComponent implements OnInit {
     this.model.tipo = "C";
     this.IsLectura = false;
     this.varruta = [];
+    this.strRegistro = "(0 registros)"; 
 
     this.model.varRutaCarrera.usuario_creador = this.currentUser.usuario;
     this.model.varRutaCarrera.usuario_modificador = this.currentUser.usuario;
@@ -473,16 +476,37 @@ export class RutaComponent implements OnInit {
       this.vargrado = this.vargradoSubOficial;
     }
 
-    this.ruta.getRutas({ruta_carrera_id: data.ruta_carrera_id}).subscribe(data => {
+    // this.ruta.getRutas({ruta_carrera_id: data.ruta_carrera_id}).subscribe(data => {
+    //   let response: any = this.api.ProcesarRespuesta(data);
+    //   if (response.tipo == 0) {
+    //     response.result.forEach((x: any) => {
+    //       x.NuevoRegistro = false;
+    //       x.x = 0;
+    //       x.activo = (x.activo == 'S') ? true : false;
+    //     });
+    //     this.varruta = response.result;
+    //     this.varrutaTemp = response.result;
+
+    //     this.strRegistro = (this.varruta.length == 0) ? "(0 registros)" : (this.varruta.length == 1) ? "(1 registro)" : "(" + this.varruta.length + " registros)";
+    //   }
+    // });
+    this.getRutasInd(data.ruta_carrera_id);
+  }
+
+  getRutasInd(id: any) {
+    this.ruta.getRutas({ruta_carrera_id: id}).subscribe(data => {
       let response: any = this.api.ProcesarRespuesta(data);
       if (response.tipo == 0) {
         response.result.forEach((x: any) => {
           x.NuevoRegistro = false;
+          x.EliminarRegistro = true;
           x.x = 0;
           x.activo = (x.activo == 'S') ? true : false;
         });
         this.varruta = response.result;
         this.varrutaTemp = response.result;
+
+        this.strRegistro = (this.varruta.length == 0) ? "(0 registros)" : (this.varruta.length == 1) ? "(1 registro)" : "(" + this.varruta.length + " registros)";
       }
     });
   }
@@ -694,11 +718,13 @@ export class RutaComponent implements OnInit {
   }
 
   addRuta() {
-    this.varruta.push({ruta_id:0,ruta_carrera_id:0,cargo_id:0,cargo_prev_id:0,cargo: "", ruta_padre_id:0,activo:true,usuario_creador: this.currentUser.usuario,usuario_modificador: this.currentUser.usuario, NuevoRegistro: true, x: 0})
+    this.varruta.push({ruta_id:0,ruta_carrera_id:0,cargo_id:0,cargo_prev_id:0,cargo: "", ruta_padre_id:0,activo:true,usuario_creador: this.currentUser.usuario,usuario_modificador: this.currentUser.usuario, NuevoRegistro: true, EliminarRegistro: false, x: 0})
+    this.strRegistro = (this.varruta.length == 1) ? "(1 registro)" : "(" + this.varruta.length + " registros)";
   }
 
   deleteRuta(id: any) {
     this.varruta.splice(id, 1);
+    this.strRegistro = (this.varruta.length == 0) ? "(0 registros)" : (this.varruta.length == 1) ? "(1 registro)" : "(" + this.varruta.length + " registros)";
   }
 
   changeCargo(index: any, id: any) {
@@ -850,8 +876,32 @@ export class RutaComponent implements OnInit {
           showConfirmButton: true,
           type: 'success'
         }).then((result: any) => {
-          this.modal = false;
-          this.reload();
+          // this.modal = false;
+          // this.reload();
+          this.getRutasInd(this.model.varRutaCarrera.ruta_carrera_id);
+        });
+      }
+    });
+  }
+
+  eliminarRuta(item: any, index: any) {
+    swal({
+      title: 'Rutas',
+      text: "¿Está seguro que desea eliminar el registro?",
+      allowOutsideClick: false,
+      showConfirmButton: true,
+      showCancelButton: true,
+      confirmButtonText: 'Eliminar',
+      cancelButtonText: 'Cancelar',
+      cancelButtonColor: "#ed1c24",
+      type: 'question'
+    }).then((result: any) => {
+      if (result.dismiss != "cancel") {
+        this.ruta.deleteRuta({ ruta_id: item.ruta_id }).subscribe(data => {
+          let response: any = this.api.ProcesarRespuesta(data);
+          if (response.tipo == 0) {
+            this.varruta.splice(index, 1);
+          }
         });
       }
     });

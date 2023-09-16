@@ -218,3 +218,11 @@
         }
     }
 }
+
+.tabla-ruta .table-content table.flex-table tr th {
+    flex: none !important;
+}
+
+.tabla-ruta .table-content table.flex-table tr td {
+    flex: none !important;
+}

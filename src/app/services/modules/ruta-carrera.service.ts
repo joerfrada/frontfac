@@ -35,6 +35,7 @@ export class RutaCarreraService {
   private apiGetRutas = this.api.getBaseUrl + "rutacarrera/getRutas";
   private apiCreateRutas = this.api.getBaseUrl + "rutacarrera/crearRutas";
   private apiUpdateRutas = this.api.getBaseUrl + "rutacarrera/actualizarRutas";
+  private apiDeleteRuta = this.api.getBaseUrl + "rutacarrera/eliminarRuta";
   private apiGetRutasByRutaCarrera = this.api.getBaseUrl + "rutacarrera/getRutasByRutaCarrera";
   private apiGetCargosByRutas = this.api.getBaseUrl + "rutacarrera/getCargosByRutas";
   private apiGetRutasFull = this.api.getBaseUrl + "rutacarrera/getRutasFull";
@@ -146,6 +147,11 @@ export class RutaCarreraService {
 
   public updateRutas(data: any) : Observable<any> {
     return this.http.post<any>(this.apiUpdateRutas, JSON.stringify(data), this.api.getHttpOptions('g'))
+    .pipe(retry(1), catchError(this.api.errorHandle));
+  }
+
+  public deleteRuta(data: any): Observable<any> {
+    return this.http.post<any>(this.apiDeleteRuta, JSON.stringify(data), this.api.getHttpOptions('g'))
     .pipe(retry(1), catchError(this.api.errorHandle));
   }
 
