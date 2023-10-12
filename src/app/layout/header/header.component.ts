@@ -14,7 +14,7 @@ export class HeaderComponent implements OnInit {
   @Output() toggleSideBar: EventEmitter<any> = new EventEmitter();
 
   lstRoles: any = [];
-  rolModal: any = false;
+  rolModal = false;
 
   currentUser: any;
 

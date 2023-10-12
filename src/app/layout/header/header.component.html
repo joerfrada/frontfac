@@ -21,7 +21,25 @@
         </li> -->
         <li>
             <span class="app-nav-user">{{currentUser.usuario}}</span>
-        </li>        
+        </li>
+        <li>
+            <div class="app-nav-item pointer noselect" (click)="openRoles();">
+                <i class="fa fa-shield-alt fa-lg"></i>
+                <div class="rol_notificacion top" *ngIf="rolModal">
+                    <div class="header-rol">
+                        <span>Roles Activo</span>
+                    </div>
+                    <div class="body-rol">
+                        <ul>
+                            <li *ngFor="let item of lstRoles">{{ item.rol }}</li>
+                        </ul>
+                    </div>
+                    <div class="footer-rol">
+                        <button type="button" class="button btn-red" (click)="closeRoles(); $event.stopPropagation()">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </li>
         <li>
             <div class="app-nav-item pointer noselect" (click)="logout()">
                 <i class="fa fa-sign-out-alt fa-lg"></i>

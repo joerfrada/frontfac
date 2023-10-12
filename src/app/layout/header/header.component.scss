@@ -125,12 +125,13 @@
     color: black;
 
     ul {
-        list-style: none;
+        list-style-type: square;
+        list-style-position: inside;
+        padding-left: 10px;
     }
 
     li {
-        font-size: 12px;
-        padding-left: 10px;
+        font-size: 11px;
     }
 }
 
