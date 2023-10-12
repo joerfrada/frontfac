@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from '../../../services/api.service';
 import { RolService } from '../../../services/modules/rol.service';
+import { UsuarioService } from '../../../services/modules/usuario.service';
 
 declare var swal:any;
 
@@ -63,14 +64,23 @@ export class RolesComponent implements OnInit {
 
   currentUser: any;
 
+  varPermisos: any = {
+    consultar: 0,
+    crear: 0,
+    actualizar: 0,
+    eliminar: 0
+  }
+
   constructor(private router: Router,
               private api: ApiService,
-              private rol: RolService) {
-    this.currentUser = JSON.parse(localStorage.getItem("currentUser") as any)[0];
+              private rol: RolService,
+              private usuario: UsuarioService) {
+    this.currentUser = JSON.parse(localStorage.getItem("currentUser") as any);
     this.model.varRol.usuario_creador = this.currentUser.usuario;
     this.model.varRol.usuario_modificador = this.currentUser.usuario;
     this.model.varRolPrivilegio.usuario_creador = this.currentUser.usuario;
     this.model.varRolPrivilegio.usuario_modificador = this.currentUser.usuario;
+    this.getPermisos(this.currentUser.usuario, 'AD');
   }
 
   ngOnInit(): void {
@@ -394,5 +404,17 @@ export class RolesComponent implements OnInit {
     if (e.target.value == "") {
       this.varhistorial = this.varhistorialTemp;
     }
+  }
+
+  getPermisos(user: any, cod_modulo: any) {
+    this.usuario.getPermisosByUser({usuario: user, cod_modulo: cod_modulo}).subscribe(data => {
+      let response: any = this.api.ProcesarRespuesta(data);
+      if (response.tipo == 0) {
+        this.varPermisos.consultar = response.result.consultar;
+        this.varPermisos.crear = response.result.crear;
+        this.varPermisos.actualizar = response.result.actualizar;
+        this.varPermisos.eliminar = response.result.eliminar;
+      }
+    })
   }
 }

@@ -8,7 +8,7 @@
             <div class="filter-content">
                 <ul class="filter-inner">
                     <li class="filter-item">
-                        <button type="button" class="button btn-default" (click)="openModal()">Crear</button>
+                        <button type="button" class="button btn-default" *ngIf="varPermisos.crear == 1" (click)="openModal()">Crear</button>
                     </li>
                     <li class="filter-item">
                         <div class="input-group-btn">
@@ -25,9 +25,7 @@
                     <thead>
                         <tr>
                             <th>Usuario</th>
-                            <th>Nombres</th>
-                            <th>Apellidos</th>
-                            <th>Num. Identificación</th>
+                            <th>Nombre Completo</th>
                             <th>Estado</th>
                             <th>Acciones</th>
                         </tr>
@@ -35,16 +33,14 @@
                     <tbody class="scroll">
                         <tr *ngFor="let item of varhistorial; let i = index">
                             <td>{{item.usuario}}</td>
-                            <td>{{item.nombres}}</td>
-                            <td>{{item.apellidos}}</td>
-                            <td>{{item.num_identificacion}}</td>
+                            <td>{{item.nombre_completo}}</td>
                             <td>
                                 <i class="fa fa-1m5x fa-check-circle" *ngIf="item.activo == 'S'"></i>
                                 <i class="fa fa-1m5x fa-times-circle" *ngIf="item.activo == 'N'"></i>
                             </td>
                             <td class="table-buttons-action">
-                                <button type="button" class="button btn-edit" (click)="editUsuario(item)">Editar</button>
-                                <button type="button" class="button btn-edit" (click)="openRol(item)">Asignar Rol</button>
+                                <button type="button" class="button btn-edit" (click)="editUsuario(item)" *ngIf="varPermisos.actualizar == 1">Editar</button>
+                                <button type="button" class="button btn-edit" (click)="openRol(item)" *ngIf="varPermisos.crear == 1 || varPermisos.actualizar == 1">Asignar Rol</button>
                                 <!--<button *ngIf="item.usuario_rol_id != 0" type="button" class="button btn-edit" (click)="openViewMenu(item)">Ver menu</button>-->
                             </td>
                         </tr>
@@ -69,6 +65,14 @@
                 <input type="text" [(ngModel)]="model.varUsuario.usuario">
             </div>
             <div class="col col33">
+                <div class="label-row">Nombre Completo</div>
+                <input type="text" [(ngModel)]="model.varUsuario.nombre_completo">
+            </div>
+            <div class="col col33">
+                <div class="label-row">Correo Electrónico</div>
+                <input type="text" [(ngModel)]="model.varUsuario.email" disabled>
+            </div>
+            <!-- <div class="col col33">
                 <div class="label-row">Nombres</div>
                 <input type="text" [(ngModel)]="model.varUsuario.nombres">
             </div>
@@ -79,7 +83,7 @@
             <div class="col col33">
                 <div class="label-row">Num. Identificación</div>
                 <input type="number" [(ngModel)]="model.varUsuario.num_identificacion" min="0">
-            </div>
+            </div> -->
             <div class="col col33">
                 <div class="label-row">Activo</div>
                 <div class="checkbox-component">

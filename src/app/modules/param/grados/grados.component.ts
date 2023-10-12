@@ -57,10 +57,10 @@ export class GradosComponent implements OnInit {
   }
 
   constructor(private router: Router, private api: ApiService, private grado: GradoService, private usuario: UsuarioService) { 
-    this.currentUser = JSON.parse(localStorage.getItem("currentUser") as any)[0];
+    this.currentUser = JSON.parse(localStorage.getItem("currentUser") as any);
     this.model.varGrado.usuario_creador = this.currentUser.usuario;
     this.model.varGrado.usuario_modificador = this.currentUser.usuario;
-    this.getPermisos(this.currentUser.usuario, this.router.url);
+    this.getPermisos(this.currentUser.usuario, 'PM');
   }
 
   ngOnInit(): void {
@@ -254,9 +254,8 @@ export class GradosComponent implements OnInit {
     this.model.varGrado.activo = (data.activo == 'S') ? true : false;
   }
 
-  getPermisos(user: any, url: any) {
-    url = url.replace('/fac', '');
-    this.usuario.getPermisosByUser({usuario: user, url: url}).subscribe(data => {
+  getPermisos(user: any, cod_modulo: any) {
+    this.usuario.getPermisosByUser({usuario: user, cod_modulo: cod_modulo}).subscribe(data => {
       let response: any = this.api.ProcesarRespuesta(data);
       if (response.tipo == 0) {
         this.varPermisos.consultar = response.result.consultar;

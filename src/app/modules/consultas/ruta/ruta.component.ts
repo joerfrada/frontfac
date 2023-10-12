@@ -197,6 +197,8 @@ export class RutaComponent implements OnInit {
   
   strRegistro: any;
 
+  width_ruta: any = "31vw";
+
   constructor(private router: Router,
               private api: ApiService,
               private ruta: RutaCarreraService,
@@ -206,10 +208,10 @@ export class RutaComponent implements OnInit {
               private cargo: CargoService,
               private grado: GradoService,
               private usuario: UsuarioService) { 
-    this.currentUser = JSON.parse(localStorage.getItem("currentUser") as any)[0];
+    this.currentUser = JSON.parse(localStorage.getItem("currentUser") as any);
     this.model.varRutaCarrera.usuario_creador = this.currentUser.usuario;
     this.model.varRutaCarrera.usuario_modificador = this.currentUser.usuario;
-    this.getPermisos(this.currentUser.usuario, this.router.url);
+    this.getPermisos(this.currentUser.usuario, 'RU');
     this.tab = 1;
   }
 
@@ -557,21 +559,11 @@ export class RutaComponent implements OnInit {
 
   openConsulta() {
     this.consultaModal = true;
-    this.model.varConsulta.tipo_ruta = "";
-    this.model.varConsulta.tipo_ruta_id = 0;
-    this.model.varConsulta.tipo_categoria = "";
-    this.model.varConsulta.tipo_categoria_id = 0;
-    this.model.varConsulta.cuerpo = "";
-    this.model.varConsulta.cuerpo_id = 0;
-    this.model.varConsulta.especialidad = "";
-    this.model.varConsulta.especialidad_id = 0;
-    this.model.varConsulta.area = "";
-    this.model.varConsulta.area_id = 0;
-    this.model.varConsulta.cargo_ruta_id = 0;
   }
 
   closeConsultaModal(bol: any) {
     this.consultaModal = bol;
+    this.model.varConsulta = new Model().varConsulta;
   }
 
   openEspecialidad() {
@@ -598,30 +590,38 @@ export class RutaComponent implements OnInit {
       /* this.workflowModal = true;
       this.consultaModal = false; */
 
-      this.ruta.getCargosByRutas(this.model.varConsulta).subscribe(data => {
+      this.ruta.getWidthByRutas({ ruta_carrera_id: this.model.varConsulta.ruta_carrera_id }).subscribe(data => {
         let response: any = this.api.ProcesarRespuesta(data);
         if (response.tipo == 0) {
-          if (response.result.length != false) {
-            this.workflowModal = true;
-            this.consultaModal = false;
+          this.width_ruta = response.result[0].width;
 
-            this.lstRutas = response.result;
-          }
-          else {
-            swal({
-              title: 'ERROR',
-              text: 'No se encuentra la información.',
-              allowOutsideClick: false,
-              showConfirmButton: true,
-              type: 'error'
-            }).then((result: any) => {
-              this.model.varConsulta.tipo_categoria_id = 0;
-              this.model.varConsulta.especialidad_id = 0;
-              this.model.varConsulta.tipo_ruta_id = 0;
-              this.model.varConsulta.cargo_ruta_id = 0;
-              this.workflowModal = false;
-            });
-          }
+          this.ruta.getCargosByRutas(this.model.varConsulta).subscribe(data1 => {
+            let response1: any = this.api.ProcesarRespuesta(data1);
+            if (response1.tipo == 0) {
+              let existe_ruta = response1.result.length;
+              if (existe_ruta != 0) {
+                this.workflowModal = true;
+                // this.consultaModal = false;
+    
+                this.lstRutas = response1.result;
+              }
+              else {
+                swal({
+                  title: 'ERROR',
+                  text: 'No se encuentra la información.',
+                  allowOutsideClick: false,
+                  showConfirmButton: true,
+                  type: 'error'
+                }).then((result: any) => {
+                  this.model.varConsulta.tipo_categoria_id = 0;
+                  this.model.varConsulta.especialidad_id = 0;
+                  this.model.varConsulta.tipo_ruta_id = 0;
+                  this.model.varConsulta.cargo_ruta_id = 0;
+                  this.workflowModal = false;
+                });
+              }
+            }
+          });
         }
       });
     }
@@ -629,7 +629,8 @@ export class RutaComponent implements OnInit {
 
   closeWorkflowModal(bol: any) {
     this.workflowModal = bol;
-    this.reload();
+    this.model.varConsulta = new Model().varConsulta;
+    // this.reload();
   }
 
   closeViewCargoModal(bol: any) {
@@ -638,7 +639,7 @@ export class RutaComponent implements OnInit {
 
   openPiramide() {
     this.piramideModal = true;
-    this.consultaModal = false;
+    // this.consultaModal = false;
 
     this.titleEsp = "Pirámide (Especialidad: " + this.model.varConsulta.especialidad + " / Área de Conocimiento: " + this.model.varConsulta.area + ")";
 
@@ -659,7 +660,8 @@ export class RutaComponent implements OnInit {
 
   closePiramideModal(bol: any) {
     this.piramideModal = bol;
-    this.reload();
+    this.model.varConsulta = new Model().varConsulta;
+    // this.reload();
   }
 
   openDetalle(dato: any, title: any) {
@@ -1009,7 +1011,8 @@ export class RutaComponent implements OnInit {
       this.model.varConsulta.area_id = data.area_id;
       this.model.varConsulta.area = data.area;
       this.model.varConsulta.ruta_carrera_id = data.ruta_carrera_id;
-      this.model.titleRuta = "Ruta de Carrera (" + data.tipo_ruta + " / " + data.tipo_categoria + " / " + data.cuerpo + " / Especialidad: " + data.especialidad + " / Área de Conocimiento: " + data.area +")";
+      // this.model.titleRuta = "Ruta de Carrera (" + data.tipo_ruta + " / " + data.tipo_categoria + " / " + data.cuerpo + " / Especialidad: " + data.especialidad + " / Área de Conocimiento: " + data.area +")";
+      this.model.titleRuta = data.tipo_ruta + " / " + data.tipo_categoria + " / " + data.cuerpo + " / Especialidad: " + data.especialidad + " / Área de Conocimiento: " + data.area;
     }
     if (inputform == 'cargo') {
       if (this.varrutaTemp.length == 0) {
@@ -1166,9 +1169,8 @@ export class RutaComponent implements OnInit {
     });
   }
 
-  getPermisos(user: any, url: any) {
-    url = url.replace('/fac', '');
-    this.usuario.getPermisosByUser({usuario: user, url: url}).subscribe(data => {
+  getPermisos(user: any, cod_modulo: any) {
+    this.usuario.getPermisosByUser({usuario: user, cod_modulo: cod_modulo}).subscribe(data => {
       let response: any = this.api.ProcesarRespuesta(data);
       if (response.tipo == 0) {
         this.varPermisos.consultar = response.result.consultar;

@@ -202,23 +202,31 @@
     </div>
 </app-modal>
 
-<workflow-modal [title]="model.titleRuta" [show]="workflowModal" [size]="'modal-wmd-4'" (close)="closeWorkflowModal($event)">
-    <div class="semaforo">
-        <div class="directo">Directo</div>
-        <div class="indirecto">Indirecto</div>
-        <div class="externo">Externo</div>
-        <div class="confianza">Confianza</div>
-        <div class="clave">Clave</div>
-        <div class="critico">Critíco</div>
-        <div class="ninguno">N/A</div>
+<workflow-modal [title]="'Ruta de Carrera'" [show]="workflowModal" [size]="'modal-wmd-4'" (close)="closeWorkflowModal($event)">
+    <div class="ruta-info">
+        <div class="ruta-titulo">
+            <div class="ruta-titulo-inner"><b>Ruta:</b></div>
+            <div class="ruta-titulo-inner ruta-box">{{model.titleRuta}}</div>
+        </div>
+        <div class="semaforo">
+            <div class="directo">Directo</div>
+            <div class="indirecto">Indirecto</div>
+            <div class="externo">Externo</div>
+            <div class="confianza">Confianza</div>
+            <div class="clave">Clave</div>
+            <div class="critico">Critíco</div>
+            <div class="ninguno">N/A</div>
+        </div>
     </div>
     <div id="chart-ruta">
-        <div class="ruta_level">
+        <div class="ruta_level" [ngStyle]="{'min-width': width_ruta}">
             <ul *ngFor="let item of lstRutas" class="ruta_cargo">
                 <li *ngFor="let cargo of item.cargos" class="{{cargo.clase_cargo}} {{cargo.tipo_ruta}} cargo_box title">
-                    <div class="title_cargo">{{cargo.cargo}}</div>
-                    <div class="title_grado">({{cargo.grado}})</div>
-                    <i class="icon fas fa-1mx fa-arrow-circle-right pointer noselect" (click)="openDetalleCargoRutaCarrera(cargo)"></i>
+                    <div class="cargo_box_title">
+                        <div class="title_grado">{{cargo.grado}}</div>                        
+                        <i class="icon fas fa-1mx fa-arrow-circle-right pointer noselect" (click)="openDetalleCargoRutaCarrera(cargo)"></i>
+                    </div>
+                    <div class="title_cargo">{{cargo.cargo}}</div>                    
                 </li>
             </ul>
         </div>

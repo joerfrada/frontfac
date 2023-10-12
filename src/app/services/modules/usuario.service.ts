@@ -19,6 +19,7 @@ export class UsuarioService {
   private apiGetRolPrivilegiosPantalla = this.api.getBaseUrl + "usuario/getRolPrivilegiosPantalla";
   private apiGetPermisosByUser = this.api.getBaseUrl + "usuario/getPermisosByUser";
   private apiDeleteUsuariosRolesId = this.api.getBaseUrl + "usuario/eliminarUsuariosRolesId";
+  private apiGetRolesByUsuarioId = this.api.getBaseUrl + "usuario/getRolesByUsuarioId";
 
   constructor(private http: HttpClient, private api: ApiService) { }
 
@@ -69,6 +70,11 @@ export class UsuarioService {
 
   public deleteUsuariosRolesId(data: any): Observable<any> {
     return this.http.post<any>(this.apiDeleteUsuariosRolesId, JSON.stringify(data), this.api.getHttpOptions('g'))
+    .pipe(retry(1), catchError(this.api.errorHandle));
+  }
+
+  public getRolesByUsuarioId(data: any): Observable<any> {
+    return this.http.post<any>(this.apiGetRolesByUsuarioId, JSON.stringify(data), this.api.getHttpOptions('g'))
     .pipe(retry(1), catchError(this.api.errorHandle));
   }
 }

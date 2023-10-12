@@ -14,9 +14,11 @@ export class Model {
   varUsuario: any = {
     usuario_id: 0,
     usuario: "",
-    nombres: "",
-    apellidos: "",
-    num_identificacion: 0,
+    nombre_completo: "",
+    email: "",
+    // nombres: "",
+    // apellidos: "",
+    // num_identificacion: 0,
     activo: true,
     usuario_creador: "",
     usuario_modificador: ""
@@ -55,10 +57,18 @@ export class UsersComponent implements OnInit {
 
   currentUser: any;
 
+  varPermisos: any = {
+    consultar: 0,
+    crear: 0,
+    actualizar: 0,
+    eliminar: 0
+  }
+
   constructor(private router: Router, private api: ApiService, private usuario: UsuarioService, private rol: RolService, private usuarioMenu: UsuarioMenuService) {
-    this.currentUser = JSON.parse(localStorage.getItem("currentUser") as any)[0];
+    this.currentUser = JSON.parse(localStorage.getItem("currentUser") as any);
     this.model.varUsuario.usuario_creador = this.currentUser.usuario;
     this.model.varUsuario.usuario_modificador = this.currentUser.usuario;
+    this.getPermisos(this.currentUser.usuario, 'AD');
   }
 
   ngOnInit(): void {
@@ -80,7 +90,8 @@ export class UsersComponent implements OnInit {
     }
     else {
       this.varhistorial = this.varhistorialTemp.filter((item: any) => {
-        if (item.rol.toString().toLowerCase().indexOf(filtro) !== -1) {
+        if (item.usuario.toString().toLowerCase().indexOf(filtro) !== -1 ||
+            item.nombre_completo.toString().toLowerCase().index(filtro) !== -1) {
             return true;
         }
         return false;
@@ -92,9 +103,10 @@ export class UsersComponent implements OnInit {
     this.model.varUsuario = {
       usuario_id: 0,
       usuario: "",
-      nombres: "",
-      apellidos: "",
-      num_identificacion: 0,
+      email: "",
+      // nombres: "",
+      // apellidos: "",
+      // num_identificacion: 0,
       activo: true,
       usuario_creador: this.currentUser.usuario,
       usuario_modificador: this.currentUser.usuario
@@ -160,9 +172,11 @@ export class UsersComponent implements OnInit {
 
     this.model.varUsuario.usuario_id = dato.usuario_id;
     this.model.varUsuario.usuario = dato.usuario;
-    this.model.varUsuario.nombres = dato.nombres;
-    this.model.varUsuario.apellidos = dato.apellidos;
-    this.model.varUsuario.num_identificacion = dato.num_identificacion;
+    this.model.varUsuario.nombre_completo = dato.nombre_completo;
+    this.model.varUsuario.email = dato.email;
+    // this.model.varUsuario.nombres = dato.nombres;
+    // this.model.varUsuario.apellidos = dato.apellidos;
+    // this.model.varUsuario.num_identificacion = dato.num_identificacion;
     this.model.varUsuario.activo = (dato.activo == 'S') ? true : false;
   }
 
@@ -348,5 +362,17 @@ export class UsersComponent implements OnInit {
     if (e.target.value == "") {
       this.varhistorial = this.varhistorialTemp;
     }
+  }
+
+  getPermisos(user: any, cod_modulo: any) {
+    this.usuario.getPermisosByUser({usuario: user, cod_modulo: cod_modulo}).subscribe(data => {
+      let response: any = this.api.ProcesarRespuesta(data);
+      if (response.tipo == 0) {
+        this.varPermisos.consultar = response.result.consultar;
+        this.varPermisos.crear = response.result.crear;
+        this.varPermisos.actualizar = response.result.actualizar;
+        this.varPermisos.eliminar = response.result.eliminar;
+      }
+    })
   }
 }

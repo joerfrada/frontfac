@@ -25,6 +25,7 @@ export class RutaCarreraService {
   private apiGetCuerposEspecialidadesAreasRutaCarrera = this.api.getBaseUrl + "rutacarrera/getCuerposEspecialidadesAreasRutaCarrera";
   private apiGetEspecialidadesRutas = this.api.getBaseUrl + "rutacarrera/getEspecialidadesRutas";
   private apiGetRutaCarreraActivos = this.api.getBaseUrl + "rutacarrera/getRutaCarreraActivos";
+  private apiGetWidthByRutas = this.api.getBaseUrl + "rutacarrera/getWidthByRutas";
 
   // Lineas de Cargo
   private apiGetLineasCargos = this.api.getBaseUrl + "rutacarrera/getLineasCargos";
@@ -167,6 +168,11 @@ export class RutaCarreraService {
 
   public getRutasFull(): Observable<any> {
     return this.http.get<any>(this.apiGetRutasFull, this.api.getHttpOptions('g'))
+    .pipe(retry(1), catchError(this.api.errorHandle));
+  }
+
+  public getWidthByRutas(data: any) : Observable<any> {
+    return this.http.post<any>(this.apiGetWidthByRutas, JSON.stringify(data), this.api.getHttpOptions('g'))
     .pipe(retry(1), catchError(this.api.errorHandle));
   }
 }

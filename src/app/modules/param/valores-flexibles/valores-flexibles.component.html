@@ -7,9 +7,9 @@
         <div class="flex-content">
             <div class="filter-content">
                 <ul class="filter-inner">
-                    <li class="filter-item">
+                    <!-- <li class="filter-item">
                         <button type="button" class="button btn-default" (click)="openModal()">Crear</button>
-                    </li>
+                    </li> -->
                     <li class="filter-item">
                         <div class="input-group-btn">
                             <input type="search" placeholder="Buscar..." (keyup)="searchLista($event)" (search)="clearListaSearch($event)">
@@ -42,8 +42,8 @@
                                 <!-- <button type="button" class="button btn-icon btn-trash"><i class="fa fa-trash"></i></button>
                                 <button type="button" class="button btn-icon btn-edit"><i class="fa fa-edit"></i></button>
                                 <button type="button" class="button btn-icon btn-plus"><i class="fa fa-plus"></i></button> -->
-                                <button type="button" class="button btn-edit" (click)="editNombreLista(item)">Editar</button>
-                                <button type="button" class="button btn-edit" (click)="openValor(item)">Valores</button>
+                                <button type="button" class="button btn-edit" (click)="editNombreLista(item)" *ngIf="varPermisos.actualizar == 1">Editar</button>
+                                <button type="button" class="button btn-edit" (click)="openValor(item)" *ngIf="varPermisos.crear == 1 || varPermisos.actualizar == 1">Valores</button>
                                 <!-- <button type="button" class="button btn-default">Detalle</button> -->
                             </td>
                         </tr>

@@ -220,10 +220,10 @@ export class CargosComponent implements OnInit {
               private area: AreaService,
               private grado: GradoService,
               private usuario: UsuarioService) { 
-    this.currentUser = JSON.parse(localStorage.getItem("currentUser") as any)[0];
+    this.currentUser = JSON.parse(localStorage.getItem("currentUser") as any);
     this.model.varCargo.usuario_creador = this.currentUser.usuario;
     this.model.varCargo.usuario_modificador = this.currentUser.usuario;
-    this.getPermisos(this.currentUser.usuario, this.router.url);
+    this.getPermisos(this.currentUser.usuario, 'PM');
   }
 
   ngOnInit(): void {
@@ -1239,9 +1239,8 @@ export class CargosComponent implements OnInit {
     }
   }
 
-  getPermisos(user: any, url: any) {
-    url = url.replace('/fac', '');
-    this.usuario.getPermisosByUser({usuario: user, url: url}).subscribe(data => {
+  getPermisos(user: any, cod_modulo: any) {
+    this.usuario.getPermisosByUser({usuario: user, cod_modulo: cod_modulo}).subscribe(data => {
       let response: any = this.api.ProcesarRespuesta(data);
       if (response.tipo == 0) {
         this.varPermisos.consultar = response.result.consultar;

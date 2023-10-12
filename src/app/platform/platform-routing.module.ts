@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { LoginComponent } from '../login/login.component';
+// import { LoginComponent } from '../login/login.component';
+import { SamlComponent } from '../saml/saml.component';
 import { PlatformComponent } from './platform.component';
 import { HomeComponent } from '../modules/home/home.component';
 import { UsersComponent } from '../modules/admin/users/users.component';
@@ -14,7 +15,9 @@ import { SiglasComponent } from '../modules/param/siglas/siglas.component';
 import { RutaComponent } from '../modules/consultas/ruta/ruta.component';
 
 const routes: Routes = [
-  { path: '', component: LoginComponent },
+  // { path: '', component: LoginComponent },
+  { path: 'saml', component: SamlComponent },
+  { path: '',   redirectTo: '/saml', pathMatch: 'full' },
   { path: 'fac', component: PlatformComponent, children: [
     { path: 'home', component: HomeComponent },
     { path: 'modulo/admin/usuarios', component: UsersComponent },

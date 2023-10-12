@@ -67,7 +67,7 @@ export class ApiService {
         }).then((result: any) => {
           setTimeout(() => {
             localStorage.clear();
-            window.location.href = '/login';
+            window.location.href = '/';
           }, 500);
         });
       }
@@ -111,7 +111,7 @@ export class ApiService {
       }).then((result: any) => {
         setTimeout(() => {
           localStorage.clear();
-          window.location.href = '/login';
+          window.location.href = 'https://plancarrera.fac.mil.co/apiplan/logout';
         }, 500);
       });
     }

@@ -5,6 +5,7 @@ import { HighchartsChartModule } from 'highcharts-angular';
 
 import { PlatformRoutingModule } from './platform-routing.module';
 import { LoginComponent } from '../login/login.component';
+import { SamlComponent } from '../saml/saml.component';
 import { PlatformComponent } from './platform.component';
 import { LayoutModule } from '../layout/layout.module';
 import { HomeComponent } from '../modules/home/home.component';
@@ -36,6 +37,7 @@ import { RestrictDirective } from '../directives/restrict.directive';
 @NgModule({
   declarations: [
     LoginComponent,
+    SamlComponent,
     PlatformComponent,
     HomeComponent,
     UsersComponent,
@@ -61,7 +63,7 @@ import { RestrictDirective } from '../directives/restrict.directive';
     SelectEspecialidadModalComponent,
     SelectGradoModalComponent,
     SelectRolModalComponent,
-    RestrictDirective
+    RestrictDirective    
   ],
   imports: [
     CommonModule,

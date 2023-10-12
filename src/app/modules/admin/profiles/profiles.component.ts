@@ -37,7 +37,7 @@ export class ProfilesComponent implements OnInit {
   currentUser: any;
 
   constructor(private router: Router, private api: ApiService, private perfil: PerfilService) { 
-    this.currentUser = JSON.parse(localStorage.getItem("currentUser") as any)[0];
+    this.currentUser = JSON.parse(localStorage.getItem("currentUser") as any);
     this.model.varPerfil.usuario_creador = this.currentUser.usuario;
     this.model.varPerfil.usuario_modificador = this.currentUser.usuario;
   }

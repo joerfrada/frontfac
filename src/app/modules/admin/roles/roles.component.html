@@ -8,7 +8,7 @@
             <div class="filter-content">
                 <ul class="filter-inner">
                     <li class="filter-item">
-                        <button type="button" class="button btn-default" (click)="openModal()">Crear</button>
+                        <button type="button" class="button btn-default" *ngIf="varPermisos.crear == 1" (click)="openModal()">Crear</button>
                     </li>
                     <li class="filter-item">
                         <div class="input-group-btn">
@@ -39,8 +39,8 @@
                                 <i class="fa fa-1m5x fa-times-circle" *ngIf="item.activo == 'N'"></i>
                             </td>
                             <td>
-                                <button type="button" class="button btn-edit" (click)="editRoles(item)">Editar</button>
-                                <button type="button" class="button btn-edit" (click)="openRolPrivilegios(item)">Privilegios</button>
+                                <button type="button" class="button btn-edit" (click)="editRoles(item)" *ngIf="varPermisos.actualizar == 1">Editar</button>
+                                <button type="button" class="button btn-edit" (click)="openRolPrivilegios(item)" *ngIf="varPermisos.crear == 1 || varPermisos.actualizar == 1">Privilegios</button>
                             </td>
                         </tr>
                         <tr *ngIf="varhistorial?.length == 0">

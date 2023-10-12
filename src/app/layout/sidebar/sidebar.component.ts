@@ -15,8 +15,8 @@ export class SidebarComponent implements OnInit {
 
   constructor() {
     this.currentUser = JSON.parse(localStorage.getItem("currentUser") as any);
-    this.usuario.usuario = this.currentUser[0].usuario.toUpperCase();
-    let menus = this.currentUser[0].menus;
+    this.usuario.usuario = this.currentUser.usuario;
+    let menus = this.currentUser.menus;
     menus.forEach((element: any) => {
       element.submenus = element.submenus.filter((x: any) => x.menu_id != 14);
     });
