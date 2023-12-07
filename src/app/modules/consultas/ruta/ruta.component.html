@@ -263,7 +263,7 @@
     </div>
     <div role="footer1">
         <button type="button" class="btn btn-blue" (click)="openConfigModal()">Detalle del Cargo</button>
-        <button type="button" class="btn btn-blue">Imprimir PDF</button>
+        <button type="button" class="btn btn-blue" (click)="openInforme()">Imprimir PDF</button>
     </div>
 </viewcargo-modal>
 
@@ -540,7 +540,7 @@
                         <div class="col col100">
                             <textarea rows="4" cols="80" [(ngModel)]="model.varConfiguracion.educacion" disabled></textarea>
                         </div>
-                        <div class="col col100 title-row">Conocimientos Adicionales</div>
+                        <div class="col col100 title-row">Conocimientos Adicionales Certificados</div>
                         <div class="line-col"></div>
                         <div class="col col100">
                             <textarea rows="4" cols="80" [(ngModel)]="model.varConfiguracion.conocimiento" disabled></textarea>
@@ -569,5 +569,15 @@
     </div>
     <div role="footer">
         <button type="button" class="btn btn-red" (click)="closeConfigModal(false)">Cerrar</button>
+    </div>
+</app-modal>
+
+<app-modal [title]="titleCargo" [show]="informeModal" [size]="'modal-wmd-4'" (close)="closeInformeModal($event)">
+    <div role="body">
+        <div [innerHTML]="url" class="iframe"></div>
+    </div>
+    <div role="footer">
+        <button type="button" class="btn btn-red" (click)="closeInformeModal(false)">Cerrar</button>
+        <button type="button" class="btn btn-blue"><a href="{{ link }}" style="color: white;">Descargar</a></button>
     </div>
 </app-modal>

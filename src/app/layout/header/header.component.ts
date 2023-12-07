@@ -51,6 +51,7 @@ export class HeaderComponent implements OnInit {
   logout() {
     setTimeout(() => {
       localStorage.clear();
+      // location.href = "/";
       location.href = 'https://plancarrera.fac.mil.co/apiplan/logout';
     }, 10);
   }

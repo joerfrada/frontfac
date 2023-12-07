@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { DomSanitizer } from '@angular/platform-browser';
 import { ApiService } from '../../../services/api.service';
 import { RutaCarreraService } from '../../../services/modules/ruta-carrera.service';
 import { CuerpoService } from '../../../services/modules/cuerpo.service';
@@ -8,6 +9,7 @@ import { AreaService } from '../../../services/modules/area.service';
 import { CargoService } from '../../../services/modules/cargo.service';
 import { GradoService } from '../../../services/modules/grado.service';
 import { UsuarioService } from '../../../services/modules/usuario.service';
+import { ReporteService } from '../../../services/modules/reporte.service';
 // import { Utilidades } from '../../../helper/utilidades';
 
 declare var $:any;
@@ -199,6 +201,12 @@ export class RutaComponent implements OnInit {
 
   width_ruta: any = "31vw";
 
+  informeModal: any;
+  titleCargo: any;
+  varCargo_grado_id: any;
+  url: any;
+  link: any;
+
   constructor(private router: Router,
               private api: ApiService,
               private ruta: RutaCarreraService,
@@ -207,7 +215,9 @@ export class RutaComponent implements OnInit {
               private area: AreaService,
               private cargo: CargoService,
               private grado: GradoService,
-              private usuario: UsuarioService) { 
+              private usuario: UsuarioService,
+              private reporte: ReporteService,
+              private sanitizer: DomSanitizer) { 
     this.currentUser = JSON.parse(localStorage.getItem("currentUser") as any);
     this.model.varRutaCarrera.usuario_creador = this.currentUser.usuario;
     this.model.varRutaCarrera.usuario_modificador = this.currentUser.usuario;
@@ -226,6 +236,8 @@ export class RutaComponent implements OnInit {
     this.getEspecialidadesRutas();
     this.getRutaCarreraActivos();
     this.getListas();
+
+    this.url = "<iframe src=\"{0}\" width=\"100%\" height=\"600\"><iframe>";
   }
 
   reload() {
@@ -1075,6 +1087,8 @@ export class RutaComponent implements OnInit {
           this.lstEspec = x.especialidad != null ? x.especialidad.split(',') : [];
           this.lstArea = x.area != null ? x.area.split(',') : [];
         });
+
+        this.varCargo_grado_id = response.result[0].cargo_grado_id;        
       }
     });
 
@@ -1185,5 +1199,16 @@ export class RutaComponent implements OnInit {
     if (e.target.value == "") {
       this.varhistorial = this.varhistorialTemp;
     }
+  }
+
+  openInforme() {
+    this.informeModal = true;
+    this.titleCargo = 'Reporte: ' + this.tituloCargo;
+    this.url = this.sanitizer.bypassSecurityTrustHtml(this.url.replace("{0}", this.reporte.getReporteCargoPreview(this.varCargo_grado_id) + "#zoom=100&toolbar=0"));
+    this.link = this.reporte.getReporteCargo(this.varCargo_grado_id);
+  }
+
+  closeInformeModal(bol: any) {
+    this.informeModal = bol;
   }
 }
