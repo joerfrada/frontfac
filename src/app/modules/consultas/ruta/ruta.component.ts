@@ -347,14 +347,14 @@ export class RutaComponent implements OnInit {
     });
   }
 
-  getCuerposEspecialidadesAreasRutaCarrera() {
-    this.ruta.getCuerposEspecialidadesAreasRutaCarrera().subscribe(data => {
-      let response: any = this.api.ProcesarRespuesta(data);
-      if (response.tipo == 0) {
-        console.log(response.result);
-      }
-    })
-  }
+  // getCuerposEspecialidadesAreasRutaCarrera() {
+  //   this.ruta.getCuerposEspecialidadesAreasRutaCarrera().subscribe(data => {
+  //     let response: any = this.api.ProcesarRespuesta(data);
+  //     if (response.tipo == 0) {
+  //       console.log(response.result);
+  //     }
+  //   })
+  // }
 
   getEspecialidadesRutas() {
     this.ruta.getEspecialidadesRutas().subscribe(data => {
@@ -1088,7 +1088,7 @@ export class RutaComponent implements OnInit {
           this.lstArea = x.area != null ? x.area.split(',') : [];
         });
 
-        this.varCargo_grado_id = response.result[0].cargo_grado_id;        
+        this.varCargo_grado_id = response.result[0].cargo_grado_id;
       }
     });
 
@@ -1203,7 +1203,9 @@ export class RutaComponent implements OnInit {
 
   openInforme() {
     this.informeModal = true;
+    this.viewCargoModal = false;
     this.titleCargo = 'Reporte: ' + this.tituloCargo;
+    this.url = "<iframe src=\"{0}\" width=\"100%\" height=\"600\"><iframe>";
     this.url = this.sanitizer.bypassSecurityTrustHtml(this.url.replace("{0}", this.reporte.getReporteCargoPreview(this.varCargo_grado_id) + "#zoom=100&toolbar=0"));
     this.link = this.reporte.getReporteCargo(this.varCargo_grado_id);
   }
